@@ -1,0 +1,117 @@
+/* ── Hero ─────────────────────────────────────────────── */
+.props-page { min-height: 100vh; background: var(--bg); }
+.props-hero {
+  padding: 140px 0 64px; position: relative; overflow: hidden;
+}
+.props-hero__bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 60%, var(--navy-2) 100%);
+}
+.props-hero__bg::after {
+  content: ''; position: absolute; inset: 0; opacity: 0.04;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 60px, #fff 60px, #fff 61px),
+    repeating-linear-gradient(90deg, transparent, transparent 60px, #fff 60px, #fff 61px);
+}
+.props-hero__content { position: relative; }
+.props-hero__title {
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 700; color: var(--white);
+  margin-bottom: 12px;
+}
+.props-hero__sub { font-size: 16px; color: rgba(255,255,255,0.65); }
+
+/* ── Filters card ────────────────────────────────────── */
+.props-filters {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  margin-top: -32px; margin-bottom: 36px;
+  overflow: hidden;
+}
+
+/* Search bar */
+.props-filters__search {
+  display: flex; align-items: center; gap: 12px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.props-filters__search-icon { font-size: 18px; flex-shrink: 0; }
+.props-filters__search-input {
+  flex: 1; border: none; outline: none;
+  font-size: 15px; font-weight: 500; color: var(--navy);
+  background: transparent; font-family: var(--font-body);
+}
+.props-filters__search-input::placeholder { color: var(--text-muted); font-weight: 400; }
+.props-filters__search-clear {
+  font-size: 13px; font-weight: 700; color: var(--text-muted);
+  padding: 4px 8px; border-radius: var(--r-sm);
+  transition: color 0.2s, background 0.2s;
+}
+.props-filters__search-clear:hover { color: var(--red); background: rgba(220,38,38,0.06); }
+
+/* Filter row */
+.props-filters__row {
+  display: flex; align-items: flex-end; gap: 24px;
+  padding: 18px 24px; flex-wrap: wrap;
+}
+.props-filter-group { display: flex; flex-direction: column; gap: 7px; }
+.props-filter-label {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--gold-dark);
+}
+.props-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.props-pill {
+  padding: 7px 16px; border-radius: 50px;
+  font-size: 13px; font-weight: 500;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary); background: transparent;
+  transition: all var(--t-fast);
+}
+.props-pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.props-pill:not(.active):hover { border-color: var(--gold); color: var(--gold); }
+
+.props-filter-group--sort { margin-left: auto; }
+.props-sort-select {
+  padding: 9px 14px; border-radius: var(--r-md);
+  border: 1.5px solid var(--border);
+  font-size: 13px; font-weight: 600; color: var(--navy);
+  background: var(--bg); outline: none; cursor: pointer;
+  font-family: var(--font-body);
+}
+
+/* Meta */
+.props-filters__meta {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 24px;
+  background: var(--bg-2); border-top: 1px solid var(--border);
+}
+.props-filters__count { font-size: 14px; color: var(--text-secondary); }
+.props-filters__count b { color: var(--navy); font-weight: 700; }
+.props-filters__clear {
+  font-size: 12px; font-weight: 700; color: var(--text-muted);
+  transition: color 0.2s;
+}
+.props-filters__clear:hover { color: var(--red); }
+
+/* ── Grid ────────────────────────────────────────────── */
+.props-grid { margin-bottom: 0; }
+
+/* ── Empty state ─────────────────────────────────────── */
+.props-empty {
+  text-align: center; padding: 80px 20px;
+  background: var(--white); border-radius: var(--r-xl);
+  border: 1px solid var(--border); margin-bottom: 48px;
+}
+.props-empty__icon  { font-size: 56px; margin-bottom: 16px; }
+.props-empty__title { font-size: 24px; color: var(--navy); margin-bottom: 8px; }
+.props-empty__sub   { font-size: 15px; color: var(--text-secondary); margin-bottom: 24px; }
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .props-filters__row { flex-direction: column; align-items: flex-start; }
+  .props-filter-group--sort { margin-left: 0; }
+  .grid-3 { grid-template-columns: 1fr; }
+}

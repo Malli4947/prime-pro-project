@@ -1,0 +1,127 @@
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.3s ease;
+}
+
+/* Transparent on hero */
+.navbar--glass {
+  padding: 22px 0;
+  background: transparent;
+}
+.navbar--glass .navbar__link { color: rgba(255,255,255,0.85); }
+.navbar--glass .navbar__link:hover,
+.navbar--glass .navbar__link.active { color: var(--gold-light); }
+.navbar--glass .navbar__link.active::after { background: var(--gold-light); }
+.navbar--glass .navbar__phone { color: rgba(255,255,255,0.75); }
+.navbar--glass .navbar__logo-text { color: var(--white); }
+.navbar--glass .navbar__burger-bar { background: var(--white); }
+
+/* Solid on scroll / non-home */
+.navbar--solid {
+  padding: 14px 0;
+  background: rgba(248,246,242,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 2px 24px rgba(12,24,37,0.10);
+}
+.navbar--solid .navbar__link        { color: var(--text-secondary); }
+.navbar--solid .navbar__link:hover,
+.navbar--solid .navbar__link.active { color: var(--navy); }
+.navbar--solid .navbar__phone       { color: var(--text-secondary); }
+.navbar--solid .navbar__logo-text   { color: var(--navy); }
+.navbar--solid .navbar__burger-bar  { background: var(--navy); }
+
+/* Inner */
+.navbar__inner {
+  display: flex; align-items: center;
+  gap: 40px;
+}
+.navbar__logo {
+  display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+  font-family: var(--font-display);
+}
+.navbar__logo-icon   { color: var(--gold); font-size: 22px; }
+.navbar__logo-text   { font-size: 22px; font-weight: 700; transition: color 0.3s; }
+.navbar__logo-accent { color: var(--gold); }
+
+.navbar__nav {
+  display: flex; align-items: center; gap: 34px;
+  margin-left: auto;
+}
+.navbar__link {
+  font-size: 14px; font-weight: 500;
+  position: relative; padding-bottom: 3px;
+  transition: color 0.2s;
+}
+.navbar__link::after {
+  content: ''; position: absolute;
+  bottom: -2px; left: 0; right: 0; height: 1.5px;
+  background: var(--gold); border-radius: 1px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.navbar__link:hover::after,
+.navbar__link.active::after { transform: scaleX(1); }
+
+.navbar__actions {
+  display: flex; align-items: center; gap: 18px; flex-shrink: 0;
+}
+.navbar__phone {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; transition: color 0.2s;
+}
+.navbar__phone:hover { color: var(--gold); }
+.navbar__cta { flex-shrink: 0; }
+
+/* Hamburger */
+.navbar__burger {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  gap: 5px; width: 40px; height: 40px;
+  border-radius: var(--r-sm);
+  background: rgba(12,24,37,0.06);
+  margin-left: auto;
+  transition: background 0.2s;
+}
+.navbar__burger:hover { background: rgba(12,24,37,0.1); }
+.navbar__burger-bar {
+  display: block; width: 20px; height: 2px;
+  border-radius: 2px; transition: all 0.3s;
+}
+.navbar__burger.open .navbar__burger-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar__burger.open .navbar__burger-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.navbar__burger.open .navbar__burger-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.navbar__drawer {
+  display: none;
+  flex-direction: column;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 0 var(--px) 24px;
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.navbar__drawer.open { max-height: 600px; display: flex; }
+.navbar__drawer-link {
+  font-size: 17px; font-weight: 500;
+  color: var(--text-secondary); padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.navbar__drawer-link:last-of-type { border-bottom: none; }
+.navbar__drawer-link.active,
+.navbar__drawer-link:hover { color: var(--gold); }
+.navbar__drawer-footer { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.navbar__drawer-phone { text-align: center; font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .navbar__nav, .navbar__actions { display: none; }
+  .navbar__burger { display: flex; }
+  .navbar__drawer { display: flex; }
+}
+@media (max-width: 768px) {
+  .navbar--glass { padding: 16px 0; }
+  .navbar--solid { padding: 12px 0; }
+}
