@@ -2,73 +2,102 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './PropertyCard.css';
 
-const BADGE_CLASS = {
-  Premium:    'pill pill-gold',
-  Featured:   'pill pill-navy',
-  Hot:        'pill pill-red',
-  'New Launch':'pill pill-green',
-  Lease:      'pill pill-purple',
-  Commercial: 'pill pill-amber',
-};
-const STATUS_CLASS = {
-  'For Sale':  'prop-card__status prop-card__status--sale',
-  'For Rent':  'prop-card__status prop-card__status--rent',
-  'For Lease': 'prop-card__status prop-card__status--lease',
-};
-
 export default function PropertyCard({ property, style }) {
-  const { id, title, location, price, type, subtype, status, beds, baths, area, image, badge, rating, reviews } = property;
+  if (!property) return null;
+
+  // ── Map real API fields ─────────────────────────────────────────────────────
+  // Backend returns: _id, title, priceLabel, price, location{locality,city},
+  //                  image (virtual), images[], beds, baths, area, status,
+  //                  type, subtype, badge, featured
+  const {
+    _id,
+    title,
+    priceLabel,
+    price,
+    location,
+    image,
+    images,
+    beds,
+    baths,
+    area,
+    status,
+    type,
+    subtype,
+    badge,
+    featured,
+  } = property;
+
+  const displayPrice   = priceLabel || (price ? `₹${Number(price).toLocaleString('en-IN')}` : 'Price on Request');
+  const displayLoc     = location?.locality
+    ? `${location.locality}${location.city ? ', ' + location.city : ''}`
+    : location?.address || 'Hyderabad';
+  const displayImage   = image || (images && images.length > 0 ? images[0] : null);
+  const propertyLink   = `/properties/${_id}`;
+
+  const statusClass = {
+    'For Sale':  'pill pill-green',
+    'For Rent':  'pill pill-amber',
+    'For Lease': 'pill pill-purple',
+  }[status] || 'pill pill-navy';
+
+  const badgeClass = {
+    'Premium':    'pill pill-gold',
+    'Hot':        'pill pill-red',
+    'New Launch': 'pill pill-green',
+    'Featured':   'pill pill-navy',
+    'Lease':      'pill pill-purple',
+    'Commercial': 'pill pill-amber',
+  }[badge] || 'pill pill-navy';
 
   return (
-    <Link to={`/properties/${id}`} className="prop-card card" style={style}>
+    <div className="prop-card" style={style}>
+      {/* Image */}
+      <Link to={propertyLink} className="prop-card__img-wrap">
+        {displayImage ? (
+          <img src={displayImage} alt={title} className="prop-card__img" loading="lazy" />
+        ) : (
+          <div className="prop-card__img-placeholder">
+            <span>🏠</span>
+          </div>
+        )}
+        <div className="prop-card__overlay" />
 
-      {/* ── Image ────────────────────────────────────────── */}
-      <div className="prop-card__img-wrap">
-        <img src={image} alt={title} className="prop-card__img" loading="lazy" />
-        <div className="prop-card__img-overlay" />
-
-        {/* Top row badges */}
-        <div className="prop-card__top">
-          {badge && <span className={BADGE_CLASS[badge] || 'pill pill-navy'}>{badge}</span>}
-          <span className={STATUS_CLASS[status] || 'prop-card__status'}>{status}</span>
+        {/* Badges */}
+        <div className="prop-card__badges">
+          {badge    && <span className={badgeClass}>{badge}</span>}
+          {featured && !badge && <span className="pill pill-gold">Featured</span>}
+          <span className={statusClass}>{status}</span>
         </div>
 
-        {/* Price */}
-        <div className="prop-card__price-wrap">
-          <span className="prop-card__price">{price}</span>
-        </div>
-      </div>
+        {/* Type chip */}
+        <div className="prop-card__type">{subtype || type}</div>
+      </Link>
 
-      {/* ── Body ─────────────────────────────────────────── */}
+      {/* Body */}
       <div className="prop-card__body">
-        <div className="prop-card__meta">
-          <span className="prop-card__type">{type} · {subtype}</span>
-          {rating && (
-            <span className="prop-card__rating">
-              ⭐ {rating} <span className="prop-card__reviews">({reviews})</span>
-            </span>
+        <div className="prop-card__price">{displayPrice}</div>
+        <h3 className="prop-card__title">
+          <Link to={propertyLink}>{title}</Link>
+        </h3>
+        <p className="prop-card__loc">📍 {displayLoc}</p>
+
+        {/* Specs */}
+        <div className="prop-card__specs">
+          {beds  != null && (
+            <span className="prop-card__spec">🛏️ {beds} {beds === 1 ? 'Bed' : 'Beds'}</span>
+          )}
+          {baths != null && (
+            <span className="prop-card__spec">🚿 {baths} {baths === 1 ? 'Bath' : 'Baths'}</span>
+          )}
+          {area && (
+            <span className="prop-card__spec">📐 {area}</span>
           )}
         </div>
 
-        <h3 className="prop-card__title">{title}</h3>
-
-        <p className="prop-card__loc">
-          <span className="prop-card__loc-pin">📍</span>
-          {location}
-        </p>
-
-        <div className="prop-card__sep" />
-
-        <div className="prop-card__specs">
-          {beds  != null && <span className="prop-card__spec">🛏 {beds} Bed{beds > 1 ? 's' : ''}</span>}
-          {baths != null && <span className="prop-card__spec">🚿 {baths} Bath{baths > 1 ? 's' : ''}</span>}
-          <span className="prop-card__spec">📐 {area}</span>
-        </div>
-
-        <div className="prop-card__footer">
-          <span className="prop-card__cta">View Details →</span>
-        </div>
+        <Link to={propertyLink} className="btn btn-gold btn-sm prop-card__cta">
+          View Details →
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }

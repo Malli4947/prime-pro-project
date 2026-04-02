@@ -102,7 +102,7 @@
 }
 .prop-card__cta {
   font-size: 13px; font-weight: 700;
-  color: var(--gold); letter-spacing: 0.2px;
+  color: var(--white); letter-spacing: 0.2px;
   transition: letter-spacing var(--t-fast);
 }
 .prop-card:hover .prop-card__cta { letter-spacing: 0.5px; }

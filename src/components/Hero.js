@@ -1,174 +1,175 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { HERO_SLIDES, STATS } from '../data/Properties';
 import './Hero.css';
 
-export default function Hero() {
-  const navigate = useNavigate();
-  const [slide, setSlide]         = useState(0);
-  const [transitioning, setTrans] = useState(false);
-  const [mounted, setMounted]     = useState(false);
-  const [searchType, setSearchType] = useState('Buy');
-  const [searchForm, setSearchForm] = useState({ propertyType: '', location: '', budget: '' });
+// ── Hero component ────────────────────────────────────────────────────────────
+// Props:
+//   cmsHero — from GET /api/cms → cms.hero
+//     { title, subtitle, ctaText, backgroundImage }
+//
+// If cmsHero is not yet loaded (null/undefined), shows a loading skeleton.
+// All content comes exclusively from the CMS — no static fallback slides.
+// ─────────────────────────────────────────────────────────────────────────────
+export default function Hero({ cmsHero }) {
+  const navigate    = useNavigate();
+  const [search,    setSearch]    = useState('');
+  const [type,      setType]      = useState('All');
+  const [mounted,   setMounted]   = useState(false);
+  const inputRef    = useRef(null);
 
   useEffect(() => {
-    setTimeout(() => setMounted(true), 100);
-    const id = setInterval(() => {
-      setTrans(true);
-      setTimeout(() => { setSlide(s => (s + 1) % HERO_SLIDES.length); setTrans(false); }, 400);
-    }, 5500);
-    return () => clearInterval(id);
+    const t = setTimeout(() => setMounted(true), 60);
+    return () => clearTimeout(t);
   }, []);
-
-  const current = HERO_SLIDES[slide];
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const p = new URLSearchParams();
-    if (searchForm.propertyType) p.set('subtype', searchForm.propertyType);
-    if (searchForm.location)     p.set('location', searchForm.location);
-    if (searchType === 'Rent')   p.set('status', 'For Rent');
-    if (searchType === 'Lease')  p.set('status', 'For Lease');
-    navigate(`/properties?${p.toString()}`);
+    const q = new URLSearchParams();
+    if (search.trim()) q.set('search', search.trim());
+    if (type !== 'All') q.set('type', type);
+    navigate(`/properties?${q.toString()}`);
   };
 
+  // ── Derive values from CMS ────────────────────────────────────────────────
+  // cmsHero comes from: GET /api/cms → data.cms.hero
+  // Fields: { title, subtitle, ctaText, backgroundImage }
+  const isLoading = !cmsHero;
+
+  const heroTitle  = cmsHero?.title           || '';
+  const heroSub    = cmsHero?.subtitle        || '';
+  const heroCta    = cmsHero?.ctaText         || 'Browse Properties';
+  const heroBg     = cmsHero?.backgroundImage || '';
+
   return (
-    <section className="hero">
-      {/* ── Background slideshow ──────────────────────── */}
-      <div className={`hero__bg${transitioning ? ' hero__bg--fade' : ''}`}>
-        {HERO_SLIDES.map((s, i) => (
-          <div key={s.id} className={`hero__bg-slide${i === slide ? ' active' : ''}`}
-            style={{ backgroundImage: `url(${s.img})` }} />
-        ))}
-        <div className="hero__overlay" />
-        <div className="hero__pattern" />
-      </div>
+    <section
+      className={`hero${mounted ? ' hero--mounted' : ''}`}
+      style={heroBg ? {
+        backgroundImage: `url(${heroBg})`,
+        backgroundSize:     'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat:   'no-repeat',
+      } : {}}>
 
-      {/* ── Slide indicators ─────────────────────────── */}
-      <div className="hero__indicators">
-        {HERO_SLIDES.map((s, i) => (
-          <button key={s.id} className={`hero__indicator${i === slide ? ' active' : ''}`}
-            onClick={() => setSlide(i)} />
-        ))}
-      </div>
+      {/* Dark overlay so text is always readable */}
+      <div className="hero__overlay" />
 
-      {/* ── Content ──────────────────────────────────── */}
-      <div className="container hero__content">
-        <div className={`hero__text${mounted ? ' mounted' : ''}`}>
+      {/* Content */}
+      <div className="container hero__body">
 
-          <div className={`hero__tag anim-fade-up${mounted ? '' : ' hidden'}`}>
-            <span className="hero__tag-dot" />
-            {current.tag}
+        {isLoading ? (
+          // ── Skeleton while CMS loads ────────────────────────────────────
+          <div className="hero__skeleton">
+            <div className="hero-skel hero-skel--tag" />
+            <div className="hero-skel hero-skel--title" />
+            <div className="hero-skel hero-skel--title hero-skel--title-2" />
+            <div className="hero-skel hero-skel--sub" />
+            <div className="hero-skel hero-skel--btn" />
           </div>
+        ) : (
+          // ── Live CMS content ────────────────────────────────────────────
+          <>
+            <div className={`hero__content${mounted ? ' hero__content--in' : ''}`}>
+              {/* Tag */}
+              <div className="hero__tag">
+                <span className="hero__tag-dot" />
+                Hyderabad's #1 Real Estate Platform
+              </div>
 
-          <h1 className={`hero__title anim-fade-up d-2${mounted ? '' : ' hidden'}`}>
-            {current.title.split('\n').map((line, i) => (
-              <span key={i} className={i === 1 ? 'hero__title-italic' : ''}>
-                {line}<br />
-              </span>
-            ))}
-          </h1>
+              {/* Title from cms.hero.title */}
+              <h1 className="hero__title">
+                {heroTitle || <>&nbsp;</>}
+              </h1>
 
-          <div className={`hero__price-tag anim-fade-up d-3${mounted ? '' : ' hidden'}`}>
-            <span className="hero__price-label">Starting</span>
-            <span className="hero__price-val">{current.price}</span>
-          </div>
+              {/* Subtitle from cms.hero.subtitle */}
+              {heroSub && (
+                <p className="hero__sub">{heroSub}</p>
+              )}
 
-          <div className={`hero__btns anim-fade-up d-4${mounted ? '' : ' hidden'}`}>
-            <Link to="/properties" className="btn btn-gold btn-lg">
-              Explore Properties
-            </Link>
-            <a href="tel:18005006000" className="btn btn-outline-light btn-lg">
-              📞 Talk to Expert
-            </a>
-          </div>
-        </div>
+              {/* CTA from cms.hero.ctaText */}
+              <div className="hero__ctas">
+                <Link to="/properties" className="btn btn-gold hero__cta-primary">
+                  {heroCta} →
+                </Link>
+                <Link to="/properties?status=For+Rent" className="btn hero__cta-secondary">
+                  Explore Rentals
+                </Link>
+              </div>
 
-        {/* ── Stats strip ──────────────────────────────── */}
-        <div className={`hero__stats anim-fade-up d-5${mounted ? '' : ' hidden'}`}>
-          {STATS.map((s, i) => (
-            <div key={i} className="hero__stat">
-              <span className="hero__stat-icon">{s.icon}</span>
-              <span className="hero__stat-val">{s.value}</span>
-              <span className="hero__stat-label">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Search box ───────────────────────────────── */}
-      <div className="hero__search-wrap">
-        <div className="container">
-          <div className={`hero__search anim-fade-up d-6${mounted ? '' : ' hidden'}`}>
-            {/* Tabs */}
-            <div className="hero__search-tabs">
-              {['Buy', 'Rent', 'Lease'].map(t => (
-                <button key={t}
-                  className={`hero__search-tab${searchType === t ? ' active' : ''}`}
-                  onClick={() => setSearchType(t)}>
-                  {t}
-                </button>
-              ))}
+              {/* Trust badges */}
+              <div className="hero__trust">
+                <span className="hero__trust-item">✓ RERA Verified</span>
+                <span className="hero__trust-sep">·</span>
+                <span className="hero__trust-item">✓ Zero Brokerage</span>
+                <span className="hero__trust-sep">·</span>
+                <span className="hero__trust-item">✓ 2-Hr Response</span>
+              </div>
             </div>
 
-            {/* Form */}
-            <form className="hero__search-form" onSubmit={handleSearch}>
-              <div className="hero__search-field">
-                <label>Property Type</label>
-                <select value={searchForm.propertyType}
-                  onChange={e => setSearchForm(f => ({ ...f, propertyType: e.target.value }))}>
-                  <option value="">All Types</option>
-                  <option>Apartment</option>
-                  <option>Villa</option>
-                  <option>Row House</option>
-                  <option>Duplex</option>
-                  <option>Penthouse</option>
-                  <option>Office Space</option>
-                  <option>Farmhouse</option>
-                  <option>Retail Shop</option>
-                </select>
-              </div>
+            {/* Search box */}
+            <div className={`hero__search-wrap${mounted ? ' hero__search-wrap--in' : ''}`}>
+              <form className="hero__search" onSubmit={handleSearch}>
+                <div className="hero__search-inner">
+                  {/* Type selector */}
+                  <div className="hero__search-type">
+                    <select
+                      value={type}
+                      onChange={e => setType(e.target.value)}
+                      className="hero__type-select">
+                      <option value="All">All Types</option>
+                      <option value="Residential">Residential</option>
+                      <option value="Commercial">Commercial</option>
+                      <option value="Agriculture">Agriculture</option>
+                      <option value="Industrial">Industrial</option>
+                      <option value="Luxury">Luxury</option>
+                    </select>
+                    <span className="hero__select-arrow">▾</span>
+                  </div>
 
-              <div className="hero__search-sep" />
+                  <div className="hero__search-divider" />
 
-              <div className="hero__search-field">
-                <label>Location</label>
-                <select value={searchForm.location}
-                  onChange={e => setSearchForm(f => ({ ...f, location: e.target.value }))}>
-                  <option value="">All Locations</option>
-                  <option>Banjara Hills</option>
-                  <option>Jubilee Hills</option>
-                  <option>Gachibowli</option>
-                  <option>Madhapur</option>
-                  <option>Kondapur</option>
-                  <option>Hitec City</option>
-                  <option>Narsingi</option>
-                  <option>Begumpet</option>
-                  <option>Shamshabad</option>
-                </select>
-              </div>
+                  {/* Text input */}
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    className="hero__search-input"
+                    placeholder="Search by location, project or type…"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                  />
 
-              <div className="hero__search-sep" />
+                  {/* Submit */}
+                  <button type="submit" className="hero__search-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="M21 21l-4.35-4.35" />
+                    </svg>
+                    <span>Search</span>
+                  </button>
+                </div>
 
-              <div className="hero__search-field">
-                <label>Budget</label>
-                <select value={searchForm.budget}
-                  onChange={e => setSearchForm(f => ({ ...f, budget: e.target.value }))}>
-                  <option value="">Any Budget</option>
-                  <option>Under ₹50 Lakh</option>
-                  <option>₹50L – ₹1 Cr</option>
-                  <option>₹1 Cr – ₹2 Cr</option>
-                  <option>₹2 Cr – ₹5 Cr</option>
-                  <option>Above ₹5 Cr</option>
-                </select>
-              </div>
+                {/* Quick tags */}
+                <div className="hero__quick-tags">
+                  <span className="hero__quick-label">Popular:</span>
+                  {['Banjara Hills', 'Gachibowli', 'Jubilee Hills', 'Villa', '3BHK'].map(tag => (
+                    <button
+                      key={tag}
+                      type="button"
+                      className="hero__quick-tag"
+                      onClick={() => { setSearch(tag); inputRef.current?.focus(); }}>
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </form>
+            </div>
 
-              <button type="submit" className="hero__search-btn">
-                🔍 Search
-              </button>
-            </form>
-          </div>
-        </div>
+            {/* Scroll hint */}
+            <div className="hero__scroll">
+              <div className="hero__scroll-line" />
+              <span>Scroll</span>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

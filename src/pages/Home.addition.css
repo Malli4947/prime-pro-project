@@ -1,0 +1,209 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Home.css  — ADDITIONS (append to your existing Home.css)
+   Covers: skeleton shimmer, empty state, CMS banners,
+           category count badge, contact chips, skel-inline/block
+───────────────────────────────────────────────────────────────────────── */
+
+/* ── Skeleton shimmer ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeleton-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e8edf5;
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, #f0f2f8 25%, #e2e6f0 50%, #f0f2f8 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.skeleton-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f2f8 25%, #e2e6f0 50%, #f0f2f8 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+.skeleton-line--lg  { width: 80%; }
+.skeleton-line--md  { width: 60%; }
+.skeleton-line--sm  { width: 40%; }
+
+/* Inline + block skeleton for text replacement */
+.skel-inline {
+  display: inline-block;
+  width: 280px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f2f8 25%, #e2e6f0 50%, #f0f2f8 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  vertical-align: middle;
+}
+.skel-block {
+  display: block;
+  width: 100%;
+  height: 56px;
+  border-radius: 8px;
+  margin-top: 8px;
+  background: linear-gradient(90deg, #f0f2f8 25%, #e2e6f0 50%, #f0f2f8 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* Skeleton category card */
+.cat-card--skeleton {
+  pointer-events: none;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e8edf5;
+  background: #fff;
+}
+
+/* ── Empty state ────────────────────────────────────────────────────────── */
+.home-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  gap: 12px;
+  text-align: center;
+}
+.home-empty__icon {
+  font-size: 48px;
+  opacity: 0.3;
+  line-height: 1;
+}
+.home-empty p {
+  color: #94a3b8;
+  font-size: 15px;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* ── CMS Banners section ────────────────────────────────────────────────── */
+.home-cms-banners {
+  padding: 40px 0 0;
+}
+.home-cms-banners__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.cms-banner-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 180px;
+  box-shadow: 0 4px 20px rgba(26, 43, 74, 0.12);
+}
+.cms-banner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.cms-banner-card:hover img {
+  transform: scale(1.04);
+}
+.cms-banner-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,13,30,0.72) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+.cms-banner-card__title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+.cms-banner-card__sub {
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Category count badge ───────────────────────────────────────────────── */
+.cat-card__count {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(201,168,76,0.12);
+  color: #C9A84C;
+  border: 1px solid rgba(201,168,76,0.25);
+  letter-spacing: 0.3px;
+}
+
+/* ── Contact chips in "Why Us" section ─────────────────────────────────── */
+.home-why__contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  margin-bottom: 4px;
+}
+.home-why__contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: #1A2B4A;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+.home-why__contact-chip:hover {
+  background: rgba(201,168,76,0.16);
+  border-color: rgba(201,168,76,0.4);
+  color: #1A2B4A;
+}
+.home-why__contact-chip span:first-child {
+  font-size: 15px;
+}
+
+/* ── Responsive tweaks ──────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .home-cms-banners__grid {
+    grid-template-columns: 1fr;
+  }
+  .home-why__contact-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .home-why__contact-chip {
+    width: 100%;
+    justify-content: center;
+  }
+  .cms-banner-card {
+    height: 160px;
+  }
+}

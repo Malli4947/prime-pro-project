@@ -8,6 +8,7 @@ import PropertyDetails from './pages/PropertyDetails';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import './App.css';
+import Profile from './pages/Profile';
 
 function ScrollReset() {
   const { pathname } = useLocation();
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/properties/:id" element={<PropertyDetails />} />
             <Route path="/about"          element={<About />} />
             <Route path="/contact"        element={<Contact />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={
               <div style={{
                 minHeight:'80vh', display:'flex', flexDirection:'column',

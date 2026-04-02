@@ -86,7 +86,7 @@ export default function Footer() {
               </li>
               <li>
                 <span className="footer__contact-icon">📞</span>
-                <a href="tel:18005006000">1800 500 600</a>
+                <a href="tel:18005006000">9347870247</a>
               </li>
               <li>
                 <span className="footer__contact-icon">✉️</span>
