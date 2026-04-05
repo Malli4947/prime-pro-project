@@ -28,7 +28,7 @@ function toValidImgArray(images, image) {
 
 export default function PropertyDetails() {
   const { id }   = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [property,     setProperty]    = useState(null);
   const [related,      setRelated]     = useState([]);

@@ -49,7 +49,7 @@ const AGENTS = [
 
 export default function About() {
   const [mounted, setMounted] = useState(false);
-  const [heroRef,    heroVis]   = useReveal(0.1);
+  // const [heroRef,    heroVis]   = useReveal(0.1);
   const [storyRef,   storyVis]  = useReveal();
   const [valuesRef,  valuesVis] = useReveal();
   const [timeRef,    timeVis]   = useReveal();
