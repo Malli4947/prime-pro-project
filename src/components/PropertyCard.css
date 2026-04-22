@@ -1,7 +1,11 @@
 .prop-card {
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  overflow: hidden; cursor: pointer;
+  overflow: hidden;
+  cursor: pointer;
   transition: transform var(--t-mid), box-shadow var(--t-mid), border-color var(--t-mid);
 }
 .prop-card:hover {
@@ -10,99 +14,261 @@
   border-color: var(--gold-border);
 }
 
-/* Image area */
+/* ── Image area (carousel) ───────────────────────────── */
 .prop-card__img-wrap {
-  position: relative; overflow: hidden;
-  height: 230px; flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  height: 230px;
+  flex-shrink: 0;
+  display: block;
+  text-decoration: none;
+  background: var(--navy);
 }
+
 .prop-card__img {
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform var(--t-slow);
+  animation: pcImgFade 0.5s ease both;
 }
-.prop-card:hover .prop-card__img { transform: scale(1.07); }
+.prop-card:hover .prop-card__img {
+  transform: scale(1.07);
+}
+
+.prop-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-2);
+}
+.prop-card__img-placeholder span {
+  font-size: 48px;
+  opacity: 0.25;
+}
 
 .prop-card__img-overlay {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background: linear-gradient(to top, rgba(12,24,37,0.65) 0%, transparent 55%);
   pointer-events: none;
+  z-index: 1;
 }
 
+/* Top row: badges on left, status on right */
 .prop-card__top {
-  position: absolute; top: 14px; left: 14px; right: 14px;
-  display: flex; justify-content: space-between; align-items: flex-start;
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 6px;
+  z-index: 3;
 }
-.prop-card__status {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  text-transform: uppercase; padding: 4px 10px; border-radius: 50px;
-  white-space: nowrap;
+.prop-card__badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
 }
-.prop-card__status--sale  { background: rgba(22,163,74,0.15);  color: #16A34A; border: 1px solid rgba(22,163,74,0.3); }
-.prop-card__status--rent  { background: rgba(201,168,76,0.15); color: var(--gold-dark); border: 1px solid var(--gold-border); }
-.prop-card__status--lease { background: rgba(124,58,237,0.12); color: #7C3AED; border: 1px solid rgba(124,58,237,0.25); }
 
-.prop-card__price-wrap {
-  position: absolute; bottom: 14px; right: 14px;
-}
-.prop-card__price {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: 18px; font-weight: 700;
+/* Type chip — bottom-left */
+.prop-card__type-chip {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
   color: var(--white);
   background: rgba(12,24,37,0.65);
   backdrop-filter: blur(10px);
-  padding: 5px 12px; border-radius: var(--r-sm);
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
   border: 1px solid rgba(201,168,76,0.3);
+  z-index: 3;
 }
 
-/* Body */
-.prop-card__body {
-  display: flex; flex-direction: column;
-  padding: 18px 20px 20px; flex: 1;
+/* Prev / Next arrows — show on hover */
+.prop-card__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(250, 246, 242, 0.92);
+  backdrop-filter: blur(8px);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.2s ease, background 0.2s ease;
+  z-index: 4;
+  padding: 0;
 }
-.prop-card__meta {
-  display: flex; justify-content: space-between; align-items: center;
+.prop-card:hover .prop-card__nav {
+  opacity: 1;
+}
+.prop-card__nav:hover {
+  background: var(--white);
+  transform: translateY(-50%) scale(1.1);
+}
+.prop-card__nav--prev { left: 10px; }
+.prop-card__nav--next { right: 10px; }
+
+/* Dots indicator */
+.prop-card__dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+}
+.prop-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.prop-card__dot.active {
+  width: 18px;
+  background: var(--gold);
+}
+.prop-card__dot:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Counter (when > 6 images) — bottom-right */
+.prop-card__counter {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(12, 24, 37, 0.75);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 3;
+}
+
+/* ── Body ───────────────────────────────────────────── */
+.prop-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 20px;
+  flex: 1;
+}
+
+.prop-card__price {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
   margin-bottom: 6px;
 }
-.prop-card__type {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; color: var(--gold);
-}
-.prop-card__rating { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
-.prop-card__reviews { font-weight: 400; color: var(--text-muted); }
 
 .prop-card__title {
-  font-size: 17px; font-weight: 600; color: var(--navy);
-  margin-bottom: 7px; line-height: 1.3;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 7px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.prop-card__loc {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 13px; color: var(--text-secondary);
-  margin-bottom: 14px;
+.prop-card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
-.prop-card__loc-pin { font-size: 12px; flex-shrink: 0; }
+.prop-card__title a:hover {
+  color: var(--gold);
+}
 
-.prop-card__sep {
-  height: 1px; background: var(--border);
+.prop-card__loc {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-secondary);
   margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .prop-card__specs {
-  display: flex; gap: 14px; flex-wrap: wrap;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
   margin-bottom: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
 }
 .prop-card__spec {
-  font-size: 12px; font-weight: 500; color: var(--text-secondary);
-  display: flex; align-items: center; gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.prop-card__footer {
-  margin-top: auto; padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
 .prop-card__cta {
-  font-size: 13px; font-weight: 700;
-  color: var(--white); letter-spacing: 0.2px;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   transition: letter-spacing var(--t-fast);
 }
-.prop-card:hover .prop-card__cta { letter-spacing: 0.5px; }
+.prop-card:hover .prop-card__cta {
+  letter-spacing: 0.5px;
+}
+
+/* ── Animations ───────────────────────────────────────── */
+@keyframes pcImgFade {
+  from { opacity: 0.5; }
+  to   { opacity: 1;   }
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .prop-card__img-wrap { height: 200px; }
+  .prop-card__body { padding: 14px 16px 16px; }
+  .prop-card__price { font-size: 18px; }
+  .prop-card__title { font-size: 15px; }
+
+  /* Always show nav arrows on touch devices (no hover) */
+  .prop-card__nav {
+    opacity: 1;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+}
