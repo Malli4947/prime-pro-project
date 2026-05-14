@@ -1,4 +1,5 @@
-import  { useRef, useEffect, useState, useCallback } from 'react';
+/* eslint-disable no-unused-vars */
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import PropertyCard from '../components/PropertyCard';
@@ -6,6 +7,7 @@ import AnimatedBackground from '../components/AnimatedBackground';
 import './Home.css';
 
 const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
+const FALLBACK_IMG = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=85';
 
 function useReveal(threshold = 0.12) {
   const ref = useRef(null);
@@ -20,54 +22,44 @@ function useReveal(threshold = 0.12) {
   return [ref, visible];
 }
 
-// ── Banner slider hook ───────────────────────────────────────
 function useBannerSlider(total, interval = 5000) {
-  const [active, setActive]   = useState(0);
-  const [paused, setPaused]   = useState(false);
-  const [prog,   setProg]     = useState(0);
-  const timerRef  = useRef(null);
-  const progRef   = useRef(null);
-  const startRef  = useRef(null);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [prog,   setProg]   = useState(0);
+  const progRef  = useRef(null);
+  const startRef = useRef(null);
 
-  // reset to slide 0 whenever the banner list loads / changes
   useEffect(() => {
-    setActive(0);
-    setProg(0);
-    startRef.current = Date.now();
+    setActive(0); setProg(0); startRef.current = Date.now();
   }, [total]);
 
   const goTo = useCallback((idx) => {
     setActive((idx + total) % total);
-    setProg(0);
-    startRef.current = Date.now();
+    setProg(0); startRef.current = Date.now();
   }, [total]);
 
-  const next = useCallback(() => goTo(active + 1), [active, goTo]);
-  const prev = useCallback(() => goTo(active - 1), [active, goTo]);
+  const next = useCallback(() => setActive(a => (a + 1) % total), [total]);
+  const prev = useCallback(() => setActive(a => (a - 1 + total) % total), [total]);
 
-  // progress bar animation
   useEffect(() => {
     if (paused || total <= 1) { cancelAnimationFrame(progRef.current); return; }
-    startRef.current = startRef.current || Date.now();
+    if (!startRef.current) startRef.current = Date.now();
     const tick = () => {
-      const elapsed = Date.now() - startRef.current;
-      const p = Math.min((elapsed / interval) * 100, 100);
+      const p = Math.min(((Date.now() - startRef.current) / interval) * 100, 100);
       setProg(p);
       if (p < 100) progRef.current = requestAnimationFrame(tick);
     };
     progRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(progRef.current);
-  }, [active, paused, total, interval]); // eslint-disable-line
+  }, [active, paused, total, interval]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // auto-advance
   useEffect(() => {
     if (paused || total <= 1) return;
-    timerRef.current = setTimeout(() => {
+    const t = setTimeout(() => {
       setActive(a => (a + 1) % total);
-      setProg(0);
-      startRef.current = Date.now();
+      setProg(0); startRef.current = Date.now();
     }, interval);
-    return () => clearTimeout(timerRef.current);
+    return () => clearTimeout(t);
   }, [active, paused, total, interval]);
 
   return { active, prog, next, prev, goTo, setPaused };
@@ -82,7 +74,7 @@ const AGENTS = [
 const TESTIMONIALS = [
   { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Madhapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
   { id:2, name:'Divya Nair',   role:'Investor',       city:'Gachibowli',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
-  { id:3, name:'Suresh Kumar', role:'Property Seller',city:'Banjara Hills', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
+  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Banjara Hills', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
 ];
 
 const STATS = [
@@ -100,60 +92,50 @@ const WHY_FEATURES = [
 ];
 
 const CAT_IMAGES = {
-  apartments:           'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80',
-  villas:               'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
-  plots:                'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  commercial:           'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80',
-  'farm lands':         'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  'ready to move':      'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
-  'under construction': 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80',
-  residential:          'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
-  agriculture:          'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  industrial:           'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
-  luxury:               'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80',
-  default:              'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+  apartments:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80',
+  villas:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
+  plots:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
+  commercial:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80',
+  'farm lands':'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
+  'ready to move':'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+  'under construction':'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80',
+  residential:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
+  agriculture:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
+  industrial:'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
+  luxury:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80',
+  default:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
 };
 
-// Returns true if a string is a real http/https URL (not an emoji or path)
 function isUrl(str) {
   return typeof str === 'string' && (str.startsWith('http://') || str.startsWith('https://'));
 }
-
 function getCatImage(cat) {
-  // 1. cat.image — if it's a real URL
   if (isUrl(cat.image)) return cat.image;
-  // 2. cat.icon — some categories store the image URL in the icon field
-  if (isUrl(cat.icon)) return cat.icon;
-  // 3. images[] array
+  if (isUrl(cat.icon))  return cat.icon;
   if (Array.isArray(cat.images) && cat.images.length > 0) {
-    const primary = cat.images.find(i => i.isPrimary) || cat.images[0];
-    if (isUrl(primary?.url)) return primary.url;
+    const p = cat.images.find(i => i.isPrimary) || cat.images[0];
+    if (isUrl(p?.url)) return p.url;
   }
-  // 4. Name-based Unsplash fallback
-  const key = cat.name?.toLowerCase().trim();
-  return CAT_IMAGES[key] || CAT_IMAGES.default;
+  return CAT_IMAGES[cat.name?.toLowerCase().trim()] || CAT_IMAGES.default;
 }
+function getCatEmoji(cat) { return isUrl(cat.icon) ? '🏠' : (cat.icon || '🏠'); }
 
-// Only return icon as emoji — never render a URL string as text
-function getCatEmoji(cat) {
-  if (isUrl(cat.icon)) return '🏠';
-  return cat.icon || '🏠';
+// Resolve banner image — swap out blocked Google thumbnails
+function getBannerImg(url) {
+  if (!url) return FALLBACK_IMG;
+  if (url.includes('encrypted-tbn') || url.includes('gstatic.com')) return FALLBACK_IMG;
+  return url;
 }
 
 const shimmerStyle = {
-  background: 'linear-gradient(90deg,#f0f2f8 25%,#e2e6f0 50%,#f0f2f8 75%)',
-  backgroundSize: '600px 100%',
-  animation: 'shimmer 1.4s infinite linear',
-  borderRadius: 6,
+  background:'linear-gradient(90deg,#f0f2f8 25%,#e2e6f0 50%,#f0f2f8 75%)',
+  backgroundSize:'600px 100%', animation:'shimmer 1.4s infinite linear', borderRadius:6,
 };
-
 const chipStyle = {
-  display:'inline-flex', alignItems:'center', gap:6,
-  padding:'7px 14px', borderRadius:99,
+  display:'inline-flex', alignItems:'center', gap:6, padding:'7px 14px', borderRadius:99,
   background:'rgba(201,168,76,0.08)', border:'1px solid rgba(201,168,76,0.2)',
   color:'#1A2B4A', fontSize:13, fontWeight:500, textDecoration:'none',
 };
-
 const SkeletonCard = () => (
   <div style={{ borderRadius:16, overflow:'hidden', background:'#fff', border:'1px solid #e8edf5' }}>
     <div style={{ height:200, ...shimmerStyle }} />
@@ -181,7 +163,6 @@ export default function Home() {
   const [agentRef, agentVis] = useReveal();
   const [testiRef, testiVis] = useReveal();
 
-  // GET /api/cms  →  { success, cms: { hero, about, seo, banners } }
   useEffect(() => {
     fetch(`${BASE}/api/cms`)
       .then(r => r.json())
@@ -190,7 +171,6 @@ export default function Home() {
       .finally(() => setLoadingCms(false));
   }, []);
 
-  // GET /api/categories
   useEffect(() => {
     fetch(`${BASE}/api/categories`)
       .then(r => r.json())
@@ -207,7 +187,6 @@ export default function Home() {
       .finally(() => setLoadingCats(false));
   }, []);
 
-  // GET /api/properties/featured?limit=6
   useEffect(() => {
     fetch(`${BASE}/api/properties/featured?limit=6`)
       .then(r => r.json())
@@ -216,7 +195,6 @@ export default function Home() {
       .finally(() => setLoadingFeat(false));
   }, []);
 
-  // GET /api/properties?page=1&limit=6
   useEffect(() => {
     fetch(`${BASE}/api/properties?page=1&limit=6`)
       .then(r => r.json())
@@ -225,7 +203,6 @@ export default function Home() {
       .finally(() => setLoadingTrend(false));
   }, []);
 
-  // CMS-derived values — all from API, not hardcoded
   const about        = cmsData?.about || {};
   const contactPhone = about.phone    || '6304829287';
   const contactEmail = about.email    || 'primeproprojects@gmail.com';
@@ -235,26 +212,120 @@ export default function Home() {
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
   const cmsBanners   = (cmsData?.banners || []).filter(b => b.isActive);
 
-  // Banner slider — pass length; hook resets active when total changes
-  const { active: bnrActive, prog: bnrProg, next: bnrNext, prev: bnrPrev, goTo: bnrGoTo, setPaused: bnrSetPaused } = useBannerSlider(Math.max(cmsBanners.length, 1));
-
-  // Resolve banner image — fallback if blocked/broken
-  const FALLBACK_IMG = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=85';
-  const getBannerImg = (url) => (url && url.startsWith('http') && !url.includes('encrypted-tbn')) ? url : FALLBACK_IMG;
+  const { active: bnrActive, prog: bnrProg, next: bnrNext, prev: bnrPrev, goTo: bnrGoTo, setPaused: bnrSetPaused }
+    = useBannerSlider(Math.max(cmsBanners.length, 1));
 
   return (
     <div className="home">
-
-      {/*
-        HERO — passes cmsData.hero to Hero component
-        Hero reads: title, subtitle, ctaText, backgroundImage
-        While cmsData is null, Hero shows a skeleton internally
-      */}
       <Hero cmsHero={cmsData?.hero} />
 
-      {/* CMS BANNERS — auto-sliding carousel, 5s interval */}
-      
+      {/* ── CMS BANNERS carousel ── */}
+      {(loadingCms || cmsBanners.length > 0) && (
+        <section className="home-banners">
+          <div className="home-banners__bg-deco" aria-hidden="true" />
+          <div className="container">
+            <div className="home-banners__header">
+              <div>
+                <span className="sec-tag">Exclusive Offers</span>
+                <h2 className="sec-title">Special <span className="hi">Highlights</span></h2>
+                <p className="sec-sub">Handpicked deals and featured projects — updated live from our team.</p>
+              </div>
+              {!loadingCms && cmsBanners.length > 1 && (
+                <div className="bnr-counter">
+                  <span className="bnr-counter__cur">{String(bnrActive + 1).padStart(2,'0')}</span>
+                  <span className="bnr-counter__sep">/</span>
+                  <span className="bnr-counter__tot">{String(cmsBanners.length).padStart(2,'0')}</span>
+                </div>
+              )}
+            </div>
 
+            {loadingCms ? (
+              <div className="bnr-skeleton">
+                <div className="bnr-skeleton__img" style={shimmerStyle} />
+                <div className="bnr-skeleton__body">
+                  <div style={{ height:14, width:'18%', borderRadius:50, ...shimmerStyle }} />
+                  <div style={{ height:36, width:'55%', borderRadius:8,  ...shimmerStyle }} />
+                  <div style={{ height:3,  width:'80px',borderRadius:4,  ...shimmerStyle }} />
+                  <div style={{ height:14, width:'70%', borderRadius:6,  ...shimmerStyle }} />
+                  <div style={{ height:14, width:'50%', borderRadius:6,  ...shimmerStyle }} />
+                </div>
+              </div>
+            ) : (
+              <div
+                className="bnr-slider"
+                onMouseEnter={() => bnrSetPaused(true)}
+                onMouseLeave={() => bnrSetPaused(false)}
+              >
+                <div className="bnr-track">
+                  {cmsBanners.map((banner, i) => {
+                    const isActive = i === bnrActive;
+                    const isPrev   = cmsBanners.length > 1 && i === (bnrActive - 1 + cmsBanners.length) % cmsBanners.length;
+                    return (
+                      <a
+                        key={banner._id || i}
+                        href={banner.link || '#'}
+                        className={`bnr-slide${isActive ? ' bnr-slide--active' : ''}${isPrev ? ' bnr-slide--prev' : ''}`}
+                        onClick={e => { if (!banner.link) e.preventDefault(); }}
+                        aria-hidden={!isActive}
+                        tabIndex={isActive ? 0 : -1}
+                      >
+                        <img
+                          src={getBannerImg(banner.image)}
+                          alt={banner.title || 'Banner'}
+                          loading={i === 0 ? 'eager' : 'lazy'}
+                          className="bnr-slide__img"
+                          onError={e => { e.target.onerror = null; e.target.src = FALLBACK_IMG; }}
+                        />
+                        <div className="bnr-slide__overlay" />
+                        <div className="bnr-slide__glow" />
+                        <div className="bnr-slide__corner bnr-slide__corner--tr" />
+                        <div className="bnr-slide__corner bnr-slide__corner--bl" />
+                        <div className="bnr-slide__num">{String(i + 1).padStart(2,'0')}</div>
+                        <div className="bnr-slide__body">
+                          {banner.tag      && <span className="bnr-slide__tag">{banner.tag}</span>}
+                          {banner.title    && <h3   className="bnr-slide__title">{banner.title}</h3>}
+                          <div className="bnr-slide__rule" />
+                          {banner.subtitle && <p    className="bnr-slide__sub">{banner.subtitle}</p>}
+                          {banner.cta      && (
+                            <span className="bnr-slide__cta">
+                              {banner.cta}
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </span>
+                          )}
+                        </div>
+                        {isActive && cmsBanners.length > 1 && (
+                          <div className="bnr-slide__progress">
+                            <div className="bnr-slide__progress-bar" style={{ width:`${bnrProg}%` }} />
+                          </div>
+                        )}
+                      </a>
+                    );
+                  })}
+                </div>
+
+                {cmsBanners.length > 1 && (
+                  <>
+                    <button className="bnr-arrow bnr-arrow--prev" onClick={bnrPrev} aria-label="Previous banner">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button className="bnr-arrow bnr-arrow--next" onClick={bnrNext} aria-label="Next banner">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <div className="bnr-dots">
+                      {cmsBanners.map((_, i) => (
+                        <button key={i} className={`bnr-dot${i === bnrActive ? ' bnr-dot--active' : ''}`}
+                          onClick={() => bnrGoTo(i)} aria-label={`Go to banner ${i + 1}`} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── CATEGORIES ── */}
       <section className="section home-cats" ref={catsRef}>
         <div className="container">
           <div className={`home-cats__header${catsVis ? ' anim-fade-up' : ''}`}>
@@ -264,15 +335,12 @@ export default function Home() {
             </div>
             <Link to="/properties" className="btn btn-outline">View All →</Link>
           </div>
-
           {loadingCats ? (
             <div className="home-cats__grid">
               {[1,2,3,4].map(i => (
                 <div key={i} style={{ borderRadius:16, overflow:'hidden', border:'1px solid #e8edf5', background:'#fff' }}>
                   <div style={{ height:200, ...shimmerStyle }} />
-                  <div style={{ padding:16 }}>
-                    <div style={{ height:12, width:'60%', ...shimmerStyle }} />
-                  </div>
+                  <div style={{ padding:16 }}><div style={{ height:12, width:'60%', ...shimmerStyle }} /></div>
                 </div>
               ))}
             </div>
@@ -288,23 +356,20 @@ export default function Home() {
                   className={`cat-card${catsVis ? ' anim-fade-up' : ''}`}
                   style={{ animationDelay:`${i * 90}ms` }}>
                   <div className="cat-card__img">
-                    <img
-                      src={getCatImage(cat)}
-                      alt={cat.name}
-                      loading="lazy"
-                      onError={e => { e.target.onerror = null; e.target.src = CAT_IMAGES.default; }}
-                    />
+                    <img src={getCatImage(cat)} alt={cat.name} loading="lazy"
+                      onError={e => { e.target.onerror = null; e.target.src = CAT_IMAGES.default; }} />
                     <div className="cat-card__overlay"
                       style={cat.color ? { background:`linear-gradient(to top, ${cat.color}ee 0%, ${cat.color}44 50%, transparent 100%)` } : {}} />
                   </div>
                   <div className="cat-card__body">
-                    <span className="cat-card__emoji" style={cat.color ? { color:cat.color } : {}}>
-                      {getCatEmoji(cat)}
-                    </span>
+                    <span className="cat-card__emoji" style={cat.color ? { color:cat.color } : {}}>{getCatEmoji(cat)}</span>
                     <h3 className="cat-card__name">{cat.name}</h3>
                     {cat.description && <p className="cat-card__desc">{cat.description}</p>}
                     {cat.propertyCount > 0 && (
-                      <span style={{ display:'inline-block', marginTop:8, padding:'3px 10px', borderRadius:99, fontSize:11, fontWeight:700, background: cat.color ? `${cat.color}18` : 'rgba(201,168,76,0.1)', color: cat.color || '#C9A84C', border:`1px solid ${cat.color ? `${cat.color}33` : 'rgba(201,168,76,0.25)'}` }}>
+                      <span style={{ display:'inline-block', marginTop:8, padding:'3px 10px', borderRadius:99, fontSize:11, fontWeight:700,
+                        background: cat.color ? `${cat.color}18` : 'rgba(201,168,76,0.1)',
+                        color: cat.color || '#C9A84C',
+                        border:`1px solid ${cat.color ? `${cat.color}33` : 'rgba(201,168,76,0.25)'}` }}>
                         {cat.propertyCount} listings
                       </span>
                     )}
@@ -316,7 +381,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURED PROPERTIES */}
+      {/* ── FEATURED PROPERTIES ── */}
       <section className="section section--mid home-featured" ref={featRef}>
         <div className="container">
           <div className={`home-section-header${featVis ? ' anim-fade-up' : ''}`}>
@@ -343,7 +408,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS */}
+      {/* ── STATS ── */}
       <section className="home-stats" ref={statRef}>
         <div className="home-stats__bg" />
         <AnimatedBackground variant="dark" density={0.6} showGrid showOrbs={false} showLines={false} />
@@ -360,7 +425,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHY US — all text from cms.about */}
+      {/* ── WHY US ── */}
       <section className="section home-why" ref={whyRef}>
         <div className="container home-why__inner">
           <div className={`home-why__img${whyVis ? ' anim-fade-left' : ''}`}>
@@ -374,19 +439,12 @@ export default function Home() {
           <div className={`home-why__content${whyVis ? ' anim-fade-right' : ''}`}>
             <span className="sec-tag">Why Choose Us</span>
             <h2 className="sec-title">
-              {loadingCms ? (
-                <span style={{ display:'inline-block', width:300, height:28, verticalAlign:'middle', ...shimmerStyle }} />
-              ) : (
-                <>
-                  {aboutHeading.split(' ').slice(0, -1).join(' ')}{' '}
-                  <span className="hi">{aboutHeading.split(' ').slice(-1)[0]}</span>
-                </>
-              )}
+              {loadingCms
+                ? <span style={{ display:'inline-block', width:300, height:28, verticalAlign:'middle', ...shimmerStyle }} />
+                : <>{aboutHeading.split(' ').slice(0,-1).join(' ')} <span className="hi">{aboutHeading.split(' ').slice(-1)[0]}</span></>}
             </h2>
             <p className="sec-sub" style={{ marginBottom:32 }}>
-              {loadingCms
-                ? <span style={{ display:'block', height:60, marginTop:8, ...shimmerStyle }} />
-                : aboutBody}
+              {loadingCms ? <span style={{ display:'block', height:60, marginTop:8, ...shimmerStyle }} /> : aboutBody}
             </p>
             <div className="home-why__features">
               {WHY_FEATURES.map((f, i) => (
@@ -404,14 +462,12 @@ export default function Home() {
               {contactPhone && <a href={`tel:${contactPhone}`}    style={chipStyle}>📞 {contactPhone}</a>}
               {contactAddr  && <span                              style={chipStyle}>📍 {contactAddr}</span>}
             </div>
-            <Link to="/properties" className="btn btn-gold" style={{ marginTop:24 }}>
-              Explore All Properties →
-            </Link>
+            <Link to="/properties" className="btn btn-gold" style={{ marginTop:24 }}>Explore All Properties →</Link>
           </div>
         </div>
       </section>
 
-      {/* TRENDING PROPERTIES */}
+      {/* ── TRENDING PROPERTIES ── */}
       <section className="section section--mid home-trending" ref={trendRef}>
         <div className="container">
           <div className={`home-section-header${trendVis ? ' anim-fade-up' : ''}`}>
@@ -438,7 +494,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AGENTS — phone from cms.about.phone */}
+      {/* ── AGENTS ── */}
       <section className="section home-agents" ref={agentRef}>
         <div className="container">
           <div className={`home-section-header home-section-header--center${agentVis ? ' anim-fade-up' : ''}`}>
@@ -470,7 +526,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* ── TESTIMONIALS ── */}
       <section className="section section--dark home-testi" ref={testiRef}>
         <AnimatedBackground variant="dark" density={0.5} showGrid showOrbs={false} showLines />
         <div className="container">
@@ -497,7 +553,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MARQUEE */}
+      {/* ── MARQUEE ── */}
       <div className="home-marquee" aria-hidden="true">
         <div className="home-marquee__track">
           {['Banjara Hills','Jubilee Hills','Gachibowli','Madhapur','Kondapur','Hitec City','Narsingi','Begumpet',
