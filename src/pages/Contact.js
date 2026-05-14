@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import AnimatedBackground from '../components/AnimatedBackground';
 import './Contact.css';
 
 // ── API base
@@ -22,26 +23,26 @@ function useReveal(threshold = 0.12) {
 const OFFICES = [
   {
     city: 'Hyderabad (HQ)',
-    address: '3rd Floor, Laxmi Cyber City,\nWhitefields, Kondapur,\nHyderabad – 500081',
-    phone: '9347870247',
-    email: 'hyderabad@primepro.in',
-    hours: 'Mon–Sun: 10 AM – 7 PM  |  Tuesday: Closed',
+    address: 'Madhapur, Kavuri Hills Phase,\nHyderabad, Telangana',
+    phone: '6304829287',
+    email: 'primeproprojects@gmail.com',
+    hours: 'Mon–Sat: 9 AM – 7 PM',
     emoji: '🏢',
   },
   {
     city: 'Gachibowli Branch',
-    address: '2nd Floor, Cyber Gateway,\nNanakramguda, Gachibowli,\nHyderabad – 500032',
-    phone: '+91 40 4567 8900',
-    email: 'gachi@primepro.in',
-    hours: 'Mon–Sun: 10 AM – 7 PM  |  Tuesday: Closed',
+    address: 'Gachibowli,\nHyderabad – 500032',
+    phone: '9347870247',
+    email: 'primeproprojects@gmail.com',
+    hours: 'Mon–Sat: 9 AM – 7 PM',
     emoji: '🏙️',
   },
   {
     city: 'Banjara Hills Branch',
-    address: '1st Floor, Road No. 12,\nBanjara Hills,\nHyderabad – 500034',
-    phone: '+91 40 4567 8901',
-    email: 'banjara@primepro.in',
-    hours: 'Mon–Sun: 10 AM – 7 PM  |  Tuesday: Closed',
+    address: 'Banjara Hills,\nHyderabad – 500034',
+    phone: '8688874521',
+    email: 'primeproprojects@gmail.com',
+    hours: 'Mon–Sat: 9 AM – 7 PM',
     emoji: '🌆',
   },
 ];
@@ -57,7 +58,7 @@ const FAQS = [
   },
   {
     q: 'How quickly will your team respond to my enquiry?',
-    a: 'We guarantee a response within 2 hours during business hours (Mon–Sun 10 AM–7 PM, Tuesday closed). For urgent requirements, call us directly at 9347870247 or WhatsApp us for an instant response from our dedicated advisors.',
+    a: 'We guarantee a response within 2 hours during business hours (Mon–Sun 10 AM–7 PM, Tuesday closed). For urgent requirements, call us directly at 6304829287 or WhatsApp us for an instant response from our dedicated advisors.',
   },
   {
     q: 'Can I schedule a physical site visit?',
@@ -75,9 +76,9 @@ const FAQS = [
 
 // Updated hours everywhere
 const QUICK_LINKS = [
-  { icon: '📞', label: 'Call Us',       val: '9347870247',            href: 'tel:9347870247' },
-  { icon: '✉️',  label: 'Email Us',      val: 'info@primepro.in',      href: 'mailto:info@primepro.in' },
-  { icon: '💬', label: 'WhatsApp',      val: '+91 93478 70247',        href: 'https://wa.me/919347870247' },
+  { icon: '📞', label: 'Call Us',       val: '6304829287',                    href: 'tel:6304829287' },
+  { icon: '✉️',  label: 'Email Us',      val: 'primeproprojects@gmail.com',     href: 'mailto:primeproprojects@gmail.com' },
+  { icon: '💬', label: 'WhatsApp',      val: '+91 6304829287',        href: 'https://wa.me/916304829287' },
   { icon: '🕐', label: 'Working Hours', val: 'Mon–Sun 10AM–7PM  |  Tue Closed', href: null },
 ];
 
@@ -177,6 +178,7 @@ export default function Contact() {
 
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="contact-hero">
+        <AnimatedBackground variant="dark" density={0.9} showGrid showOrbs showLines />
         <div className="contact-hero__bg" />
         <div className="contact-hero__pattern" />
         <div className="container contact-hero__content">
@@ -273,7 +275,7 @@ export default function Contact() {
                   <div className="contact-form__row">
                     <div className="form-field">
                       <label className="form-label">Full Name *</label>
-                      <input type="text" placeholder="Arjun Mehta"
+                      <input type="text" placeholder="Enter name"
                         value={form.name}
                         onChange={e => setField('name', e.target.value)}
                         className={`form-input${errors.name ? ' form-input--error' : ''}`} />
@@ -281,7 +283,7 @@ export default function Contact() {
                     </div>
                     <div className="form-field">
                       <label className="form-label">Phone Number *</label>
-                      <input type="tel" placeholder="9876543210" maxLength={10}
+                      <input type="tel" placeholder="Enter number" maxLength={10}
                         value={form.phone}
                         onChange={e => setField('phone', e.target.value.replace(/\D/,'').slice(0,10))}
                         className={`form-input${errors.phone ? ' form-input--error' : ''}`} />
@@ -293,7 +295,7 @@ export default function Contact() {
                   <div className="contact-form__row">
                     <div className="form-field">
                       <label className="form-label">Email Address *</label>
-                      <input type="email" placeholder="you@example.com"
+                      <input type="email" placeholder="Enter email"
                         value={form.email}
                         onChange={e => setField('email', e.target.value)}
                         className={`form-input${errors.email ? ' form-input--error' : ''}`} />
@@ -372,29 +374,29 @@ export default function Contact() {
             </div>
 
             <div className="contact-direct">
-              <a href="tel:9347870247" className="contact-direct__item contact-direct__item--call">
+              <a href="tel:6304829287" className="contact-direct__item contact-direct__item--call">
                 <div className="contact-direct__icon">📞</div>
                 <div>
                   <div className="contact-direct__label">Call Us</div>
-                  <div className="contact-direct__val">9347870247</div>
+                  <div className="contact-direct__val">6304829287</div>
                   <div className="contact-direct__note">Mon–Sun 10 AM–7 PM  ·  Tue Closed</div>
                 </div>
               </a>
-              <a href="https://wa.me/919347870247" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/916304829287" target="_blank" rel="noopener noreferrer"
                 className="contact-direct__item contact-direct__item--whatsapp">
                 <div className="contact-direct__icon">💬</div>
                 <div>
                   <div className="contact-direct__label">WhatsApp Us</div>
-                  <div className="contact-direct__val">+91 93478 70247</div>
+                  <div className="contact-direct__val">+91 6304829287</div>
                   <div className="contact-direct__note">Instant response</div>
                 </div>
               </a>
-              <a href="mailto:info@primepro.in"
+              <a href="mailto:primeproprojects@gmail.com"
                 className="contact-direct__item contact-direct__item--email">
                 <div className="contact-direct__icon">✉️</div>
                 <div>
                   <div className="contact-direct__label">Email Us</div>
-                  <div className="contact-direct__val">info@primepro.in</div>
+                  <div className="contact-direct__val">primeproprojects@gmail.com</div>
                   <div className="contact-direct__note">Reply within 4 hours</div>
                 </div>
               </a>
@@ -449,7 +451,7 @@ export default function Contact() {
             <h2 className="sec-title">Frequently Asked <span className="hi">Questions</span></h2>
             <p className="sec-sub">
               Can't find your answer?{' '}
-              <a href="tel:9347870247" style={{ color:'var(--gold)' }}>Call 9347870247</a>
+              <a href="tel:6304829287" style={{ color:'var(--gold)' }}>Call 6304829287</a>
             </p>
             <Link to="/properties" className="btn btn-gold" style={{ marginTop:24 }}>
               Browse Properties →

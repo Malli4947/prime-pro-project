@@ -93,7 +93,8 @@ export default function Navbar() {
           <Link to="/" className="navbar__logo">
             <span className="navbar__logo-icon">⬡</span>
             <span className="navbar__logo-text">
-              Prime<span className="navbar__logo-accent">Pro</span>
+              <span className="navbar__logo-line1">PRIME <span className="navbar__logo-accent">PRO</span></span>
+              <span className="navbar__logo-line2">PROJECTS</span>
             </span>
           </Link>
 
@@ -110,7 +111,7 @@ export default function Navbar() {
           {/* Desktop actions */}
           <div className="navbar__actions">
             {/* <a href="tel:18005006000" className="navbar__phone">
-              <span className="navbar__phone-icon">📞</span>9347870247
+              <span className="navbar__phone-icon">📞</span>6304829287
             </a> */}
 
             {user ? (
@@ -251,7 +252,7 @@ export default function Navbar() {
                 </button>
               </>
             )}
-            {/* <a href="tel:18005006000" className="navbar__drawer-phone">📞 9347870247</a> */}
+            {/* <a href="tel:18005006000" className="navbar__drawer-phone">📞 6304829287</a> */}
           </div>
         </div>
       </header>

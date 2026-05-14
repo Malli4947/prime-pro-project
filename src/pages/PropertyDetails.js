@@ -3,6 +3,67 @@ import {useParams, Link} from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
 import './PropertyDetails.css';
 
+/* ── Amenity icon map ─────────────────────────────────────────────────── */
+const AMENITY_ICONS = {
+  'swimming pool': '🏊', 'pool': '🏊',
+  'gym': '💪', 'fitness': '💪', 'fitness center': '💪',
+  'parking': '🅿️', 'car parking': '🅿️', 'covered parking': '🅿️',
+  'security': '🔒', '24/7 security': '🔒', 'cctv': '📹', 'surveillance': '📹',
+  'garden': '🌳', 'landscaped garden': '🌳', 'park': '🌳',
+  'clubhouse': '🏛️', 'club house': '🏛️',
+  'power backup': '⚡', 'generator': '⚡', 'ups': '⚡',
+  'elevator': '🛗', 'lift': '🛗',
+  'playground': '🎮', 'children play area': '🎮', 'kids play area': '🎮',
+  'jogging track': '🏃', 'walking track': '🏃',
+  'indoor games': '🎯', 'game room': '🎯',
+  'wifi': '📶', 'internet': '📶', 'broadband': '📶',
+  'water supply': '💧', '24/7 water': '💧', 'borewell': '💧',
+  'rainwater harvesting': '🌧️',
+  'solar': '☀️', 'solar panels': '☀️', 'solar water heater': '☀️',
+  'intercom': '📞', 'video door phone': '📞',
+  'fire safety': '🔥', 'fire fighting': '🔥', 'sprinklers': '🔥',
+  'amphitheater': '🎭', 'amphitheatre': '🎭',
+  'basketball': '🏀', 'tennis': '🎾', 'badminton': '🏸', 'cricket': '🏏',
+  'yoga': '🧘', 'meditation': '🧘',
+  'library': '📚', 'reading room': '📚',
+  'banquet': '🎉', 'party hall': '🎉', 'multipurpose hall': '🎉',
+  'spa': '💆', 'sauna': '💆',
+  'rooftop': '🏙️', 'terrace': '🏙️',
+  'vastu': '🕉️', 'vastu compliant': '🕉️',
+  'gated community': '🏘️', 'gated': '🏘️',
+  'modular kitchen': '🍳', 'kitchen': '🍳',
+  'air conditioning': '❄️', 'ac': '❄️',
+  'wooden flooring': '🪵', 'flooring': '🪵',
+  'balcony': '🌅', 'terrace garden': '🌅',
+  'servant room': '🛏️', 'utility room': '🛏️',
+  'store room': '📦', 'storage': '📦',
+  'visitor parking': '🚗', 'two wheeler parking': '🛵',
+  'atm': '🏧', 'convenience store': '🏪',
+  'school': '🏫', 'hospital': '🏥', 'temple': '⛪',
+  'waste management': '♻️', 'sewage treatment': '♻️',
+};
+
+function getAmenityIcon(name) {
+  const key = name.toLowerCase().trim();
+  if (AMENITY_ICONS[key]) return AMENITY_ICONS[key];
+  const partial = Object.keys(AMENITY_ICONS).find(k => key.includes(k) || k.includes(key));
+  return partial ? AMENITY_ICONS[partial] : '✓';
+}
+
+/* ── Intersection observer reveal hook ───────────────────────────────── */
+function useReveal(threshold = 0.1) {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.disconnect(); }
+    }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, vis];
+}
+
 const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
 
 // ── Auto-rotate interval (30 seconds) ────────────────────────────────────────
@@ -56,9 +117,18 @@ export default function PropertyDetails() {
   const [submitting, setSubmitting] = useState(false);
   const [enquiryError, setEnquiryError] = useState('');
   const [showSticky, setShowSticky] = useState(false);
+  const [lightbox, setLightbox] = useState(false);
 
   const [isPaused, setIsPaused] = useState(false);
   const autoPlayRef = useRef(null);
+
+  /* reveal refs */
+  const [infoRef,  infoVis]  = useReveal();
+  const [descRef,  descVis]  = useReveal();
+  const [amenRef,  amenVis]  = useReveal();
+  const [detRef,   detVis]   = useReveal();
+  const [locRef,   locVis]   = useReveal();
+  const [relRef,   relVis]   = useReveal();
 
   const [form, setForm] = useState({
     name: '', phone: '', email: '', message: '', scheduleDate: '',
@@ -68,8 +138,17 @@ export default function PropertyDetails() {
     setTimeout(() => setMounted(true), 80);
     const onScroll = () => setShowSticky(window.scrollY > 500);
     window.addEventListener('scroll', onScroll, {passive: true});
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    /* keyboard nav for lightbox */
+    const onKey = e => {
+      if (!lightbox) return;
+      if (e.key === 'Escape') setLightbox(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [lightbox]);
 
   useEffect(() => {
     setLoading(true);
@@ -252,9 +331,10 @@ export default function PropertyDetails() {
             goNext={goNext}
             goPrev={goPrev}
             goTo={goTo}
+            onOpenLightbox={() => setLightbox(true)}
           />
 
-          <div className={`pd-info-card${mounted ? ' anim-fade-up d-1' : ''}`}>
+          <div className={`pd-info-card${infoVis ? ' pd-reveal' : ''}`} ref={infoRef}>
             <div className="pd-info-card__header">
               <div className="pd-info-card__header-left">
                 <div className="pd-info-card__type">
@@ -306,26 +386,30 @@ export default function PropertyDetails() {
           </div>
 
           {description && (
-            <div className={`pd-section${mounted ? ' anim-fade-up d-2' : ''}`}>
+            <div className={`pd-section${descVis ? ' pd-reveal' : ''}`} ref={descRef}>
               <h2 className="pd-section__title">About This Property</h2>
               <p className="pd-section__text">{description}</p>
             </div>
           )}
 
           {amenities?.length > 0 && (
-            <div className={`pd-section${mounted ? ' anim-fade-up d-2' : ''}`}>
+            <div className={`pd-section${amenVis ? ' pd-reveal' : ''}`} ref={amenRef}>
               <h2 className="pd-section__title">Amenities &amp; Features</h2>
               <div className="pd-amenities">
-                {amenities.map((a, i) => (
-                  <div key={i} className="pd-amenity">
-                    <span className="pd-amenity__check">✓</span>{a}
-                  </div>
-                ))}
+                {amenities.map((a, i) => {
+                  const icon = getAmenityIcon(a);
+                  return (
+                    <div key={i} className="pd-amenity" style={{ animationDelay: `${i * 40}ms` }}>
+                      <span className="pd-amenity__icon">{icon}</span>
+                      <span className="pd-amenity__name">{a}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          <div className={`pd-section${mounted ? ' anim-fade-up d-2' : ''}`}>
+          <div className={`pd-section${detVis ? ' pd-reveal' : ''}`} ref={detRef}>
             <h2 className="pd-section__title">Property Details</h2>
             <div className="pd-table">
               {[
@@ -351,10 +435,12 @@ export default function PropertyDetails() {
             </div>
           </div>
 
-          <div className={`pd-section${mounted ? ' anim-fade-up d-3' : ''}`}>
-            <h2 className="pd-section__title">Location</h2>
+          <div className={`pd-section${locVis ? ' pd-reveal' : ''}`} ref={locRef}>
+            <h2 className="pd-section__title">Location &amp; Nearby</h2>
             <div className="pd-location">
-              <div className="pd-location__pin">📍</div>
+              <div className="pd-location__pin">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
               <div className="pd-location__info">
                 <div className="pd-location__address">{location?.address || displayLoc}</div>
                 <div className="pd-location__sub">
@@ -362,19 +448,48 @@ export default function PropertyDetails() {
                   {location?.pincode ? ` – ${location.pincode}` : ''}
                 </div>
               </div>
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent((location?.address || displayLoc) + ', Hyderabad')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pd-location__maps-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                Get Directions
+              </a>
             </div>
-            <div className="pd-map-placeholder">
-              <div className="pd-map-placeholder__inner">
-                <span>🗺️</span>
-                <p>Interactive map coming soon</p>
-                <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent((location?.address || displayLoc) + ', Hyderabad')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-outline btn-sm">
-                  View on Google Maps →
-                </a>
-              </div>
+
+            {/* Google Maps Embed */}
+            <div className="pd-map-embed">
+              <iframe
+                title="Property Location"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent((location?.address || displayLoc) + ', Hyderabad')}&output=embed&z=15`}
+                width="100%"
+                height="340"
+                style={{ border: 0, borderRadius: '16px', display: 'block' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+
+            {/* Nearby highlights */}
+            <div className="pd-nearby">
+              {[
+                { icon: '🏫', label: 'Schools & Colleges', val: 'Within 2 km' },
+                { icon: '🏥', label: 'Hospitals',          val: 'Within 3 km' },
+                { icon: '🛒', label: 'Shopping Malls',     val: 'Within 4 km' },
+                { icon: '🚇', label: 'Metro Station',      val: 'Within 1.5 km' },
+                { icon: '✈️', label: 'Airport',            val: 'Within 25 km' },
+                { icon: '🏢', label: 'IT Hubs',            val: 'Within 5 km' },
+              ].map((item, i) => (
+                <div key={i} className="pd-nearby__item" style={{ animationDelay: `${i * 60}ms` }}>
+                  <span className="pd-nearby__icon">{item.icon}</span>
+                  <div>
+                    <div className="pd-nearby__label">{item.label}</div>
+                    <div className="pd-nearby__val">{item.val}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -403,7 +518,7 @@ export default function PropertyDetails() {
                 <div className="form-field">
                   <label className="form-label">Your Name *</label>
                   <input
-                    type="text" placeholder="Arjun Mehta" required
+                    type="text" placeholder="Enter name" required
                     value={form.name}
                     onChange={e => setForm(f => ({...f, name: e.target.value}))}
                     className="form-input"
@@ -412,7 +527,7 @@ export default function PropertyDetails() {
                 <div className="form-field">
                   <label className="form-label">Phone Number *</label>
                   <input
-                    type="tel" placeholder="9876543210" maxLength={10}
+                    type="tel" placeholder="Enter number" maxLength={10}
                     value={form.phone}
                     onChange={e => setForm(f => ({...f, phone: e.target.value.replace(/\D/, '').slice(0, 10)}))}
                     className="form-input"
@@ -421,7 +536,7 @@ export default function PropertyDetails() {
                 <div className="form-field">
                   <label className="form-label">Email Address</label>
                   <input
-                    type="email" placeholder="you@example.com"
+                    type="email" placeholder="Enter email"
                     value={form.email}
                     onChange={e => setForm(f => ({...f, email: e.target.value}))}
                     className="form-input"
@@ -462,15 +577,15 @@ export default function PropertyDetails() {
           </div>
 
           <div className={`pd-contacts${mounted ? ' anim-fade-up d-4' : ''}`}>
-            <a href="tel:9347870247" className="pd-contact pd-contact--call">
+            <a href="tel:6304829287" className="pd-contact pd-contact--call">
               <span className="pd-contact__icon">📞</span>
               <div>
                 <div className="pd-contact__label">Call Us Now</div>
-                <div className="pd-contact__val">9347870247</div>
+                <div className="pd-contact__val">6304829287</div>
               </div>
             </a>
             <a
-              href={`https://wa.me/919347870247?text=Hi! I'm interested in ${encodeURIComponent(title)} at ${encodeURIComponent(displayLoc)}.`}
+              href={`https://wa.me/916304829287?text=Hi! I'm interested in ${encodeURIComponent(title)} at ${encodeURIComponent(displayLoc)}.`}
               target="_blank" rel="noopener noreferrer"
               className="pd-contact pd-contact--whatsapp">
               <span className="pd-contact__icon">💬</span>
@@ -516,7 +631,7 @@ export default function PropertyDetails() {
       </div>
 
       {related.length > 0 && (
-        <section className="pd-related">
+        <section className={`pd-related${relVis ? ' pd-reveal' : ''}`} ref={relRef}>
           <div className="container">
             <div className="pd-related__header">
               <span className="sec-tag">You May Also Like</span>
@@ -537,7 +652,10 @@ export default function PropertyDetails() {
       <div className={`pd-sticky${showSticky ? ' visible' : ''}`}>
         <div className="pd-sticky__price">{displayPrice}</div>
         <div className="pd-sticky__actions">
-          <a href="tel:9347870247" className="btn btn-outline-light btn-sm">📞 Call</a>
+          <a href="tel:6304829287" className="btn btn-outline-light btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call
+          </a>
           <button
             className="btn btn-gold btn-sm"
             onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
@@ -545,46 +663,43 @@ export default function PropertyDetails() {
           </button>
         </div>
       </div>
+
+      {/* ── Lightbox ─────────────────────────────────────── */}
+      {lightbox && hasGallery && (
+        <div className="pd-lightbox" onClick={() => setLightbox(false)}>
+          <button className="pd-lightbox__close" onClick={() => setLightbox(false)} aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <button className="pd-lightbox__nav pd-lightbox__nav--prev" onClick={e => { e.stopPropagation(); goPrev(); }} aria-label="Previous">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div className="pd-lightbox__img-wrap" onClick={e => e.stopPropagation()}>
+            <img src={galleryImgs[safeActiveImg]} alt={`${title} — ${safeActiveImg + 1}`} className="pd-lightbox__img" />
+            <div className="pd-lightbox__counter">{safeActiveImg + 1} / {galleryImgs.length}</div>
+          </div>
+          <button className="pd-lightbox__nav pd-lightbox__nav--next" onClick={e => { e.stopPropagation(); goNext(); }} aria-label="Next">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-// ── Gallery subcomponent (uses CSS classes, no inline overrides) ──────────────
+// ── Gallery subcomponent ──────────────────────────────────────────────────────
 function Gallery({
-  galleryImgs,
-  hasGallery,
-  imgError,
-  setImgError,
-  safeActiveImg,
-  setActiveImg,
-  isPaused,
-  setIsPaused,
-  autoPlayRef,
-  title,
-  badge,
-  badgeClass,
-  status,
-  statusClass,
-  mounted,
-  goNext,
-  goPrev,
-  goTo,
+  galleryImgs, hasGallery, imgError, setImgError,
+  safeActiveImg, setActiveImg, isPaused, setIsPaused,
+  autoPlayRef, title, badge, badgeClass, status, statusClass,
+  mounted, goNext, goPrev, goTo, onOpenLightbox,
 }) {
   useEffect(() => {
     if (!hasGallery || galleryImgs.length <= 1 || isPaused || imgError) return;
-
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-
     autoPlayRef.current = setInterval(() => {
       setActiveImg(i => (i + 1) % galleryImgs.length);
     }, AUTO_PLAY_INTERVAL);
-
-    return () => {
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
-        autoPlayRef.current = null;
-      }
-    };
+    return () => { if (autoPlayRef.current) { clearInterval(autoPlayRef.current); autoPlayRef.current = null; } };
   }, [hasGallery, galleryImgs.length, isPaused, imgError, setActiveImg, autoPlayRef]);
 
   if (!hasGallery || imgError) {
@@ -615,15 +730,19 @@ function Gallery({
           src={galleryImgs[safeActiveImg]}
           alt={`${title} — view ${safeActiveImg + 1}`}
           className="pd-gallery__main-img"
+          onClick={() => onOpenLightbox && onOpenLightbox()}
+          style={{ cursor: 'zoom-in' }}
           onError={() => {
-            if (safeActiveImg < galleryImgs.length - 1) {
-              setActiveImg(safeActiveImg + 1);
-            } else {
-              setImgError(true);
-            }
+            if (safeActiveImg < galleryImgs.length - 1) setActiveImg(safeActiveImg + 1);
+            else setImgError(true);
           }}
         />
         <div className="pd-gallery__main-overlay" />
+
+        {/* Expand icon */}
+        <button className="pd-gallery__expand" onClick={() => onOpenLightbox && onOpenLightbox()} aria-label="View fullscreen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
 
         <div className="pd-gallery__badges">
           {badge && <span className={badgeClass}>{badge}</span>}
@@ -632,54 +751,36 @@ function Gallery({
 
         {galleryImgs.length > 1 && (
           <>
-            <button
-              className="pd-gallery__nav pd-gallery__nav--prev"
-              onClick={goPrev}
-              aria-label="Previous image">
-              ‹
+            <button className="pd-gallery__nav pd-gallery__nav--prev" onClick={goPrev} aria-label="Previous image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
-            <button
-              className="pd-gallery__nav pd-gallery__nav--next"
-              onClick={goNext}
-              aria-label="Next image">
-              ›
+            <button className="pd-gallery__nav pd-gallery__nav--next" onClick={goNext} aria-label="Next image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
           </>
         )}
 
-        {/* Dots — hide if too many images */}
         {galleryImgs.length > 1 && galleryImgs.length <= 10 && (
           <div className="pd-gallery__dots">
             {galleryImgs.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
+              <button key={i} onClick={() => goTo(i)}
                 className={`pd-gallery__dot${i === safeActiveImg ? ' active' : ''}`}
-                aria-label={`Go to image ${i + 1}`}
-              />
+                aria-label={`Go to image ${i + 1}`} />
             ))}
           </div>
         )}
 
         <div className="pd-gallery__counter">
-          📷 {safeActiveImg + 1} / {galleryImgs.length}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          {safeActiveImg + 1} / {galleryImgs.length}
         </div>
       </div>
 
       {galleryImgs.length > 1 && (
         <div className="pd-gallery__thumbs">
           {galleryImgs.map((img, i) => (
-            <button
-              key={i}
-              className={`pd-gallery__thumb${i === safeActiveImg ? ' active' : ''}`}
-              onClick={() => goTo(i)}>
-              <img
-                src={img}
-                alt={`Thumbnail ${i + 1}`}
-                onError={e => {
-                  e.target.closest('button').style.display = 'none';
-                }}
-              />
+            <button key={i} className={`pd-gallery__thumb${i === safeActiveImg ? ' active' : ''}`} onClick={() => goTo(i)}>
+              <img src={img} alt={`Thumbnail ${i + 1}`} onError={e => { e.target.closest('button').style.display = 'none'; }} />
             </button>
           ))}
         </div>

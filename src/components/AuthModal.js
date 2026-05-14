@@ -294,7 +294,7 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                   <input
                     className={`auth-input${error && !loginForm.identifier ? ' has-error' : ''}`}
                     type="text"
-                    placeholder="arjun@example.com or 9876543210"
+                    placeholder="arjun@email.com or Enter number"
                     value={loginForm.identifier}
                     onChange={e => setL('identifier', e.target.value)}
                     autoComplete="username"
@@ -382,7 +382,7 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                   <input
                     className="auth-input"
                     type="text"
-                    placeholder="Arjun Mehta"
+                    placeholder="Enter name"
                     value={regForm.name}
                     onChange={e => setR('name', e.target.value)}
                     autoComplete="name"
@@ -399,7 +399,7 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                   <input
                     className="auth-input"
                     type="email"
-                    placeholder="arjun@example.com"
+                    placeholder="arjun@email.com"
                     value={regForm.email}
                     onChange={e => setR('email', e.target.value)}
                     autoComplete="email"
@@ -414,7 +414,7 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                   <span className="auth-phone-prefix">🇮🇳 +91</span>
                   <input
                     type="tel"
-                    placeholder="9876543210"
+                    placeholder="Enter number"
                     maxLength={10}
                     value={regForm.phone}
                     onChange={e => setR('phone', e.target.value.replace(/\D/, '').slice(0, 10))}

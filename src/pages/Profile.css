@@ -118,11 +118,21 @@
 .pf-prop__link{color:#C9A84C;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;}
 .pf-prop__link:hover{text-decoration:underline;}
 
-@media(max-width:768px){
-  .pf-page{padding:76px 0 40px;}
+@media(max-width:900px){
   .pf-wrap{grid-template-columns:1fr;}
   .pf-sidebar{position:static;}
+}
+@media(max-width:768px){
+  .pf-page{padding:76px 0 40px;}
+  .pf-wrap{padding:0 16px;}
   .pf-form-grid{grid-template-columns:1fr;}
   .pf-actions{flex-direction:column;}
   .pf-btn-gold,.pf-btn-ghost{width:100%;justify-content:center;}
+}
+@media(max-width:480px){
+  .pf-page{padding:70px 0 32px;}
+  .pf-wrap{padding:0 12px;}
+  .pf-card__hd{padding:16px 18px 14px;}
+  .pf-card__body{padding:18px 18px;}
+  .pf-stats{grid-template-columns:1fr 1fr;}
 }

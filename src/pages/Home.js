@@ -1,7 +1,8 @@
-import  { useRef, useEffect, useState } from 'react';
+import  { useRef, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import PropertyCard from '../components/PropertyCard';
+import AnimatedBackground from '../components/AnimatedBackground';
 import './Home.css';
 
 const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
@@ -19,10 +20,63 @@ function useReveal(threshold = 0.12) {
   return [ref, visible];
 }
 
+// ── Banner slider hook ───────────────────────────────────────
+function useBannerSlider(total, interval = 5000) {
+  const [active, setActive]   = useState(0);
+  const [paused, setPaused]   = useState(false);
+  const [prog,   setProg]     = useState(0);
+  const timerRef  = useRef(null);
+  const progRef   = useRef(null);
+  const startRef  = useRef(null);
+
+  // reset to slide 0 whenever the banner list loads / changes
+  useEffect(() => {
+    setActive(0);
+    setProg(0);
+    startRef.current = Date.now();
+  }, [total]);
+
+  const goTo = useCallback((idx) => {
+    setActive((idx + total) % total);
+    setProg(0);
+    startRef.current = Date.now();
+  }, [total]);
+
+  const next = useCallback(() => goTo(active + 1), [active, goTo]);
+  const prev = useCallback(() => goTo(active - 1), [active, goTo]);
+
+  // progress bar animation
+  useEffect(() => {
+    if (paused || total <= 1) { cancelAnimationFrame(progRef.current); return; }
+    startRef.current = startRef.current || Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - startRef.current;
+      const p = Math.min((elapsed / interval) * 100, 100);
+      setProg(p);
+      if (p < 100) progRef.current = requestAnimationFrame(tick);
+    };
+    progRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(progRef.current);
+  }, [active, paused, total, interval]); // eslint-disable-line
+
+  // auto-advance
+  useEffect(() => {
+    if (paused || total <= 1) return;
+    timerRef.current = setTimeout(() => {
+      setActive(a => (a + 1) % total);
+      setProg(0);
+      startRef.current = Date.now();
+    }, interval);
+    return () => clearTimeout(timerRef.current);
+  }, [active, paused, total, interval]);
+
+  return { active, prog, next, prev, goTo, setPaused };
+}
+
 const AGENTS = [
-  { id:1, name:'Priya Reddy',  role:'Senior Property Advisor', deals:'142', exp:'8 Yrs', initials:'PR', color:'#C9A84C' },
-  { id:2, name:'Rahul Sharma', role:'Commercial Specialist',   deals:'98',  exp:'6 Yrs', initials:'RS', color:'#1A2B4A' },
-  { id:3, name:'Anita Verma',  role:'NRI Investment Desk',     deals:'76',  exp:'5 Yrs', initials:'AV', color:'#22c55e' },
+  { id:1, name:'Vaishnavi Chowdary', role:'Senior Property Advisor', deals:'100', exp:'5 Yrs', initials:'VC', color:'#C9A84C', phone:'8688874521' },
+  { id:2, name:'Prashanth Reddy',    role:'Commercial Specialist',   deals:'130', exp:'6 Yrs', initials:'PR', color:'#1A2B4A', phone:'9347870247' },
+  { id:3, name:'K Arun Kumar Reddy', role:'NRI Investment Desk',     deals:'75',  exp:'3 Yrs', initials:'AK', color:'#22c55e', phone:'9390798969' },
 ];
 
 const TESTIMONIALS = [
@@ -46,17 +100,44 @@ const WHY_FEATURES = [
 ];
 
 const CAT_IMAGES = {
-  residential: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
-  commercial:  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80',
-  agriculture: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  industrial:  'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
-  luxury:      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80',
-  default:     'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+  apartments:           'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80',
+  villas:               'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
+  plots:                'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
+  commercial:           'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80',
+  'farm lands':         'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
+  'ready to move':      'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+  'under construction': 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80',
+  residential:          'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
+  agriculture:          'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
+  industrial:           'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
+  luxury:               'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80',
+  default:              'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
 };
+
+// Returns true if a string is a real http/https URL (not an emoji or path)
+function isUrl(str) {
+  return typeof str === 'string' && (str.startsWith('http://') || str.startsWith('https://'));
+}
+
 function getCatImage(cat) {
-  if (cat.image) return cat.image;
+  // 1. cat.image — if it's a real URL
+  if (isUrl(cat.image)) return cat.image;
+  // 2. cat.icon — some categories store the image URL in the icon field
+  if (isUrl(cat.icon)) return cat.icon;
+  // 3. images[] array
+  if (Array.isArray(cat.images) && cat.images.length > 0) {
+    const primary = cat.images.find(i => i.isPrimary) || cat.images[0];
+    if (isUrl(primary?.url)) return primary.url;
+  }
+  // 4. Name-based Unsplash fallback
   const key = cat.name?.toLowerCase().trim();
   return CAT_IMAGES[key] || CAT_IMAGES.default;
+}
+
+// Only return icon as emoji — never render a URL string as text
+function getCatEmoji(cat) {
+  if (isUrl(cat.icon)) return '🏠';
+  return cat.icon || '🏠';
 }
 
 const shimmerStyle = {
@@ -146,13 +227,20 @@ export default function Home() {
 
   // CMS-derived values — all from API, not hardcoded
   const about        = cmsData?.about || {};
-  const contactPhone = about.phone    || '9347870247';
-  const contactEmail = about.email    || 'info@primepro.in';
-  const contactAddr  = about.address  || 'Jubilee Hills, Hyderabad';
-  const yearsExp     = about.yearsExperience || 12;
+  const contactPhone = about.phone    || '6304829287';
+  const contactEmail = about.email    || 'primeproprojects@gmail.com';
+  const contactAddr  = about.address  || 'Madhapur, Kavuri Hills, Hyderabad';
+  const yearsExp     = about.yearsExperience || 2;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
-  const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology.';
+  const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
   const cmsBanners   = (cmsData?.banners || []).filter(b => b.isActive);
+
+  // Banner slider — pass length; hook resets active when total changes
+  const { active: bnrActive, prog: bnrProg, next: bnrNext, prev: bnrPrev, goTo: bnrGoTo, setPaused: bnrSetPaused } = useBannerSlider(Math.max(cmsBanners.length, 1));
+
+  // Resolve banner image — fallback if blocked/broken
+  const FALLBACK_IMG = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=85';
+  const getBannerImg = (url) => (url && url.startsWith('http') && !url.includes('encrypted-tbn')) ? url : FALLBACK_IMG;
 
   return (
     <div className="home">
@@ -164,27 +252,9 @@ export default function Home() {
       */}
       <Hero cmsHero={cmsData?.hero} />
 
-      {/* CMS BANNERS — from cms.banners[] where isActive=true */}
-      {cmsBanners.length > 0 && (
-        <section style={{ padding:'40px 0 0' }}>
-          <div className="container">
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:20 }}>
-              {cmsBanners.map((banner, i) => (
-                <div key={banner._id || i} style={{ position:'relative', borderRadius:16, overflow:'hidden', height:180, boxShadow:'0 4px 20px rgba(26,43,74,0.12)' }}>
-                  <img src={banner.image} alt={banner.title || 'Banner'} loading="lazy"
-                    style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,13,30,0.7) 0%,transparent 55%)', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:20 }}>
-                    {banner.title    && <h3 style={{ color:'#fff', fontSize:18, fontWeight:700, margin:'0 0 4px' }}>{banner.title}</h3>}
-                    {banner.subtitle && <p  style={{ color:'rgba(255,255,255,0.8)', fontSize:13, margin:0 }}>{banner.subtitle}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* CMS BANNERS — auto-sliding carousel, 5s interval */}
+      
 
-      {/* CATEGORIES — from GET /api/categories */}
       <section className="section home-cats" ref={catsRef}>
         <div className="container">
           <div className={`home-cats__header${catsVis ? ' anim-fade-up' : ''}`}>
@@ -218,13 +288,18 @@ export default function Home() {
                   className={`cat-card${catsVis ? ' anim-fade-up' : ''}`}
                   style={{ animationDelay:`${i * 90}ms` }}>
                   <div className="cat-card__img">
-                    <img src={getCatImage(cat)} alt={cat.name} loading="lazy" />
+                    <img
+                      src={getCatImage(cat)}
+                      alt={cat.name}
+                      loading="lazy"
+                      onError={e => { e.target.onerror = null; e.target.src = CAT_IMAGES.default; }}
+                    />
                     <div className="cat-card__overlay"
-                      style={cat.color ? { background:`${cat.color}44` } : {}} />
+                      style={cat.color ? { background:`linear-gradient(to top, ${cat.color}ee 0%, ${cat.color}44 50%, transparent 100%)` } : {}} />
                   </div>
                   <div className="cat-card__body">
                     <span className="cat-card__emoji" style={cat.color ? { color:cat.color } : {}}>
-                      {cat.icon || '🏠'}
+                      {getCatEmoji(cat)}
                     </span>
                     <h3 className="cat-card__name">{cat.name}</h3>
                     {cat.description && <p className="cat-card__desc">{cat.description}</p>}
@@ -271,6 +346,7 @@ export default function Home() {
       {/* STATS */}
       <section className="home-stats" ref={statRef}>
         <div className="home-stats__bg" />
+        <AnimatedBackground variant="dark" density={0.6} showGrid showOrbs={false} showLines={false} />
         <div className="container">
           <div className={`home-stats__grid${statVis ? ' anim-fade-up' : ''}`}>
             {STATS.map((s, i) => (
@@ -383,7 +459,11 @@ export default function Home() {
                   <div className="agent-card__stat-sep" />
                   <div className="agent-card__stat"><b>{a.exp}</b><span>Experience</span></div>
                 </div>
-                <a href={`tel:${contactPhone}`} className="btn btn-outline btn-sm btn-full agent-card__cta">Contact</a>
+                <a href={`tel:${a.phone}`} className="agent-card__phone-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  {a.phone}
+                </a>
+                <a href={`tel:${a.phone}`} className="btn btn-outline btn-sm btn-full agent-card__cta">Contact</a>
               </div>
             ))}
           </div>
@@ -392,6 +472,7 @@ export default function Home() {
 
       {/* TESTIMONIALS */}
       <section className="section section--dark home-testi" ref={testiRef}>
+        <AnimatedBackground variant="dark" density={0.5} showGrid showOrbs={false} showLines />
         <div className="container">
           <div className={`home-section-header home-section-header--center${testiVis ? ' anim-fade-up' : ''}`}>
             <span className="sec-tag">Client Stories</span>

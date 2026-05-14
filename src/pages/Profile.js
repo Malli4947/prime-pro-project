@@ -160,8 +160,8 @@ export default function Home() {
   const about   = cmsData?.about   || {};
   const banners = (cmsData?.banners || []).filter(b => b.isActive);
 
-  const contactPhone = about.phone    || '9347870247';
-  const contactEmail = about.email    || 'info@primepro.in';
+  const contactPhone = about.phone    || '6304829287';
+  const contactEmail = about.email    || 'primeproprojects@gmail.com';
   const contactAddr  = about.address  || 'Jubilee Hills, Hyderabad, Telangana';
   const yearsExp     = about.yearsExperience || 12;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";

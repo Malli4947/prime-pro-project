@@ -1,6 +1,7 @@
 import  { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
+import AnimatedBackground from '../components/AnimatedBackground';
 import './Properties.css';
 
 const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
@@ -81,6 +82,7 @@ export default function Properties() {
     <div className="props-page">
       {/* Hero */}
       <section className="props-hero">
+        <AnimatedBackground variant="dark" density={0.8} showGrid showOrbs={false} showLines />
         <div className="props-hero__bg" />
         <div className="container props-hero__content">
           <div className={mounted ? 'anim-fade-up' : ''}>

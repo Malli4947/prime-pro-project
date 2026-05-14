@@ -3,7 +3,49 @@
   flex-direction: column;
   min-height: 100vh;
 }
-
 .app-main {
   flex: 1;
 }
+
+/* ── Page section with animated background ── */
+.page-section-dark {
+  position: relative;
+  background: linear-gradient(135deg, #060d18 0%, #0c1825 50%, #0e2240 100%);
+  overflow: hidden;
+}
+.page-section-dark > .container,
+.page-section-dark > * { position: relative; z-index: 1; }
+
+/* ── Animated gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* ── Glowing card ── */
+.glow-card {
+  position: relative;
+  transition: all 0.3s ease;
+}
+.glow-card::before {
+  content: '';
+  position: absolute; inset: -1px;
+  background: linear-gradient(135deg, var(--gold-border), transparent, var(--gold-border));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+.glow-card:hover::before { opacity: 1; }
+.glow-card:hover { box-shadow: var(--shadow-gold-lg); }
+
+/* ── Reveal animation ── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { animation: revealUp 0.7s cubic-bezier(0.4,0,0.2,1) both; }

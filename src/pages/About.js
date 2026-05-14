@@ -1,8 +1,19 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import AnimatedBackground from '../components/AnimatedBackground';
 import './About.css';
 
-function useReveal(threshold = 0.12) {
+/* ── Real-estate gallery images ─────────────────────────────── */
+const GALLERY_IMGS = [
+  { src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&q=85', alt: 'Luxury Villa Hyderabad' },
+  { src: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&q=85', alt: 'Premium Apartment' },
+  { src: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85',    alt: 'Modern Office Space' },
+  { src: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=85', alt: 'Gated Community' },
+  { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85', alt: 'Commercial Complex' },
+  { src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=85', alt: 'Farmland Project' },
+];
+
+function useReveal(threshold = 0.10) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -17,12 +28,12 @@ function useReveal(threshold = 0.12) {
 }
 
 const TIMELINE = [
-  { year: '2012', title: 'Founded',              desc: 'Launched in Hyderabad with a singular mission — to make real estate transparent, trustworthy, and accessible for every Indian family.' },
-  { year: '2015', title: 'RERA & HMDA Approved', desc: 'Became one of the first real estate portals in Telangana to achieve full RERA compliance with HMDA & DTCP approved listings.' },
-  { year: '2018', title: 'Pan-South Expansion',  desc: 'Scaled operations across 12 cities in Telangana, Andhra Pradesh, Karnataka and Tamil Nadu with 200+ verified projects.' },
-  { year: '2021', title: 'Award Winning',         desc: 'Recognised as "Best Real Estate Portal – South India" for excellence in transparency, customer satisfaction and digital innovation.' },
-  { year: '2023', title: 'NRI Investment Desk',   desc: 'Launched a dedicated NRI investment division providing end-to-end FEMA compliant solutions for non-resident property buyers.' },
-  { year: '2025', title: '2,400+ Properties',    desc: 'Crossed 2,400 active verified listings and 1,800+ successful family settlements across Hyderabad\'s prime localities.' },
+  { year: '2020', title: 'Founded — Our Journey Begins', desc: 'PrimePro Project\'s was established in Hyderabad with a clear mission — to make real estate transparent, trustworthy, and accessible for every family and investor in Telangana.' },
+  { year: '2021', title: 'First Verified Listings',      desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
+  { year: '2022', title: 'Growing Network',              desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Crossed 100+ successful property deals with happy families.' },
+  { year: '2023', title: 'Farmland & NRI Desk',          desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
+  { year: '2024', title: 'Scaling New Heights',          desc: 'Reached new milestones with 300+ verified listings, 200+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors. Our journey from 2020 to 2024 reflects our commitment to excellence.' },
+  { year: '2025', title: '5 Years of Excellence',       desc: 'Celebrating five years of trusted real estate services in Hyderabad. With over 400+ verified listings, a dedicated NRI desk, and channel partner network spanning the entire city, PrimePro Project\'s continues to set new standards.' },
 ];
 
 const VALUES = [
@@ -30,32 +41,83 @@ const VALUES = [
   { icon: '🤝', title: 'Trust',          desc: 'We build lasting relationships — 87% of our clients return or refer us to friends and family within a year.' },
   { icon: '⚡', title: 'Speed',          desc: 'Every enquiry receives a response within 2 hours during business hours. Your time and investment both matter to us.' },
   { icon: '📋', title: 'Legal Clarity',  desc: 'Every project is RERA registered, HMDA or DTCP approved, and legally vetted before it appears on our platform.' },
-  { icon: '🏆', title: 'Excellence',     desc: 'Award-winning service backed by 12+ years of deep on-ground expertise across South India\'s fastest-growing cities.' },
+  { icon: '🏆', title: 'Excellence',     desc: 'Award-winning service backed by 5+ years of deep on-ground expertise across Hyderabad and Telangana\'s fastest-growing real estate corridors.' },
   { icon: '💚', title: 'Community',      desc: 'We invest in the localities we serve — partnering with local developers, civic bodies, and community initiatives across Hyderabad.' },
 ];
 
 const STATS = [
-  { icon: '🏘️', value: '2,400+', label: 'Properties Listed'  },
-  { icon: '🤝', value: '1,800+', label: 'Happy Families'      },
-  { icon: '🏙️', value: '48+',    label: 'Prime Localities'    },
-  { icon: '⭐', value: '4.9/5',  label: 'Customer Rating'     },
+  { icon: '🏘️', value: '300+',  label: 'Properties Listed'  },
+  { icon: '🤝', value: '200+',  label: 'Happy Families'      },
+  { icon: '🏙️', value: '15+',   label: 'Prime Localities'    },
+  { icon: '⭐', value: '4.9/5', label: 'Customer Rating'     },
 ];
 
 const AGENTS = [
-  { id:1, name:'Priya Reddy',   role:'Senior Property Advisor',  deals:'142', exp:'8 Yrs', initials:'PR', color:'#C9A84C' },
-  { id:2, name:'Rahul Sharma',  role:'Commercial & Villa Specialist', deals:'98', exp:'6 Yrs', initials:'RS', color:'#1A2B4A' },
-  { id:3, name:'Anita Verma',   role:'NRI Investment Desk',       deals:'76',  exp:'5 Yrs', initials:'AV', color:'#22c55e' },
+  {
+    id: 1,
+    name: 'Vaishnavi Chowdary',
+    role: 'Senior Property Advisor',
+    deals: '100',
+    exp: '5 Yrs',
+    initials: 'VC',
+    color: '#C9A84C',
+    phone: '8688874521',
+  },
+  {
+    id: 2,
+    name: 'Prashanth Reddy',
+    role: 'Commercial & Villa Specialist',
+    deals: '130',
+    exp: '6 Yrs',
+    initials: 'PR',
+    color: '#1A2B4A',
+    phone: '9347870247',
+  },
+  {
+    id: 3,
+    name: 'K Arun Kumar Reddy',
+    role: 'NRI Investment Desk',
+    deals: '75',
+    exp: '3 Yrs',
+    initials: 'AK',
+    color: '#22c55e',
+    phone: '9390798969',
+  },
+];
+
+/* ── What makes us different ───────────────────────────────── */
+const DIFFERENTIATORS = [
+  {
+    icon: '🏠',
+    title: 'Villas & High-Rise Apartments',
+    desc: 'Exclusive access to luxury villas, premium high-rise apartments, and gated communities across Hyderabad\'s most sought-after localities.',
+  },
+  {
+    icon: '📐',
+    title: 'HMDA & DTCP Approved Layouts',
+    desc: 'All open plot and layout projects are government-approved with full HMDA & DTCP compliance — zero legal risk for your investment.',
+  },
+  {
+    icon: '🌿',
+    title: 'Concept-Based Farmland Projects',
+    desc: 'Unique farmland investment opportunities combining eco-living with strong ROI potential, ideal for both NRIs and end-users.',
+  },
+  {
+    icon: '🛡️',
+    title: 'Transparent Dealings',
+    desc: 'We believe in complete transparency at every step — from pricing to documentation. No hidden charges, no surprises.',
+  },
 ];
 
 export default function About() {
   const [mounted, setMounted] = useState(false);
-  // const [heroRef,    heroVis]   = useReveal(0.1);
-  const [storyRef,   storyVis]  = useReveal();
-  const [valuesRef,  valuesVis] = useReveal();
-  const [timeRef,    timeVis]   = useReveal();
-  const [teamRef,    teamVis]   = useReveal();
-  const [statsRef,   statsVis]  = useReveal();
-  const [ctaRef,     ctaVis]    = useReveal();
+  const [storyRef,   storyVis]  = useReveal(0.08);
+  const [valuesRef,  valuesVis] = useReveal(0.08);
+  const [timeRef,    timeVis]   = useReveal(0.08);
+  const [teamRef,    teamVis]   = useReveal(0.08);
+  const [statsRef,   statsVis]  = useReveal(0.08);
+  const [ctaRef,     ctaVis]    = useReveal(0.08);
+  const [diffRef,    diffVis]   = useReveal(0.08);
 
   useEffect(() => { setTimeout(() => setMounted(true), 80); }, []);
 
@@ -64,17 +126,18 @@ export default function About() {
 
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="about-hero">
+        <AnimatedBackground variant="dark" density={1} showGrid showOrbs showLines />
         <div className="about-hero__bg" />
         <div className="about-hero__pattern" />
         <div className="container about-hero__content">
           <div className={mounted ? 'anim-fade-up' : ''}>
             <span className="sec-tag">Our Story</span>
             <h1 className="about-hero__title">
-              Built on <span className="hi">Trust.</span><br />
-              Driven by <span className="hi">Excellence.</span>
+              Build Your Dream with{' '}
+              <span className="hi">PrimePro Project's</span>
             </h1>
             <p className="about-hero__sub">
-              A trusted name in Hyderabad's real estate market — delivering quality projects, transparent dealings, and value-driven investment opportunities across Villas, Apartments, Open Plots, and Farmland for over 12 years.
+              A trusted name in Hyderabad's real estate market — with over 5 years of experience delivering quality projects, transparent dealings, and value-driven investment opportunities across Villas, Apartments, HMDA & DTCP Approved Layouts, and Concept-Based Farmland Projects.
             </p>
             <div className="about-hero__actions">
               <Link to="/properties" className="btn btn-gold btn-lg">Browse Properties</Link>
@@ -83,8 +146,8 @@ export default function About() {
           </div>
         </div>
         <div className="about-hero__chips">
-          <div className="about-hero__chip anim-fade-up d-3">🏆 Award Winning 2024</div>
-          <div className="about-hero__chip anim-fade-up d-4">✓ RERA & HMDA Approved</div>
+          <div className="about-hero__chip anim-fade-up d-3">🏆 Est. 2020 · 5 Years</div>
+          <div className="about-hero__chip anim-fade-up d-4">✓ RERA &amp; HMDA Approved</div>
           <div className="about-hero__chip anim-fade-up d-5">⭐ 4.9 / 5 Rating</div>
         </div>
       </section>
@@ -115,24 +178,24 @@ export default function About() {
               loading="lazy"
             />
             <div className="about-story__img-badge">
-              <span className="about-story__badge-num">12+</span>
+              <span className="about-story__badge-num">5+</span>
               <span className="about-story__badge-txt">Years of<br />Excellence</span>
             </div>
           </div>
           <div className={`about-story__content${storyVis ? ' anim-fade-right' : ''}`}>
             <span className="sec-tag">Who We Are</span>
             <h2 className="sec-title">
-              We Are a South India-Based Real Estate Platform<br />
-              <span className="hi">Built on Trust, Vision & Value</span>
+              Build Your Dream with<br />
+              <span className="hi">PrimePro Project's</span>
             </h2>
             <p className="sec-sub" style={{ marginBottom:18 }}>
-              A trusted name in Hyderabad's real estate market, with over 12 years of experience delivering quality projects and trusted investment opportunities. Our expertise spans Villas, High-Rise Apartments, HMDA & DTCP Approved Layouts, Open Plots, and Concept-Based Farmland Projects.
+              PrimePro Project's is a trusted name in Hyderabad's real estate market, with over 5 years of experience in delivering quality projects and trusted investment opportunities. Our expertise spans across Villas, High-Rise Apartments, HMDA &amp; DTCP Approved Layouts, and Concept-Based Farmland Projects.
             </p>
             <p className="about-story__text">
-              We take pride in offering transparent dealings, timely delivery, and customer-centric solutions that cater to both investors and end-users. With a deep understanding of the local market and a strong network of developers and channel partners, we continue to create value-driven real estate experiences across Hyderabad and surrounding regions.
+              We take pride in offering transparent dealings, timely delivery, and customer-centric solutions that cater to both investors and end-users. With a deep understanding of the local market and a strong network of developers and channel partners, PrimePro Project's continues to create value-driven real estate experiences across Hyderabad and surrounding regions.
             </p>
-            <p className="about-story__text">
-              We don't just list properties — we help you invest in growth, lifestyle, and long-term value. Our NRI desk, legal advisory, and zero-brokerage model ensure your journey from search to settlement is smooth, transparent, and rewarding.
+            <p className="about-story__text" style={{ marginTop: 14 }}>
+              At PrimePro Project's, we don't just sell properties — we help you invest in growth, lifestyle, and long-term value.
             </p>
 
             {/* Vision & Mission */}
@@ -140,7 +203,7 @@ export default function About() {
               <div style={{ background:'#f8f4ea', borderRadius:12, padding:'16px 20px', borderLeft:'4px solid #C9A84C' }}>
                 <div style={{ fontSize:12, fontWeight:800, textTransform:'uppercase', letterSpacing:'1px', color:'#C9A84C', marginBottom:6 }}>Our Vision</div>
                 <p style={{ fontSize:14, color:'#1A2B4A', lineHeight:1.7, margin:0 }}>
-                  To craft exceptional residential and commercial communities that elevate living standards, blend comfort with sustainability, and foster vibrant neighbourhoods — empowering homeowners to experience joy and pride in their property across South India.
+                  To craft exceptional residential and commercial communities that elevate living standards, blend comfort with sustainability, and foster vibrant neighbourhoods — empowering homeowners to experience joy and pride in their property across Hyderabad.
                 </p>
               </div>
               <div style={{ background:'#eff6ff', borderRadius:12, padding:'16px 20px', borderLeft:'4px solid #1A2B4A' }}>
@@ -153,21 +216,44 @@ export default function About() {
 
             <div className="about-story__pills">
               <span className="about-story__pill">✓ RERA Registered</span>
-              <span className="about-story__pill">✓ HMDA & DTCP Approved</span>
+              <span className="about-story__pill">✓ HMDA &amp; DTCP Approved</span>
               <span className="about-story__pill">✓ Zero Brokerage</span>
               <span className="about-story__pill">✓ NRI Desk</span>
               <span className="about-story__pill">✓ Verified Listings</span>
+              <span className="about-story__pill">✓ Est. 2020 · 5 Years</span>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ── WHAT MAKES US DIFFERENT ──────────────────────── */}
+      <section className="section section--mid" ref={diffRef}>
+        <div className="container">
+          <div className={`about-values__header${diffVis ? ' anim-fade-up' : ''}`}>
+            <span className="sec-tag">Our Expertise</span>
+            <h2 className="sec-title">What We <span className="hi">Specialise In</span></h2>
+            <p className="sec-sub">
+              Five years of on-ground expertise across Hyderabad's real estate market has given us unique insight and access to the best projects for every type of buyer.
+            </p>
+          </div>
+          <div className={`about-values__grid${diffVis ? ' anim-fade-up d-2' : ''}`}>
+            {DIFFERENTIATORS.map((d, i) => (
+              <div key={i} className="value-card" style={{ animationDelay:`${i * 70}ms` }}>
+                <div className="value-card__icon">{d.icon}</div>
+                <h3 className="value-card__title">{d.title}</h3>
+                <p className="value-card__desc">{d.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── OUR VALUES ────────────────────────────────────── */}
-      <section className="section section--mid about-values" ref={valuesRef}>
+      <section className="section about-values" ref={valuesRef}>
         <div className="container">
           <div className={`about-values__header${valuesVis ? ' anim-fade-up' : ''}`}>
             <span className="sec-tag">What Drives Us</span>
-            <h2 className="sec-title">Excellence Skills & <span className="hi">Quality Workflow</span></h2>
+            <h2 className="sec-title">Excellence &amp; <span className="hi">Quality Workflow</span></h2>
             <p className="sec-sub">
               A leading real estate platform with a strong footprint across Telangana — committed to creating lasting value through high-quality living spaces and transparent, customer-focused practices.
             </p>
@@ -189,7 +275,10 @@ export default function About() {
         <div className="container">
           <div className={`about-timeline__header${timeVis ? ' anim-fade-up' : ''}`}>
             <span className="sec-tag">Our Journey</span>
-            <h2 className="sec-title">Milestones That <span className="hi">Define Us</span></h2>
+            <h2 className="sec-title">From <span className="hi">2020 to 2025</span> — Our Milestones</h2>
+            <p className="sec-sub" style={{ margin:'0 auto', textAlign:'center' }}>
+              Every step of our journey has been driven by trust, transparency, and a commitment to delivering the best real estate experience in Hyderabad.
+            </p>
           </div>
           <div className="about-timeline__track">
             {TIMELINE.map((item, i) => (
@@ -238,10 +327,20 @@ export default function About() {
                     <b>{a.exp}</b><span>Experience</span>
                   </div>
                 </div>
+                <a href={`tel:${a.phone}`} className="team-card__phone">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  {a.phone}
+                </a>
                 <div className="team-card__socials">
-                  <a href="tel:9347870247" className="team-card__social">📞</a>
-                  <a href="mailto:info@primepro.in" className="team-card__social">✉️</a>
-                  <a href="#!" className="team-card__social">💼</a>
+                  <a href={`tel:${a.phone}`} className="team-card__social" title="Call">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </a>
+                  <a href={`https://wa.me/91${a.phone}`} target="_blank" rel="noopener noreferrer" className="team-card__social" title="WhatsApp">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  </a>
+                  <a href="mailto:primeproprojects@gmail.com" className="team-card__social" title="Email">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </a>
                 </div>
               </div>
             ))}
@@ -271,7 +370,7 @@ export default function About() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────── */}
-      <section className="section section--dark">
+      <section className="section section--dark about-testi-section">
         <div className="container">
           <div className="home-section-header home-section-header--center" style={{ marginBottom:36 }}>
             <span className="sec-tag">Client Stories</span>
@@ -280,16 +379,16 @@ export default function About() {
           <div className="home-testi__grid">
             {[
               { name:'Rajesh Kumar',  role:'Home Buyer',     city:'Kondapur',    rating:5, initials:'RK', color:'#C9A84C',
-                text:'"Buying a plot through this platform was one of the best decisions we made as a family. The location, documentation process, and customer service were all top-notch. Truly professional!"' },
+                text:'Buying a plot through PrimePro Project\'s was one of the best decisions we made as a family. The location, documentation process, and customer service were all top-notch. Truly professional!' },
               { name:'Priya Reddy',   role:'NRI Investor',   city:'Dubai → Hyd', rating:5, initials:'PR', color:'#1A2B4A',
-                text:'"As an NRI, I was initially hesitant about investing in real estate back home. But the team made the entire process smooth and transparent. I received regular updates, and the team was always responsive."' },
+                text:'As an NRI, I was initially hesitant about investing in real estate back home. But the team made the entire process smooth and transparent. I received regular updates, and the team was always responsive.' },
               { name:'Anil Mehta',    role:'Villa Owner',    city:'Gachibowli',  rating:5, initials:'AM', color:'#3b82f6',
-                text:'"We recently moved into our villa. The quality of construction and attention to detail exceeded our expectations. It\'s rare to find a platform that actually delivers on time and as promised!"' },
+                text:"We recently moved into our villa. The quality of construction and attention to detail exceeded our expectations. It's rare to find a platform that actually delivers on time and as promised!" },
             ].map((t, i) => (
               <div key={i} className="testi-card" style={{ animationDelay:`${i * 100}ms` }}>
                 <div className="testi-card__quote">"</div>
                 <div className="testi-card__stars">{'⭐'.repeat(t.rating)}</div>
-                <p className="testi-card__text">{t.text}</p>
+                <p className="testi-card__text about-testi-text">{t.text}</p>
                 <div className="testi-card__author">
                   <div className="testi-card__avatar"
                     style={{ background:`linear-gradient(135deg, ${t.color}, ${t.color}88)` }}>
@@ -314,8 +413,22 @@ export default function About() {
               Ready to Start Your<br /><span className="hi">Property Journey?</span>
             </h2>
             <p className="about-cta__sub">
-              Explore 2,400+ verified properties — Villas, Apartments, Open Plots, and Farmland — or talk to an expert for personalised guidance. Zero brokerage. Full transparency.
+              Explore verified properties — Villas, Apartments, Open Plots, and Farmland — or talk to an expert for personalised guidance. Zero brokerage. Full transparency. 5 years of trust · Est. 2020.
             </p>
+            <div className="about-cta__contact-row">
+              <a href="tel:6304829287" className="about-cta__contact-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                6304829287
+              </a>
+              <a href="mailto:primeproprojects@gmail.com" className="about-cta__contact-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                primeproprojects@gmail.com
+              </a>
+              <span className="about-cta__contact-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Madhapur, Kavuri Hills, Hyderabad
+              </span>
+            </div>
             <div className="about-cta__actions">
               <Link to="/properties" className="btn btn-gold btn-lg">Browse Properties →</Link>
               <Link to="/contact" className="btn btn-outline-light btn-lg">Contact Us</Link>

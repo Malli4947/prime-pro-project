@@ -4,13 +4,13 @@
 .contact-hero {
   padding: 130px 0 0;
   position: relative; overflow: hidden;
-  background: var(--navy);
+  background: linear-gradient(135deg, #060d18 0%, #0c1825 50%, #0e2240 100%);
 }
 .contact-hero__bg {
   position: absolute; inset: 0;
   background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80')
     center / cover no-repeat;
-  opacity: 0.08;
+  opacity: 0.04;
 }
 .contact-hero__pattern {
   position: absolute; inset: 0; opacity: 0.03;
@@ -227,13 +227,20 @@
   .contact-offices__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
-  .contact-hero__title { font-size: 36px; letter-spacing: -0.5px; }
+  .contact-hero { padding: 100px 0 0; }
+  .contact-hero__title { font-size: clamp(28px, 7vw, 42px); letter-spacing: -0.5px; }
   .contact-hero__quick { grid-template-columns: 1fr 1fr; }
   .contact-hero__quick-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .contact-hero__quick-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.08); }
   .contact-form__row { grid-template-columns: 1fr; }
   .contact-offices__grid { grid-template-columns: 1fr; }
-  .contact-form { padding: 18px 20px; }
+  .contact-form { padding: 18px 18px; }
+  .contact-form-card__header { padding: 20px 20px; }
 }
 @media (max-width: 480px) {
   .contact-hero__quick { grid-template-columns: 1fr; }
+  .contact-hero__quick-item { border-right: none !important; }
+  .contact-type-pills { gap: 6px; }
+  .contact-type-pill { font-size: 11px; padding: 6px 12px; }
+  .contact-map { height: 200px; }
 }

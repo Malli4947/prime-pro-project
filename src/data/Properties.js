@@ -196,7 +196,7 @@ export const STATS = [
 ];
 
 export const TESTIMONIALS = [
-  { id:1, name:"Arjun Mehta",  role:"Software Engineer",    initials:"AM", color:"#C9A84C", text:"Found my dream penthouse through PrimePro in under 2 weeks. The team was incredibly professional and the process was completely transparent.", rating:5, city:"Hyderabad" },
+  { id:1, name:"Enter name",  role:"Software Engineer",    initials:"AM", color:"#C9A84C", text:"Found my dream penthouse through PrimePro in under 2 weeks. The team was incredibly professional and the process was completely transparent.", rating:5, city:"Hyderabad" },
   { id:2, name:"Priya Sharma", role:"Business Owner",       initials:"PS", color:"#1E3347", text:"Invested in Grade-A office space via PrimePro. Their market insights saved me months of research. Zero hidden charges, honest throughout.", rating:5, city:"Bangalore" },
   { id:3, name:"Ravi Kumar",   role:"Senior Doctor",        initials:"RK", color:"#2D6A4F", text:"The team found us a villa in Jubilee Hills perfectly within budget. Exceptional service from start to registration.", rating:5, city:"Hyderabad" },
 ];

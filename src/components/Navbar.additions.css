@@ -1,14 +1,14 @@
 /* ════════════════════════════════════════════════
-   Paste at the BOTTOM of your existing Navbar.css
+   Navbar additions — auth buttons & user menu
    ════════════════════════════════════════════════ */
 
 /* ── Not logged in: two distinct auth buttons ── */
 .pp-auth-row { display:flex; align-items:center; gap:8px; }
 
-/* Ghost outline "Sign In" — clearly different from gold Register */
+/* Ghost outline "Sign In" */
 .pp-btn-signin {
   height: 38px;
-  padding: 0 18px;
+  padding: 0 16px;
   border: 1.5px solid rgba(201,168,76,0.55);
   border-radius: 9px;
   background: transparent;
@@ -20,8 +20,8 @@
   white-space: nowrap;
 }
 .navbar--solid .pp-btn-signin {
-  color: #1A2B4A;
-  border-color: rgba(26,43,74,0.3);
+  color: rgba(255,255,255,0.85);
+  border-color: rgba(201,168,76,0.4);
 }
 .pp-btn-signin:hover {
   background: rgba(201,168,76,0.12);
@@ -45,7 +45,7 @@
   transition: all 0.18s;
   color: #ffffff;
 }
-.navbar--solid .pp-pill { color: #1A2B4A; }
+.navbar--solid .pp-pill { color: rgba(255,255,255,0.85); }
 .pp-pill:hover, .pp-pill[aria-expanded="true"] {
   background: rgba(201,168,76,0.1);
   border-color: #C9A84C;
@@ -209,4 +209,13 @@
   flex-shrink: 0;
   overflow: hidden;
   border: 2px solid rgba(201,168,76,0.4);
+}
+
+/* ── Responsive dropdown adjustments ── */
+@media (max-width: 480px) {
+  .pp-menu {
+    right: -8px;
+    min-width: calc(100vw - 32px);
+    max-width: 340px;
+  }
 }
