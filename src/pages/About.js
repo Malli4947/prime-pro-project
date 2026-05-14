@@ -3,16 +3,6 @@ import { Link } from 'react-router-dom';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './About.css';
 
-/* ── Real-estate gallery images ─────────────────────────────── */
-const GALLERY_IMGS = [
-  { src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&q=85', alt: 'Luxury Villa Hyderabad' },
-  { src: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&q=85', alt: 'Premium Apartment' },
-  { src: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85',    alt: 'Modern Office Space' },
-  { src: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=85', alt: 'Gated Community' },
-  { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85', alt: 'Commercial Complex' },
-  { src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=85', alt: 'Farmland Project' },
-];
-
 function useReveal(threshold = 0.10) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
