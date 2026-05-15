@@ -81,11 +81,15 @@ export default function PropertyCard({property, style}) {
     _id,
     title,
     priceLabel,
+    totalPriceLabel,
     price,
+    totalPrice,
+    minSft,    maxSft,
     location,
     beds,
     baths,
     area,
+    unitType,
     status,
     type,
     subtype,
@@ -93,10 +97,26 @@ export default function PropertyCard({property, style}) {
     featured,
   } = property;
 
-  // Derived display values
+  // ── Price: pick the first truthy value ──────────────────────────────────
   const displayPrice =
     priceLabel ||
-    (price ? `₹${Number(price).toLocaleString('en-IN')}` : 'Price on Request');
+    totalPriceLabel ||
+    (totalPrice > 0 ? `₹${Number(totalPrice).toLocaleString('en-IN')}` : null) ||
+    (price     > 0 ? `₹${Number(price).toLocaleString('en-IN')}`      : null) ||
+    'Price on Request';
+
+  // ── Area: prefer explicit field, then range, then single min ────────────
+  const displayArea =
+    (area && area !== '0') ? area :
+    (minSft > 0 && maxSft > 0) ? `${Number(minSft).toLocaleString()} – ${Number(maxSft).toLocaleString()} Sft` :
+    (minSft > 0) ? `${Number(minSft).toLocaleString()} Sft` :
+    null;
+
+  // ── Beds / unit type ─────────────────────────────────────────────────────
+  const displayBeds     = (beds  != null && beds  > 0) ? beds  : null;
+  const displayBaths    = (baths != null && baths > 0) ? baths : null;
+  const displayUnitType = (unitType && !displayBeds) ? unitType : null;
+
   const displayLoc = location?.locality
     ? `${location.locality}${location.city ? ', ' + location.city : ''}`
     : location?.address || 'Hyderabad';
@@ -234,20 +254,23 @@ export default function PropertyCard({property, style}) {
 
         <p className="prop-card__loc">📍 {displayLoc}</p>
 
-        {/* Specs */}
+        {/* Specs — only render a chip when the value actually exists */}
         <div className="prop-card__specs">
-          {beds != null && (
+          {displayBeds && (
             <span className="prop-card__spec">
-              🛏️ {beds} {beds === 1 ? 'Bed' : 'Beds'}
+              🛏️ {displayBeds} {displayBeds === 1 ? 'Bed' : 'Beds'}
             </span>
           )}
-          {baths != null && (
+          {displayUnitType && (
+            <span className="prop-card__spec">🏠 {displayUnitType}</span>
+          )}
+          {displayBaths && (
             <span className="prop-card__spec">
-              🚿 {baths} {baths === 1 ? 'Bath' : 'Baths'}
+              🚿 {displayBaths} {displayBaths === 1 ? 'Bath' : 'Baths'}
             </span>
           )}
-          {area && (
-            <span className="prop-card__spec">📐 {area}</span>
+          {displayArea && (
+            <span className="prop-card__spec">📐 {displayArea}</span>
           )}
         </div>
 

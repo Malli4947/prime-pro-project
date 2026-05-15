@@ -210,7 +210,7 @@ export default function Home() {
   const yearsExp     = about.yearsExperience || 2;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
-  const cmsBanners   = (cmsData?.banners || []).filter(b => b.isActive);
+  const cmsBanners   = (Array.isArray(cmsData?.banners) ? cmsData.banners : []).filter(b => b.isActive);
 
   const { active: bnrActive, prog: bnrProg, next: bnrNext, prev: bnrPrev, goTo: bnrGoTo, setPaused: bnrSetPaused }
     = useBannerSlider(Math.max(cmsBanners.length, 1));

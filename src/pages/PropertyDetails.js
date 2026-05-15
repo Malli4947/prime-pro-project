@@ -252,11 +252,12 @@ export default function PropertyDetails() {
     );
 
   const {
-    _id, title, description, priceLabel, price,
+    _id, title, description, priceLabel, totalPriceLabel, price, totalPrice,
     location, status, type, subtype,
-    beds, baths, area, images, image,
+    beds, baths, area, minSft, maxSft, unitType, images, image,
     badge, amenities, developer, possession,
     rera, reraVerified, rating, reviews, views,
+    floors, totalUnits, pricePerSft, facing, projectStatus,
   } = property;
 
   const galleryImgs = toValidImgArray(images, image);
@@ -264,7 +265,18 @@ export default function PropertyDetails() {
   const safeActiveImg = Math.min(activeImg, Math.max(0, galleryImgs.length - 1));
 
   const displayPrice =
-    priceLabel || (price ? `₹${price.toLocaleString('en-IN')}` : 'Price on Request');
+    priceLabel ||
+    totalPriceLabel ||
+    (totalPrice > 0 ? `₹${Number(totalPrice).toLocaleString('en-IN')}` : null) ||
+    (price     > 0 ? `₹${Number(price).toLocaleString('en-IN')}`      : null) ||
+    'Price on Request';
+
+  const displayArea =
+    (area && area !== '0') ? area :
+    (minSft > 0 && maxSft > 0) ? `${Number(minSft).toLocaleString()} – ${Number(maxSft).toLocaleString()} Sft` :
+    (minSft > 0) ? `${Number(minSft).toLocaleString()} Sft` :
+    null;
+
   const displayLoc = location?.locality
     ? `${location.locality}, ${location.city || 'Hyderabad'}`
     : location?.address || 'Hyderabad';
@@ -358,28 +370,52 @@ export default function PropertyDetails() {
             </div>
 
             <div className="pd-specs">
-              {beds != null && (
+              {beds > 0 && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">🛏️</span>
                   <div><b>{beds}</b><p>Bedroom{beds > 1 ? 's' : ''}</p></div>
                 </div>
               )}
-              {baths != null && (
+              {!(beds > 0) && unitType && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">🏠</span>
+                  <div><b>{unitType}</b><p>Unit Type</p></div>
+                </div>
+              )}
+              {baths > 0 && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">🚿</span>
                   <div><b>{baths}</b><p>Bathroom{baths > 1 ? 's' : ''}</p></div>
                 </div>
               )}
-              {area && (
+              {displayArea && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">📐</span>
-                  <div><b>{area}</b><p>Total Area</p></div>
+                  <div><b>{displayArea}</b><p>Total Area</p></div>
                 </div>
               )}
               {possession && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">🗓️</span>
                   <div><b>{possession}</b><p>Possession</p></div>
+                </div>
+              )}
+              {floors > 0 && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">🏢</span>
+                  <div><b>{floors}</b><p>Floors</p></div>
+                </div>
+              )}
+              {totalUnits > 0 && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">🏘️</span>
+                  <div><b>{totalUnits}</b><p>Total Units</p></div>
+                </div>
+              )}
+              {pricePerSft > 0 && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">💰</span>
+                  <div><b>₹{Number(pricePerSft).toLocaleString('en-IN')}</b><p>Per Sft</p></div>
                 </div>
               )}
             </div>
@@ -413,19 +449,25 @@ export default function PropertyDetails() {
             <h2 className="pd-section__title">Property Details</h2>
             <div className="pd-table">
               {[
-                ['Property Type', type],
-                ['Sub-Type', subtype],
-                ['Status', status],
-                ['Total Area', area],
-                ['Bedrooms', beds != null ? `${beds} BHK` : '—'],
-                ['Bathrooms', baths != null ? String(baths) : '—'],
-                ['Developer', developer || '—'],
-                ['Possession', possession || '—'],
-                ['RERA Number', rera || 'Applied'],
-                ['RERA Verified', reraVerified ? '✓ Verified' : 'Pending'],
-                ['Property ID', `#${_id?.slice(-10)}`],
+                ['Property Type',  type],
+                ['Sub-Type',       subtype],
+                ['Status',         status],
+                ['Project Status', projectStatus],
+                ['Unit Type',      unitType],
+                ['Total Area',     displayArea],
+                ['Bedrooms',       beds  > 0 ? `${beds} BHK`  : null],
+                ['Bathrooms',      baths > 0 ? String(baths)  : null],
+                ['Floors',         floors > 0 ? String(floors) : null],
+                ['Total Units',    totalUnits > 0 ? String(totalUnits) : null],
+                ['Facing',         facing],
+                ['Price Per Sft',  pricePerSft > 0 ? `₹${Number(pricePerSft).toLocaleString('en-IN')}` : null],
+                ['Developer',      developer],
+                ['Possession',     possession],
+                ['RERA Number',    rera && rera !== 'N/A' ? rera : null],
+                ['RERA Verified',  reraVerified ? '✓ Verified' : null],
+                ['Property ID',    _id ? `#${_id.slice(-10)}` : null],
               ]
-                .filter(([, v]) => v && v !== 'undefined')
+                .filter(([, v]) => v && String(v).trim() !== '' && v !== 'undefined' && v !== 'null')
                 .map(([k, v]) => (
                   <div key={k} className="pd-table__row">
                     <span className="pd-table__key">{k}</span>
