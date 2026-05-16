@@ -109,16 +109,23 @@ const CAT_IMAGES = {
 function isUrl(str) {
   return typeof str === 'string' && (str.startsWith('http://') || str.startsWith('https://'));
 }
+function isValidImage(str) {
+  return typeof str === 'string' && (
+    str.startsWith('http://') ||
+    str.startsWith('https://') ||
+    str.startsWith('data:image/')
+  );
+}
 function getCatImage(cat) {
-  if (isUrl(cat.image)) return cat.image;
-  if (isUrl(cat.icon))  return cat.icon;
+  if (isValidImage(cat.image)) return cat.image;
+  if (isValidImage(cat.icon))  return cat.icon;
   if (Array.isArray(cat.images) && cat.images.length > 0) {
     const p = cat.images.find(i => i.isPrimary) || cat.images[0];
-    if (isUrl(p?.url)) return p.url;
+    if (isValidImage(p?.url)) return p.url;
   }
   return CAT_IMAGES[cat.name?.toLowerCase().trim()] || CAT_IMAGES.default;
 }
-function getCatEmoji(cat) { return isUrl(cat.icon) ? '🏠' : (cat.icon || '🏠'); }
+function getCatEmoji(cat) { return isValidImage(cat.icon) ? '🏠' : (cat.icon || '🏠'); }
 
 // Resolve banner image — swap out blocked Google thumbnails
 function getBannerImg(url) {

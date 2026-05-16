@@ -18,12 +18,12 @@ function useReveal(threshold = 0.10) {
 }
 
 const TIMELINE = [
-  { year: '2020', title: 'Founded — Our Journey Begins', desc: 'PrimePro Project\'s was established in Hyderabad with a clear mission — to make real estate transparent, trustworthy, and accessible for every family and investor in Telangana.' },
-  { year: '2021', title: 'First Verified Listings',      desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
-  { year: '2022', title: 'Growing Network',              desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Crossed 100+ successful property deals with happy families.' },
-  { year: '2023', title: 'Farmland & NRI Desk',          desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
-  { year: '2024', title: 'Scaling New Heights',          desc: 'Reached new milestones with 300+ verified listings, 200+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors. Our journey from 2020 to 2024 reflects our commitment to excellence.' },
-  { year: '2025', title: '5 Years of Excellence',       desc: 'Celebrating five years of trusted real estate services in Hyderabad. With over 400+ verified listings, a dedicated NRI desk, and channel partner network spanning the entire city, PrimePro Project\'s continues to set new standards.' },
+  { year: '2024', title: 'Founded — Our Journey Begins', desc: 'PrimePro Project\'s was established in Hyderabad with a clear mission — to make real estate transparent, trustworthy, and accessible for every family and investor in Telangana.' },
+  { year: '2024', title: 'First Verified Listings',      desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
+  { year: '2024', title: 'Growing Network',              desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Closed our first successful property deals with happy families.' },
+  { year: '2025', title: 'Farmland & NRI Desk',          desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
+  { year: '2025', title: 'Scaling New Heights',          desc: 'Reached new milestones with 300+ verified listings, 200+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors. Our journey from 2024 reflects our commitment to excellence.' },
+  { year: '2025', title: 'Award Winning 2024',           desc: 'Recognised as one of Hyderabad\'s most trusted real estate platforms. With verified listings, a dedicated NRI desk, and a channel partner network spanning the entire city, PrimePro Project\'s continues to set new standards.' },
 ];
 
 const VALUES = [
@@ -31,7 +31,7 @@ const VALUES = [
   { icon: '🤝', title: 'Trust',          desc: 'We build lasting relationships — 87% of our clients return or refer us to friends and family within a year.' },
   { icon: '⚡', title: 'Speed',          desc: 'Every enquiry receives a response within 2 hours during business hours. Your time and investment both matter to us.' },
   { icon: '📋', title: 'Legal Clarity',  desc: 'Every project is RERA registered, HMDA or DTCP approved, and legally vetted before it appears on our platform.' },
-  { icon: '🏆', title: 'Excellence',     desc: 'Award-winning service backed by 5+ years of deep on-ground expertise across Hyderabad and Telangana\'s fastest-growing real estate corridors.' },
+  { icon: '🏆', title: 'Excellence',     desc: 'Award-winning service backed by deep on-ground expertise across Hyderabad and Telangana\'s fastest-growing real estate corridors — recognised since our founding in 2024.' },
   { icon: '💚', title: 'Community',      desc: 'We invest in the localities we serve — partnering with local developers, civic bodies, and community initiatives across Hyderabad.' },
 ];
 
@@ -127,7 +127,7 @@ export default function About() {
               <span className="hi">PrimePro Project's</span>
             </h1>
             <p className="about-hero__sub">
-              A trusted name in Hyderabad's real estate market — with over 5 years of experience delivering quality projects, transparent dealings, and value-driven investment opportunities across Villas, Apartments, HMDA & DTCP Approved Layouts, and Concept-Based Farmland Projects.
+              A trusted name in Hyderabad's real estate market — established in 2024 and delivering quality projects, transparent dealings, and value-driven investment opportunities across Villas, Apartments, HMDA & DTCP Approved Layouts, and Concept-Based Farmland Projects.
             </p>
             <div className="about-hero__actions">
               <Link to="/properties" className="btn btn-gold btn-lg">Browse Properties</Link>
@@ -136,7 +136,7 @@ export default function About() {
           </div>
         </div>
         <div className="about-hero__chips">
-          <div className="about-hero__chip anim-fade-up d-3">🏆 Est. 2020 · 5 Years</div>
+          <div className="about-hero__chip anim-fade-up d-3">🏆 Est. 2024 · Award Winning</div>
           <div className="about-hero__chip anim-fade-up d-4">✓ RERA &amp; HMDA Approved</div>
           <div className="about-hero__chip anim-fade-up d-5">⭐ 4.9 / 5 Rating</div>
         </div>
@@ -168,7 +168,7 @@ export default function About() {
               loading="lazy"
             />
             <div className="about-story__img-badge">
-              <span className="about-story__badge-num">5+</span>
+              <span className="about-story__badge-num">2+</span>
               <span className="about-story__badge-txt">Years of<br />Excellence</span>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function About() {
               <span className="hi">PrimePro Project's</span>
             </h2>
             <p className="sec-sub" style={{ marginBottom:18 }}>
-              PrimePro Project's is a trusted name in Hyderabad's real estate market, with over 5 years of experience in delivering quality projects and trusted investment opportunities. Our expertise spans across Villas, High-Rise Apartments, HMDA &amp; DTCP Approved Layouts, and Concept-Based Farmland Projects.
+              PrimePro Project's is a trusted name in Hyderabad's real estate market, established in 2024 and delivering quality projects and trusted investment opportunities. Our expertise spans across Villas, High-Rise Apartments, HMDA &amp; DTCP Approved Layouts, and Concept-Based Farmland Projects.
             </p>
             <p className="about-story__text">
               We take pride in offering transparent dealings, timely delivery, and customer-centric solutions that cater to both investors and end-users. With a deep understanding of the local market and a strong network of developers and channel partners, PrimePro Project's continues to create value-driven real estate experiences across Hyderabad and surrounding regions.
@@ -210,7 +210,7 @@ export default function About() {
               <span className="about-story__pill">✓ Zero Brokerage</span>
               <span className="about-story__pill">✓ NRI Desk</span>
               <span className="about-story__pill">✓ Verified Listings</span>
-              <span className="about-story__pill">✓ Est. 2020 · 5 Years</span>
+              <span className="about-story__pill">✓ Est. 2024 · Award Winning</span>
             </div>
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function About() {
             <span className="sec-tag">Our Expertise</span>
             <h2 className="sec-title">What We <span className="hi">Specialise In</span></h2>
             <p className="sec-sub">
-              Five years of on-ground expertise across Hyderabad's real estate market has given us unique insight and access to the best projects for every type of buyer.
+              On-ground expertise across Hyderabad's real estate market since 2024 has given us unique insight and access to the best projects for every type of buyer.
             </p>
           </div>
           <div className={`about-values__grid${diffVis ? ' anim-fade-up d-2' : ''}`}>
@@ -265,7 +265,7 @@ export default function About() {
         <div className="container">
           <div className={`about-timeline__header${timeVis ? ' anim-fade-up' : ''}`}>
             <span className="sec-tag">Our Journey</span>
-            <h2 className="sec-title">From <span className="hi">2020 to 2025</span> — Our Milestones</h2>
+            <h2 className="sec-title">From <span className="hi">2024 to 2025</span> — Our Milestones</h2>
             <p className="sec-sub" style={{ margin:'0 auto', textAlign:'center' }}>
               Every step of our journey has been driven by trust, transparency, and a commitment to delivering the best real estate experience in Hyderabad.
             </p>
@@ -403,7 +403,7 @@ export default function About() {
               Ready to Start Your<br /><span className="hi">Property Journey?</span>
             </h2>
             <p className="about-cta__sub">
-              Explore verified properties — Villas, Apartments, Open Plots, and Farmland — or talk to an expert for personalised guidance. Zero brokerage. Full transparency. 5 years of trust · Est. 2020.
+              Explore verified properties — Villas, Apartments, Open Plots, and Farmland — or talk to an expert for personalised guidance. Zero brokerage. Full transparency. Est. 2024 · Award Winning.
             </p>
             <div className="about-cta__contact-row">
               <a href="tel:6304829287" className="about-cta__contact-chip">

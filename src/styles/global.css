@@ -403,9 +403,14 @@ h1,h2,h3,h4,h5 { font-family: var(--font-display); line-height: 1.15; letter-spa
   .grid-3 { grid-template-columns: 1fr; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .btn { padding: 11px 20px; font-size: 13px; }
+  .sec-title { font-size: clamp(22px, 6vw, 36px); }
 }
 @media (max-width: 480px) {
   .grid-4 { grid-template-columns: 1fr; }
+  :root { --px: 16px; }
+}
+@media (max-width: 360px) {
+  :root { --px: 12px; }
 }
 
 /* ── Reduce motion ──────────────────────────────────────────── */
