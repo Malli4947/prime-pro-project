@@ -69,7 +69,7 @@ function ParticleCanvas() {
     resize();
     window.addEventListener('resize', resize);
 
-    const pts = Array.from({ length: 60 }, () => ({
+    const pts = Array.from({ length: 30 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       vx: (Math.random() - 0.5) * 0.35,
@@ -431,6 +431,24 @@ export default function Hero({ cmsHero }) {
           </form>
         </div>
       </div> */}
+
+      {/* ── Mobile stats strip ── */}
+      <div className="hero__stats-strip">
+        <div className="hero__stats-strip-inner container">
+          {[
+            { val: '2,400+', label: 'Properties', icon: '🏘️' },
+            { val: '1,800+', label: 'Happy Clients', icon: '🤝' },
+            { val: '48+',    label: 'Localities', icon: '🏙️' },
+            { val: '4.9★',   label: 'Rating', icon: '⭐' },
+          ].map((s, i) => (
+            <div key={i} className="hero__strip-item">
+              <span className="hero__strip-icon">{s.icon}</span>
+              <span className="hero__strip-val">{s.val}</span>
+              <span className="hero__strip-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* ── Slide controls ── */}
       <div className="hero__controls">

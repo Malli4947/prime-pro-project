@@ -49,9 +49,9 @@ const AGENTS = [
 ];
 
 const TESTIMONIALS = [
-  { id: 1, name: 'Kiran Rao',    role: 'Home Buyer',     city: 'Madhapur',     rating: 5, initials: 'KR', color: '#C9A84C', text: 'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step of the process.' },
-  { id: 2, name: 'Divya Nair',   role: 'Investor',       city: 'Gachibowli',   rating: 5, initials: 'DN', color: '#1A2B4A', text: 'Excellent platform with verified listings. I found the perfect commercial space for my startup within a week!' },
-  { id: 3, name: 'Suresh Kumar', role: 'Property Seller',city: 'Banjara Hills', rating: 5, initials: 'SK', color: '#3b82f6', text: "Sold my property at the best price. The team's market knowledge and network is simply outstanding." },
+  { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Tellapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
+  { id:2, name:'Divya Nair',   role:'Investor',       city:'Kokapet',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
+  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kokapet', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
 ];
 
 const WHY_FEATURES = [

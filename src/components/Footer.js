@@ -140,11 +140,8 @@ export default function Footer() {
             {/* Brand column */}
             <div className={`footer__brand${mainVis ? ' footer-anim-up' : ''}`} style={{ animationDelay: '0ms' }}>
               <div className="footer__logo">
-                <span className="footer__logo-icon">⬡</span>
-                <span className="footer__logo-textblock">
-                  <span className="footer__logo-line1">PRIME <span className="footer__logo-gold">PRO</span></span>
-                  <span className="footer__logo-line2">PROJECTS</span>
-                </span>
+                <img src="/FullLogo.jpeg" alt="Prime Pro Projects" className="footer__logo-img" />
+                <img src="/TitleLogo.jpeg" alt="Prime Pro Projects" className="footer__logo-title-img" />
               </div>
               <p className="footer__brand-desc">
                 Hyderabad's most trusted real estate platform. Verified listings, expert agents, zero hidden charges. Established 2024 · Journey 2024–2026.

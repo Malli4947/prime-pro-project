@@ -125,11 +125,8 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="navbar__logo">
-            <span className="navbar__logo-icon">⬡</span>
-            <span className="navbar__logo-text">
-              <span className="navbar__logo-line1">PRIME <span className="navbar__logo-accent">PRO</span></span>
-              <span className="navbar__logo-line2">PROJECTS</span>
-            </span>
+            <img src="/FullLogo.jpeg" alt="Prime Pro Projects" className="navbar__logo-img" />
+            <img src="/TitleLogo.jpeg" alt="Prime Pro Projects" className="navbar__logo-title-img" />
           </Link>
 
           {/* Desktop nav — hidden on mobile via CSS */}

@@ -74,7 +74,7 @@ function toValidImgArray(images, image) {
   const isValidUrl = url =>
     typeof url === 'string' &&
     url.trim().length > 0 &&
-    (url.startsWith('http') || url.startsWith('/'));
+    (url.startsWith('http') || url.startsWith('/') || url.startsWith('data:image'));
 
   let fromArray = [];
 
@@ -121,6 +121,10 @@ export default function PropertyDetails() {
 
   const [isPaused, setIsPaused] = useState(false);
   const autoPlayRef = useRef(null);
+  const [brochureModal, setBrochureModal] = useState(false);
+  const [brochureForm, setBrochureForm] = useState({ name: '', phone: '', email: '', message: '', scheduleDate: '' });
+  const [brochureSubmitting, setBrochureSubmitting] = useState(false);
+  const [brochureError, setBrochureError] = useState('');
 
   /* reveal refs */
   const [infoRef,  infoVis]  = useReveal();
@@ -229,6 +233,69 @@ export default function PropertyDetails() {
     setSubmitting(false);
   };
 
+  // ── Brochure download handler ─────────────────────────────────────────
+  const handleBrochureSubmit = async e => {
+    e.preventDefault();
+    setBrochureError('');
+    if (!brochureForm.name.trim()) return setBrochureError('Name is required');
+    if (!brochureForm.phone.trim() || brochureForm.phone.length < 10)
+      return setBrochureError('Valid 10-digit phone number is required');
+    if (!brochureForm.email.trim()) return setBrochureError('Email address is required');
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(brochureForm.email.trim())) return setBrochureError('Enter a valid email address');
+
+    setBrochureSubmitting(true);
+    try {
+      const token = localStorage.getItem('pp_user_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const body = {
+        propertyId: property._id,
+        name: brochureForm.name.trim(),
+        phone: brochureForm.phone.replace(/\D/g, '').slice(-10),
+        email: brochureForm.email.trim().toLowerCase(),
+        message:
+          brochureForm.message.trim() ||
+          `Brochure download request for ${property.title}`,
+        type: 'Site Visit',
+        subject: `Site Visit — ${property.title}`,
+      };
+      if (brochureForm.scheduleDate) body.scheduleDate = brochureForm.scheduleDate;
+
+      const res = await fetch(`${BASE}/api/enquiries`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setBrochureError(data.message || 'Submission failed. Please try again.');
+        setBrochureSubmitting(false);
+        return;
+      }
+    } catch {
+      setBrochureError('Network error — please try again.');
+      setBrochureSubmitting(false);
+      return;
+    }
+
+    // Trigger download only after successful API call
+    if (brochureLink) {
+      const link = document.createElement('a');
+      link.href = brochureLink;
+      link.download = `${title.replace(/\s+/g, '_')}_Brochure`;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    setBrochureSubmitting(false);
+    setBrochureModal(false);
+    setBrochureForm({ name: '', phone: '', email: '', message: '', scheduleDate: '' });
+  };
+
   if (loading)
     return (
       <div style={{minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 80}}>
@@ -257,7 +324,7 @@ export default function PropertyDetails() {
     beds, baths, area, minSft, maxSft, unitType, images, image,
     badge, amenities, developer, possession,
     rera, reraVerified, rating, reviews, views,
-    floors, totalUnits, pricePerSft, facing, projectStatus,
+    floors, totalUnits, pricePerSft, facing, projectStatus, brochureLink,
   } = property;
 
   const galleryImgs = toValidImgArray(images, image);
@@ -370,22 +437,10 @@ export default function PropertyDetails() {
             </div>
 
             <div className="pd-specs">
-              {beds > 0 && (
-                <div className="pd-spec">
-                  <span className="pd-spec__icon">🛏️</span>
-                  <div><b>{beds}</b><p>Bedroom{beds > 1 ? 's' : ''}</p></div>
-                </div>
-              )}
               {!(beds > 0) && unitType && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">🏠</span>
                   <div><b>{unitType}</b><p>Unit Type</p></div>
-                </div>
-              )}
-              {baths > 0 && (
-                <div className="pd-spec">
-                  <span className="pd-spec__icon">🚿</span>
-                  <div><b>{baths}</b><p>Bathroom{baths > 1 ? 's' : ''}</p></div>
                 </div>
               )}
               {displayArea && (
@@ -428,20 +483,24 @@ export default function PropertyDetails() {
             </div>
           )}
 
-          {amenities?.length > 0 && (
-            <div className={`pd-section${amenVis ? ' pd-reveal' : ''}`} ref={amenRef}>
-              <h2 className="pd-section__title">Amenities &amp; Features</h2>
-              <div className="pd-amenities">
-                {amenities.map((a, i) => {
-                  const icon = getAmenityIcon(a);
-                  return (
-                    <div key={i} className="pd-amenity" style={{ animationDelay: `${i * 40}ms` }}>
-                      <span className="pd-amenity__icon">{icon}</span>
-                      <span className="pd-amenity__name">{a}</span>
-                    </div>
-                  );
-                })}
+          {/* ── Download Brochure Banner — only when brochureLink exists ── */}
+          {brochureLink && brochureLink.trim() !== '' && (
+            <div className={`pd-brochure-banner${mounted ? ' anim-fade-up' : ''}`}>
+              <div className="pd-brochure-banner__left">
+                <div className="pd-brochure-banner__icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div>
+                  <h3 className="pd-brochure-banner__title">Download Brochure</h3>
+                  <p className="pd-brochure-banner__sub">Get floor plans, pricing &amp; full project details</p>
+                </div>
               </div>
+              <button
+                className="pd-brochure-banner__btn"
+                onClick={() => setBrochureModal(true)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Now
+              </button>
             </div>
           )}
 
@@ -455,8 +514,6 @@ export default function PropertyDetails() {
                 ['Project Status', projectStatus],
                 ['Unit Type',      unitType],
                 ['Total Area',     displayArea],
-                ['Bedrooms',       beds  > 0 ? `${beds} BHK`  : null],
-                ['Bathrooms',      baths > 0 ? String(baths)  : null],
                 ['Floors',         floors > 0 ? String(floors) : null],
                 ['Total Units',    totalUnits > 0 ? String(totalUnits) : null],
                 ['Facing',         facing],
@@ -476,6 +533,25 @@ export default function PropertyDetails() {
                 ))}
             </div>
           </div>
+          
+          {amenities?.length > 0 && (
+            <div className={`pd-section${amenVis ? ' pd-reveal' : ''}`} ref={amenRef}>
+              <h2 className="pd-section__title">Amenities &amp; Features</h2>
+              <div className="pd-amenities">
+                {amenities.map((a, i) => {
+                  const icon = getAmenityIcon(a);
+                  return (
+                    <div key={i} className="pd-amenity" style={{ animationDelay: `${i * 40}ms` }}>
+                      <span className="pd-amenity__icon">{icon}</span>
+                      <span className="pd-amenity__name">{a}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          
 
           <div className={`pd-section${locVis ? ' pd-reveal' : ''}`} ref={locRef}>
             <h2 className="pd-section__title">Location &amp; Nearby</h2>
@@ -618,6 +694,18 @@ export default function PropertyDetails() {
             )}
           </div>
 
+          {/* ── Download Brochure button — only when brochureLink exists ── */}
+          {brochureLink && (
+            <div className={`pd-brochure-wrap${mounted ? ' anim-fade-up d-4' : ''}`}>
+              <button
+                className="pd-brochure-btn"
+                onClick={() => setBrochureModal(true)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Brochure
+              </button>
+            </div>
+          )}
+
           <div className={`pd-contacts${mounted ? ' anim-fade-up d-4' : ''}`}>
             <a href="tel:6304829287" className="pd-contact pd-contact--call">
               <span className="pd-contact__icon">📞</span>
@@ -705,6 +793,146 @@ export default function PropertyDetails() {
           </button>
         </div>
       </div>
+
+      {/* ── Brochure Modal ───────────────────────────────── */}
+      {brochureModal && (
+        <div
+          style={{
+            position:'fixed', inset:0, zIndex:9000,
+            background:'rgba(6,13,24,0.75)', backdropFilter:'blur(6px)',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            padding:'16px',
+          }}
+          onClick={() => setBrochureModal(false)}>
+          <div
+            style={{
+              background:'#fff', borderRadius:20, width:'100%', maxWidth:440,
+              boxShadow:'0 32px 80px rgba(0,0,0,0.35)',
+              overflow:'hidden', animation:'fadeUp .3s ease both',
+            }}
+            onClick={e => e.stopPropagation()}>
+
+            {/* Header */}
+            <div style={{
+              background:'linear-gradient(135deg,#1A2B4A,#243a60)',
+              padding:'22px 24px 18px', position:'relative',
+            }}>
+              <button
+                onClick={() => setBrochureModal(false)}
+                style={{
+                  position:'absolute', top:14, right:14,
+                  background:'rgba(255,255,255,0.1)', border:'none',
+                  borderRadius:'50%', width:32, height:32,
+                  color:'#fff', cursor:'pointer', fontSize:16,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                }}>✕</button>
+              <div style={{fontSize:28, marginBottom:8}}>📄</div>
+              <h3 style={{color:'#fff', fontSize:18, fontWeight:700, margin:'0 0 4px', fontFamily:'inherit'}}>
+                Download Brochure
+              </h3>
+              <p style={{color:'rgba(255,255,255,0.6)', fontSize:13, margin:0}}>
+                {title} — Fill in your details to get the brochure
+              </p>            </div>
+
+            {/* Form */}
+            <form onSubmit={handleBrochureSubmit} style={{padding:'24px'}}>
+              {brochureError && (
+                <div style={{
+                  background:'#fff5f5', border:'1px solid #fecaca',
+                  borderRadius:8, padding:'10px 14px',
+                  fontSize:13, color:'#c53030', marginBottom:14,
+                }}>
+                  ⚠️ {brochureError}
+                </div>
+              )}
+
+              <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Your Name *</label>
+                <input
+                  type="text" placeholder="Enter your name" required
+                  value={brochureForm.name}
+                  onChange={e => setBrochureForm(f => ({...f, name: e.target.value}))}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Phone Number *</label>
+                <input
+                  type="tel" placeholder="10-digit mobile number" maxLength={10}
+                  value={brochureForm.phone}
+                  onChange={e => setBrochureForm(f => ({...f, phone: e.target.value.replace(/\D/g,'').slice(0,10)}))}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Email Address *</label>
+                <input
+                  type="email" placeholder="Enter your email" required
+                  value={brochureForm.email}
+                  onChange={e => setBrochureForm(f => ({...f, email: e.target.value}))}
+                  className="form-input"
+                />
+              </div>
+
+              {/* <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Preferred Visit Date</label>
+                <input
+                  type="date"
+                  min={new Date().toISOString().split('T')[0]}
+                  value={brochureForm.scheduleDate}
+                  onChange={e => setBrochureForm(f => ({...f, scheduleDate: e.target.value}))}
+                  className="form-input"
+                />
+              </div> */}
+
+              <div className="form-field" style={{marginBottom:20}}>
+                <label className="form-label">Message</label>
+                <textarea
+                  rows={3}
+                  placeholder={`I'm interested in ${title}. Please share more details…`}
+                  value={brochureForm.message}
+                  onChange={e => setBrochureForm(f => ({...f, message: e.target.value}))}
+                  className="form-input"
+                  style={{resize:'none', minHeight:72}}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={brochureSubmitting}
+                className="btn btn-gold btn-full"
+                style={{height:48, fontSize:15, fontWeight:700}}>
+                {brochureSubmitting ? (
+                  <>
+                    <span style={{
+                      display:'inline-block', width:16, height:16,
+                      border:'2px solid rgba(12,24,37,0.3)', borderTopColor:'#1A2B4A',
+                      borderRadius:'50%', animation:'rotateSlow .7s linear infinite',
+                      marginRight:8,
+                    }} />
+                    Submitting…
+                  </>
+                ) : brochureLink ? (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{marginRight:6}}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Brochure
+                  </>
+                ) : (
+                  <>📅 Schedule Visit</>
+                )}
+              </button>
+
+              <p style={{textAlign:'center', fontSize:12, color:'#94a3b8', marginTop:12}}>
+                {brochureLink
+                  ? 'Your details are safe with us. No spam, ever.'
+                  : 'Our team will call you within 2 hours.'}
+              </p>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* ── Lightbox ─────────────────────────────────────── */}
       {lightbox && hasGallery && (

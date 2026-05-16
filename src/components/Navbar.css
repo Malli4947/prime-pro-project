@@ -46,6 +46,25 @@
 .navbar__logo-line2 { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.75; margin-top: 2px; }
 .navbar__logo-accent { color: var(--gold); }
 
+/* Logo images */
+.navbar__logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.navbar__logo-title-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.navbar--solid .navbar__logo-img,
+.navbar--solid .navbar__logo-title-img { filter: brightness(1); }
+.navbar--glass .navbar__logo-img,
+.navbar--glass .navbar__logo-title-img { filter: brightness(1.05); }
+
 /* Desktop nav links */
 .navbar__nav {
   display: flex; align-items: center; gap: 28px;

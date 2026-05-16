@@ -18,12 +18,15 @@ function useReveal(threshold = 0.10) {
 }
 
 const TIMELINE = [
-  { year: '2024', title: 'Founded — Our Journey Begins', desc: 'PrimePro Project\'s was established in Hyderabad with a clear mission — to make real estate transparent, trustworthy, and accessible for every family and investor in Telangana.' },
-  { year: '2024', title: 'First Verified Listings',      desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
-  { year: '2024', title: 'Growing Network',              desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Closed our first successful property deals with happy families.' },
-  { year: '2025', title: 'Farmland & NRI Desk',          desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
-  { year: '2025', title: 'Scaling New Heights',          desc: 'Reached new milestones with 300+ verified listings, 200+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors. Our journey from 2024 reflects our commitment to excellence.' },
-  { year: '2025', title: 'Award Winning 2024',           desc: 'Recognised as one of Hyderabad\'s most trusted real estate platforms. With verified listings, a dedicated NRI desk, and a channel partner network spanning the entire city, PrimePro Project\'s continues to set new standards.' },
+  { year: '2024', title: 'Founded — Our Journey Begins',   desc: 'PrimePro Project\'s was established in Hyderabad with a clear mission — to make real estate transparent, trustworthy, and accessible for every family and investor in Telangana.' },
+  { year: '2024', title: 'First Verified Listings',         desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
+  { year: '2024', title: 'Growing Network',                 desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Closed our first successful property deals with happy families.' },
+  { year: '2025', title: 'Farmland & NRI Desk',             desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
+  { year: '2025', title: 'Scaling New Heights',             desc: 'Reached new milestones with 300+ verified listings, 200+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors.' },
+  { year: '2025', title: 'Award Winning Recognition',       desc: 'Recognised as one of Hyderabad\'s most trusted real estate platforms — with verified listings, a dedicated NRI desk, and a channel partner network spanning the entire city.' },
+  { year: '2026', title: 'Expanding Horizons',              desc: 'Scaling operations beyond Hyderabad into emerging Telangana corridors — bringing new luxury villa projects, commercial spaces, and farmland investments to a wider audience.' },
+  { year: '2026', title: 'Technology & Innovation',         desc: 'Launched an enhanced digital platform with AI-powered property recommendations, virtual site tours, and real-time RERA verification — making property discovery faster and smarter.' },
+  { year: '2026', title: 'Stronger. Bigger. Trusted.',      desc: 'With 2,400+ listings, 1,800+ happy clients, and a presence across 48+ prime localities, PrimePro Project\'s continues to set new benchmarks in Hyderabad\'s real estate market.' },
 ];
 
 const VALUES = [
@@ -45,6 +48,16 @@ const STATS = [
 const AGENTS = [
   {
     id: 1,
+    name: 'Prashanth Reddy',
+    role: 'Senior Property Advisor',
+    deals: '130',
+    exp: '6 Yrs',
+    initials: 'PR',
+    color: '#1A2B4A',
+    phone: '9347870247',
+  },
+  {
+    id: 2,
     name: 'Vaishnavi Chowdary',
     role: 'Senior Property Advisor',
     deals: '100',
@@ -53,20 +66,11 @@ const AGENTS = [
     color: '#C9A84C',
     phone: '8688874521',
   },
-  {
-    id: 2,
-    name: 'Prashanth Reddy',
-    role: 'Commercial & Villa Specialist',
-    deals: '130',
-    exp: '6 Yrs',
-    initials: 'PR',
-    color: '#1A2B4A',
-    phone: '9347870247',
-  },
+  
   {
     id: 3,
     name: 'K Arun Kumar Reddy',
-    role: 'NRI Investment Desk',
+    role: 'Property Advisor',
     deals: '75',
     exp: '3 Yrs',
     initials: 'AK',
@@ -163,7 +167,7 @@ export default function About() {
         <div className="container about-story__inner">
           <div className={`about-story__img${storyVis ? ' anim-fade-left' : ''}`}>
             <img
-              src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=720&q=85"
+              src="/Person.jpeg"
               alt="Our Office"
               loading="lazy"
             />
@@ -265,9 +269,9 @@ export default function About() {
         <div className="container">
           <div className={`about-timeline__header${timeVis ? ' anim-fade-up' : ''}`}>
             <span className="sec-tag">Our Journey</span>
-            <h2 className="sec-title">From <span className="hi">2024 to 2025</span> — Our Milestones</h2>
+            <h2 className="sec-title">From <span className="hi">2024 to 2026</span> — Our Milestones</h2>
             <p className="sec-sub" style={{ margin:'0 auto', textAlign:'center' }}>
-              Every step of our journey has been driven by trust, transparency, and a commitment to delivering the best real estate experience in Hyderabad.
+              From our founding in 2024 to where we stand today in 2026 — every step has been driven by trust, transparency, and a commitment to delivering the best real estate experience in Hyderabad.
             </p>
           </div>
           <div className="about-timeline__track">

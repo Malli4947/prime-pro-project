@@ -10,7 +10,7 @@ function toValidImgArray(images, image) {
   const isValidUrl = url =>
     typeof url === 'string' &&
     url.trim().length > 0 &&
-    (url.startsWith('http') || url.startsWith('/'));
+    (url.startsWith('http') || url.startsWith('/') || url.startsWith('data:image'));
 
   let fromArray = [];
 
@@ -112,10 +112,8 @@ export default function PropertyCard({property, style}) {
     (minSft > 0) ? `${Number(minSft).toLocaleString()} Sft` :
     null;
 
-  // ── Beds / unit type ─────────────────────────────────────────────────────
-  const displayBeds     = (beds  != null && beds  > 0) ? beds  : null;
-  const displayBaths    = (baths != null && baths > 0) ? baths : null;
-  const displayUnitType = (unitType && !displayBeds) ? unitType : null;
+  // ── Beds / unit type — REMOVED permanently ──────────────────────────────
+  const displayUnitType = unitType || null;
 
   const displayLoc = location?.locality
     ? `${location.locality}${location.city ? ', ' + location.city : ''}`
@@ -256,18 +254,8 @@ export default function PropertyCard({property, style}) {
 
         {/* Specs — only render a chip when the value actually exists */}
         <div className="prop-card__specs">
-          {displayBeds && (
-            <span className="prop-card__spec">
-              🛏️ {displayBeds} {displayBeds === 1 ? 'Bed' : 'Beds'}
-            </span>
-          )}
           {displayUnitType && (
             <span className="prop-card__spec">🏠 {displayUnitType}</span>
-          )}
-          {displayBaths && (
-            <span className="prop-card__spec">
-              🚿 {displayBaths} {displayBaths === 1 ? 'Bath' : 'Baths'}
-            </span>
           )}
           {displayArea && (
             <span className="prop-card__spec">📐 {displayArea}</span>

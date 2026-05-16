@@ -66,15 +66,43 @@ function useBannerSlider(total, interval = 5000) {
 }
 
 const AGENTS = [
-  { id:1, name:'Vaishnavi Chowdary', role:'Senior Property Advisor', deals:'100', exp:'5 Yrs', initials:'VC', color:'#C9A84C', phone:'8688874521' },
-  { id:2, name:'Prashanth Reddy',    role:'Commercial Specialist',   deals:'130', exp:'6 Yrs', initials:'PR', color:'#1A2B4A', phone:'9347870247' },
-  { id:3, name:'K Arun Kumar Reddy', role:'NRI Investment Desk',     deals:'75',  exp:'3 Yrs', initials:'AK', color:'#22c55e', phone:'9390798969' },
+   {
+    id: 1,
+    name: 'Prashanth Reddy',
+    role: 'Senior Property Advisor',
+    deals: '130',
+    exp: '6 Yrs',
+    initials: 'PR',
+    color: '#1A2B4A',
+    phone: '9347870247',
+  },
+  {
+    id: 2,
+    name: 'Vaishnavi Chowdary',
+    role: 'Senior Property Advisor',
+    deals: '100',
+    exp: '5 Yrs',
+    initials: 'VC',
+    color: '#C9A84C',
+    phone: '8688874521',
+  },
+  
+  {
+    id: 3,
+    name: 'K Arun Kumar Reddy',
+    role: 'Property Advisor',
+    deals: '75',
+    exp: '3 Yrs',
+    initials: 'AK',
+    color: '#22c55e',
+    phone: '9390798969',
+  },
 ];
 
 const TESTIMONIALS = [
-  { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Madhapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
-  { id:2, name:'Divya Nair',   role:'Investor',       city:'Gachibowli',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
-  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Banjara Hills', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
+  { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Tellapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
+  { id:2, name:'Divya Nair',   role:'Investor',       city:'Kokapet',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
+  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kokapet', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
 ];
 
 const STATS = [
@@ -365,18 +393,13 @@ export default function Home() {
                   <div className="cat-card__img">
                     <img src={getCatImage(cat)} alt={cat.name} loading="lazy"
                       onError={e => { e.target.onerror = null; e.target.src = CAT_IMAGES.default; }} />
-                    <div className="cat-card__overlay"
-                      style={cat.color ? { background:`linear-gradient(to top, ${cat.color}ee 0%, ${cat.color}44 50%, transparent 100%)` } : {}} />
+                    <div className="cat-card__overlay" />
                   </div>
                   <div className="cat-card__body">
-                    <span className="cat-card__emoji" style={cat.color ? { color:cat.color } : {}}>{getCatEmoji(cat)}</span>
                     <h3 className="cat-card__name">{cat.name}</h3>
                     {cat.description && <p className="cat-card__desc">{cat.description}</p>}
                     {cat.propertyCount > 0 && (
-                      <span style={{ display:'inline-block', marginTop:8, padding:'3px 10px', borderRadius:99, fontSize:11, fontWeight:700,
-                        background: cat.color ? `${cat.color}18` : 'rgba(201,168,76,0.1)',
-                        color: cat.color || '#C9A84C',
-                        border:`1px solid ${cat.color ? `${cat.color}33` : 'rgba(201,168,76,0.25)'}` }}>
+                      <span className="cat-card__count">
                         {cat.propertyCount} listings
                       </span>
                     )}
@@ -436,7 +459,7 @@ export default function Home() {
       <section className="section home-why" ref={whyRef}>
         <div className="container home-why__inner">
           <div className={`home-why__img${whyVis ? ' anim-fade-left' : ''}`}>
-            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=720&q=85" alt="Our Team" loading="lazy" />
+            <img src="/Person.jpeg" alt="Our Team" loading="lazy" />
             <div className="home-why__badge">
               <span className="home-why__badge-num">{yearsExp}+</span>
               <span className="home-why__badge-txt">Years of<br />Excellence</span>
