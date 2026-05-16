@@ -86,8 +86,6 @@ export default function PropertyCard({property, style}) {
     totalPrice,
     minSft,    maxSft,
     location,
-    beds,
-    baths,
     area,
     unitType,
     status,

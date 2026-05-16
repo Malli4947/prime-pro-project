@@ -321,7 +321,7 @@ export default function PropertyDetails() {
   const {
     _id, title, description, priceLabel, totalPriceLabel, price, totalPrice,
     location, status, type, subtype,
-    beds, baths, area, minSft, maxSft, unitType, images, image,
+    beds, area, minSft, maxSft, unitType, images, image,
     badge, amenities, developer, possession,
     rera, reraVerified, rating, reviews, views,
     floors, totalUnits, pricePerSft, facing, projectStatus, brochureLink,
