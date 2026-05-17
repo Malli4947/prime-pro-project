@@ -360,10 +360,10 @@ export default function Hero({ cmsHero }) {
         {/* Stats panel (right side) */}
         <div className={`hero__stats-panel${mounted ? ' hero__stats-panel--in' : ''}`}>
           {[
-            { val: '2,400+', label: 'Properties', icon: '🏘️' },
-            { val: '1,800+', label: 'Happy Clients', icon: '🤝' },
-            { val: '48+',    label: 'Localities', icon: '🏙️' },
-            { val: '4.9★',   label: 'Rating', icon: '⭐' },
+            { val: '200+',  label: 'Properties',  icon: '🏘️' },
+            { val: '35+',   label: 'Clients',      icon: '🤝' },
+            { val: '5',     label: 'Major Cities', icon: '🏙️' },
+            { val: '4.9★',  label: 'Rating',       icon: '⭐' },
           ].map((s, i) => (
             <div key={i} className="hero__stat-item" style={{ animationDelay: `${0.6 + i * 0.1}s` }}>
               <span className="hero__stat-icon">{s.icon}</span>
@@ -436,10 +436,10 @@ export default function Hero({ cmsHero }) {
       <div className="hero__stats-strip">
         <div className="hero__stats-strip-inner container">
           {[
-            { val: '2,400+', label: 'Properties', icon: '🏘️' },
-            { val: '1,800+', label: 'Happy Clients', icon: '🤝' },
-            { val: '48+',    label: 'Localities', icon: '🏙️' },
-            { val: '4.9★',   label: 'Rating', icon: '⭐' },
+            { val: '200+',  label: 'Properties',  icon: '🏘️' },
+            { val: '35+',   label: 'Clients',      icon: '🤝' },
+            { val: '5',     label: 'Major Cities', icon: '🏙️' },
+            { val: '4.9★',  label: 'Rating',       icon: '⭐' },
           ].map((s, i) => (
             <div key={i} className="hero__strip-item">
               <span className="hero__strip-icon">{s.icon}</span>

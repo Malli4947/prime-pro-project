@@ -51,7 +51,7 @@ const AGENTS = [
 const TESTIMONIALS = [
   { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Tellapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
   { id:2, name:'Divya Nair',   role:'Investor',       city:'Kokapet',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
-  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kokapet', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
+  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kollur', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
 ];
 
 const WHY_FEATURES = [
@@ -62,10 +62,10 @@ const WHY_FEATURES = [
 ];
 
 const BASE_STATS = [
-  { icon: '🏘️', value: '2,400+', label: 'Properties Listed' },
-  { icon: '🤝', value: '1,800+', label: 'Happy Clients'     },
-  { icon: '🏙️', value: '48+',    label: 'Prime Localities'  },
-  { icon: '⭐', value: '4.9/5',  label: 'Average Rating'    },
+  { icon: '🏘️', value: '200+',  label: 'Properties'  },
+  { icon: '🤝', value: '35+',   label: 'Clients'      },
+  { icon: '🏙️', value: '5',     label: 'Major Cities' },
+  { icon: '⭐', value: '4.9★',  label: 'Rating'       },
 ];
 
 // ── Skeleton shimmer card ─────────────────────────────────────────────────────

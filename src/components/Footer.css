@@ -128,9 +128,9 @@
 }
 .footer__logo-icon { color: var(--gold); font-size: 22px; flex-shrink: 0; }
 .footer__logo-gold { color: var(--gold); }
-.footer__logo-textblock { display: flex; flex-direction: column; line-height: 1; }
-.footer__logo-line1 { font-size: 20px; font-weight: 800; letter-spacing: 1.5px; }
-.footer__logo-line2 { font-size: 9px; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 3px; }
+.footer__logo-textblock { display: flex; flex-direction: column; line-height: 1; gap: 4px; }
+.footer__logo-line1 { font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #ffffff; text-transform: uppercase; }
+.footer__logo-line2 { font-size: 20px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #C9A84C; text-align: center; }
 
 /* Logo images */
 .footer__logo-img {
@@ -138,12 +138,6 @@
   width: auto;
   object-fit: contain;
   border-radius: 6px;
-  flex-shrink: 0;
-}
-.footer__logo-title-img {
-  height: 36px;
-  width: auto;
-  object-fit: contain;
   flex-shrink: 0;
 }
 .footer__brand-desc {

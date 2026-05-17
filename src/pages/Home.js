@@ -102,14 +102,14 @@ const AGENTS = [
 const TESTIMONIALS = [
   { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Tellapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
   { id:2, name:'Divya Nair',   role:'Investor',       city:'Kokapet',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
-  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kokapet', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
+  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kollur', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
 ];
 
 const STATS = [
-  { icon:'🏘️', value:'2,400+', label:'Properties Listed' },
-  { icon:'🤝', value:'1,800+', label:'Happy Clients'      },
-  { icon:'🏙️', value:'48+',    label:'Prime Localities'   },
-  { icon:'⭐', value:'4.9/5',  label:'Average Rating'     },
+  { icon:'🏘️', value:'200+',  label:'Properties'   },
+  { icon:'🤝', value:'35+',   label:'Clients'       },
+  { icon:'🏙️', value:'5',     label:'Major Cities'  },
+  { icon:'⭐', value:'4.9★',  label:'Rating'        },
 ];
 
 const WHY_FEATURES = [
@@ -242,7 +242,7 @@ export default function Home() {
   const contactPhone = about.phone    || '6304829287';
   const contactEmail = about.email    || 'primeproprojects@gmail.com';
   const contactAddr  = about.address  || 'Madhapur, Kavuri Hills, Hyderabad';
-  const yearsExp     = about.yearsExperience || 2;
+  const yearsExp     = about.yearsExperience || 5;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
   const cmsBanners   = (Array.isArray(cmsData?.banners) ? cmsData.banners : []).filter(b => b.isActive);
@@ -386,8 +386,19 @@ export default function Home() {
             </div>
           ) : (
             <div className="home-cats__grid">
-              {categories.map((cat, i) => (
-                <Link key={cat._id} to={`/properties?type=${encodeURIComponent(cat.name)}`}
+              {categories.map((cat, i) => {
+                // Map category name → subtype param for filtering
+                const nameUpper = (cat.name || '').toUpperCase().trim();
+                let filterParam = `type=${encodeURIComponent(cat.name)}`;
+                if (nameUpper === 'APARTMENTS')          filterParam = 'subtype=Apartment';
+                else if (nameUpper === 'VILLAS')         filterParam = 'subtype=Villa';
+                else if (nameUpper === 'PLOTS')          filterParam = 'subtype=Plot';
+                else if (nameUpper === 'FARM LANDS')     filterParam = 'subtype=Farm+Land';
+                else if (nameUpper === 'COMMERCIAL')     filterParam = 'type=Commercial';
+                else if (nameUpper === 'READY TO MOVE')  filterParam = 'subtype=Ready+to+Move';
+                else if (nameUpper === 'UNDER CONSTRUCTION') filterParam = 'subtype=Under+Construction';
+                return (
+                <Link key={cat._id} to={`/properties?${filterParam}`}
                   className={`cat-card${catsVis ? ' anim-fade-up' : ''}`}
                   style={{ animationDelay:`${i * 90}ms` }}>
                   <div className="cat-card__img">
@@ -405,7 +416,8 @@ export default function Home() {
                     )}
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -586,9 +598,19 @@ export default function Home() {
       {/* ── MARQUEE ── */}
       <div className="home-marquee" aria-hidden="true">
         <div className="home-marquee__track">
-          {['Banjara Hills','Jubilee Hills','Gachibowli','Madhapur','Kondapur','Hitec City','Narsingi','Begumpet',
-            'Banjara Hills','Jubilee Hills','Gachibowli','Madhapur','Kondapur','Hitec City','Narsingi','Begumpet']
-            .map((loc, i) => <span key={i} className="home-marquee__item">⬡ {loc}</span>)}
+          {[
+            'Kokapet','Financial District','Gachibowli','Narsingi','Tellapur','Osman Nagar','Kollur','Miyapur',
+            'Bachupally','Patancheru','Kompally','Medchal','Suchitra','Alwal','Shamirpet','Dundigal','Bowrampet',
+            'Kandlakoya','Genome Valley','Maisammaguda','Shamshabad','Rajendranagar','Maheshwaram','Kandukur',
+            'Srisailam Highway','Tukkuguda','Adibatla','Balapur','Chandrayangutta','Kothur','Uppal','Pocharam',
+            'Nagole','LB Nagar','Hayathnagar','Ghatkesar','Pedda Amberpet','Vanasthalipuram','Yadadri',
+            // duplicate for seamless loop
+            'Kokapet','Financial District','Gachibowli','Narsingi','Tellapur','Osman Nagar','Kollur','Miyapur',
+            'Bachupally','Patancheru','Kompally','Medchal','Suchitra','Alwal','Shamirpet','Dundigal','Bowrampet',
+            'Kandlakoya','Genome Valley','Maisammaguda','Shamshabad','Rajendranagar','Maheshwaram','Kandukur',
+            'Srisailam Highway','Tukkuguda','Adibatla','Balapur','Chandrayangutta','Kothur','Uppal','Pocharam',
+            'Nagole','LB Nagar','Hayathnagar','Ghatkesar','Pedda Amberpet','Vanasthalipuram','Yadadri',
+          ].map((loc, i) => <span key={i} className="home-marquee__item">⬡ {loc}</span>)}
         </div>
       </div>
     </div>

@@ -17,11 +17,20 @@ const SORTS    = [
   { label:'Most Popular',         val:'-views'       },
 ];
 
+// Category quick-filter — maps to exact subtype values stored in the backend
+const CATEGORIES = [
+  { label: 'All',        value: '' },
+  { label: 'Apartments', value: 'Apartment' },
+  { label: 'Villas',     value: 'Villa' },
+  { label: 'Plots',      value: 'Plot' },
+];
+
 export default function Properties() {
   const [params] = useSearchParams();
 
   const [type,    setType]    = useState(params.get('type')   || 'All');
   const [status,  setStatus]  = useState(params.get('status') || 'All');
+  const [category,setCategory]= useState(params.get('subtype') || params.get('category') || '');
   const [sort,    setSort]    = useState('-createdAt');
   const [search,  setSearch]  = useState('');
   const [mounted, setMounted] = useState(false);
@@ -38,7 +47,7 @@ export default function Properties() {
   useEffect(() => { setTimeout(() => setMounted(true), 80); }, []);
 
   // Reset to page 1 when filters change
-  useEffect(() => { setPage(1); }, [type, status, sort, search]);
+  useEffect(() => { setPage(1); }, [type, status, sort, search, category]);
 
   // GET /api/properties — with filters mapped to backend query params
   const fetchProperties = useCallback(async () => {
@@ -52,6 +61,7 @@ export default function Properties() {
       if (type   !== 'All') q.set('type',   type);
       if (status !== 'All') q.set('status', status);
       if (search.trim())    q.set('search', search.trim());
+      if (category)         q.set('subtype', category);
 
       const res  = await fetch(`${BASE}/api/properties?${q.toString()}`);
       const data = await res.json();
@@ -67,16 +77,16 @@ export default function Properties() {
       setError('Network error — is the backend running?');
     }
     setLoading(false);
-  }, [type, status, sort, search, page]);
+  }, [type, status, sort, search, page, category]);
 
   useEffect(() => { fetchProperties(); }, [fetchProperties]);
 
   const clearAll = () => {
-    setType('All'); setStatus('All');
+    setType('All'); setStatus('All'); setCategory('');
     setSearch(''); setSort('-createdAt'); setPage(1);
   };
 
-  const hasFilters = type !== 'All' || status !== 'All' || search || sort !== '-createdAt';
+  const hasFilters = type !== 'All' || status !== 'All' || search || sort !== '-createdAt' || category;
 
   return (
     <div className="props-page">
@@ -115,6 +125,18 @@ export default function Properties() {
 
           {/* Filter row */}
           <div className="props-filters__row">
+            {/* Category quick-filter */}
+            <div className="props-filter-group">
+              <span className="props-filter-label">Category</span>
+              <div className="props-pills">
+                {CATEGORIES.map(c => (
+                  <button key={c.value}
+                    className={`props-pill${category === c.value ? ' active' : ''}`}
+                    onClick={() => setCategory(c.value)}>{c.label}</button>
+                ))}
+              </div>
+            </div>
+
             <div className="props-filter-group">
               <span className="props-filter-label">Type</span>
               <div className="props-pills">

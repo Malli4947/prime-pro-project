@@ -22,11 +22,11 @@ const TIMELINE = [
   { year: '2024', title: 'First Verified Listings',         desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
   { year: '2024', title: 'Growing Network',                 desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Closed our first successful property deals with happy families.' },
   { year: '2025', title: 'Farmland & NRI Desk',             desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
-  { year: '2025', title: 'Scaling New Heights',             desc: 'Reached new milestones with 300+ verified listings, 200+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors.' },
+  { year: '2025', title: 'Scaling New Heights',             desc: 'Reached new milestones with 200+ verified listings, 35+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors.' },
   { year: '2025', title: 'Award Winning Recognition',       desc: 'Recognised as one of Hyderabad\'s most trusted real estate platforms — with verified listings, a dedicated NRI desk, and a channel partner network spanning the entire city.' },
   { year: '2026', title: 'Expanding Horizons',              desc: 'Scaling operations beyond Hyderabad into emerging Telangana corridors — bringing new luxury villa projects, commercial spaces, and farmland investments to a wider audience.' },
   { year: '2026', title: 'Technology & Innovation',         desc: 'Launched an enhanced digital platform with AI-powered property recommendations, virtual site tours, and real-time RERA verification — making property discovery faster and smarter.' },
-  { year: '2026', title: 'Stronger. Bigger. Trusted.',      desc: 'With 2,400+ listings, 1,800+ happy clients, and a presence across 48+ prime localities, PrimePro Project\'s continues to set new benchmarks in Hyderabad\'s real estate market.' },
+  { year: '2026', title: 'Stronger. Bigger. Trusted.',      desc: 'With 200+ listings, 35+ happy clients, and a presence across 5 major cities, PrimePro Project\'s continues to set new benchmarks in Hyderabad\'s real estate market.' },
 ];
 
 const VALUES = [
@@ -39,9 +39,9 @@ const VALUES = [
 ];
 
 const STATS = [
-  { icon: '🏘️', value: '300+',  label: 'Properties Listed'  },
-  { icon: '🤝', value: '200+',  label: 'Happy Families'      },
-  { icon: '🏙️', value: '15+',   label: 'Prime Localities'    },
+  { icon: '🏘️', value: '200+',  label: 'Properties Listed'  },
+  { icon: '🤝', value: '35+',   label: 'Happy Families'      },
+  { icon: '🏙️', value: '5',     label: 'Major Cities'        },
   { icon: '⭐', value: '4.9/5', label: 'Customer Rating'     },
 ];
 
@@ -172,7 +172,7 @@ export default function About() {
               loading="lazy"
             />
             <div className="about-story__img-badge">
-              <span className="about-story__badge-num">2+</span>
+              <span className="about-story__badge-num">5+</span>
               <span className="about-story__badge-txt">Years of<br />Excellence</span>
             </div>
           </div>
@@ -269,9 +269,9 @@ export default function About() {
         <div className="container">
           <div className={`about-timeline__header${timeVis ? ' anim-fade-up' : ''}`}>
             <span className="sec-tag">Our Journey</span>
-            <h2 className="sec-title">From <span className="hi">2024 to 2026</span> — Our Milestones</h2>
+            <h2 className="sec-title">5+ Years of <span className="hi">Excellence</span></h2>
             <p className="sec-sub" style={{ margin:'0 auto', textAlign:'center' }}>
-              From our founding in 2024 to where we stand today in 2026 — every step has been driven by trust, transparency, and a commitment to delivering the best real estate experience in Hyderabad.
+              Over 5 years of building trust, delivering quality, and creating real value — every milestone has been driven by our commitment to transparent and rewarding real estate experiences in Hyderabad.
             </p>
           </div>
           <div className="about-timeline__track">
@@ -289,6 +289,23 @@ export default function About() {
               </div>
             ))}
             <div className="about-timeline__line" />
+          </div>
+
+          {/* ── 5+ Years bottom summary ── */}
+          <div className={`about-timeline__summary${timeVis ? ' anim-fade-up' : ''}`} style={{ animationDelay:'900ms' }}>
+            <div className="about-timeline__summary-badge">5+</div>
+            <div className="about-timeline__summary-body">
+              <h3 className="about-timeline__summary-title">Years of Excellence &amp; Counting</h3>
+              <p className="about-timeline__summary-desc">
+                From our first verified listing to 200+ properties across 5 major cities — PrimePro Project's has spent 5+ years earning the trust of families, investors, and NRIs across Hyderabad and Telangana. The journey continues.
+              </p>
+              <div className="about-timeline__summary-pills">
+                <span>✓ 200+ Properties</span>
+                <span>✓ 35+ Happy Clients</span>
+                <span>✓ 5 Major Cities</span>
+                <span>✓ 4.9 ★ Rating</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

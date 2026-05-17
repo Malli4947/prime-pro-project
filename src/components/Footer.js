@@ -85,12 +85,43 @@ const SOCIALS = [
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const [nlEmail, setNlEmail] = useState('');
-  const [nlDone,  setNlDone]  = useState(false);
+  const [nlEmail,     setNlEmail]     = useState('');
+  const [nlDone,      setNlDone]      = useState(false);
+  const [categories,  setCategories]  = useState([]);
 
   const [ctaRef,   ctaVis]   = useReveal();
   const [mainRef,  mainVis]  = useReveal();
   const [botRef,   botVis]   = useReveal();
+
+  // Fetch categories from API so footer always reflects what's in the DB
+  useEffect(() => {
+    const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    fetch(`${BASE}/api/categories`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.success && Array.isArray(d.categories)) {
+          setCategories(
+            d.categories
+              .filter(c => c.isActive !== false)
+              .sort((a, b) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Map category name → correct subtype/type query param
+  const getCatParam = (name = '') => {
+    const n = name.toUpperCase().trim();
+    if (n === 'APARTMENTS')           return 'subtype=Apartment';
+    if (n === 'VILLAS')               return 'subtype=Villa';
+    if (n === 'PLOTS')                return 'subtype=Plot';
+    if (n === 'FARM LANDS')           return 'subtype=Farm+Land';
+    if (n === 'COMMERCIAL')           return 'type=Commercial';
+    if (n === 'READY TO MOVE')        return 'subtype=Ready+to+Move';
+    if (n === 'UNDER CONSTRUCTION')   return 'subtype=Under+Construction';
+    return `subtype=${encodeURIComponent(name)}`;
+  };
 
   const handleNewsletter = e => {
     e.preventDefault();
@@ -141,7 +172,10 @@ export default function Footer() {
             <div className={`footer__brand${mainVis ? ' footer-anim-up' : ''}`} style={{ animationDelay: '0ms' }}>
               <div className="footer__logo">
                 <img src="/FullLogo.jpeg" alt="Prime Pro Projects" className="footer__logo-img" />
-                <img src="/TitleLogo.jpeg" alt="Prime Pro Projects" className="footer__logo-title-img" />
+                <span className="footer__logo-textblock">
+                  <span className="footer__logo-line1">PRIME <span className="footer__logo-gold">PRO</span></span>
+                  <span className="footer__logo-line2">PROJECTS</span>
+                </span>
               </div>
               <p className="footer__brand-desc">
                 Hyderabad's most trusted real estate platform. Verified listings, expert agents, zero hidden charges. Established 2024 · Journey 2024–2026.
@@ -193,17 +227,29 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Property types */}
+            {/* Property types — dynamic from API */}
             <div className={`footer__col${mainVis ? ' footer-anim-up' : ''}`} style={{ animationDelay: '160ms' }}>
               <h4 className="footer__col-title">Property Types</h4>
               <ul className="footer__links">
-                {['Apartments','Independent Villas','Row Houses','Penthouses','Commercial Offices','Retail Shops','Farmhouses'].map(t => (
-                  <li key={t}>
-                    <Link to={`/properties?subtype=${encodeURIComponent(t)}`} className="footer__link">
-                      <span className="footer__link-arrow">›</span>{t}
-                    </Link>
-                  </li>
-                ))}
+                {categories.length > 0
+                  ? categories.map(cat => (
+                    <li key={cat._id || cat.name}>
+                      <Link to={`/properties?${getCatParam(cat.name)}`} className="footer__link">
+                        <span className="footer__link-arrow">›</span>
+                        {/* Capitalise first letter of each word for display */}
+                        {cat.name.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
+                      </Link>
+                    </li>
+                  ))
+                  : /* fallback while loading */
+                  ['Apartments','Villas','Plots','Farm Lands','Commercial'].map(t => (
+                    <li key={t}>
+                      <Link to={`/properties?subtype=${encodeURIComponent(t)}`} className="footer__link">
+                        <span className="footer__link-arrow">›</span>{t}
+                      </Link>
+                    </li>
+                  ))
+                }
               </ul>
             </div>
 
