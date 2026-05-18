@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import PropertyCard from '../components/PropertyCard';
 import AnimatedBackground from '../components/AnimatedBackground';
+import { cachedFetch } from '../utils/apiCache';
 import './Home.css';
 
 const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
@@ -198,44 +199,39 @@ export default function Home() {
   const [agentRef, agentVis] = useReveal();
   const [testiRef, testiVis] = useReveal();
 
+  // ── Fire all 4 fetches in parallel, with caching ──────────────────────────
   useEffect(() => {
-    fetch(`${BASE}/api/cms`)
-      .then(r => r.json())
-      .then(d => { if (d.success && d.cms) setCmsData(d.cms); })
-      .catch(e => console.error('CMS error:', e))
-      .finally(() => setLoadingCms(false));
-  }, []);
+    let cancelled = false;
 
-  useEffect(() => {
-    fetch(`${BASE}/api/categories`)
-      .then(r => r.json())
-      .then(d => {
-        if (d.success && Array.isArray(d.categories)) {
-          setCategories(
-            d.categories
-              .filter(c => c.isActive !== false)
-              .sort((a, b) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99))
-          );
+    Promise.all([
+      cachedFetch(`${BASE}/api/cms`),
+      cachedFetch(`${BASE}/api/categories`),
+      cachedFetch(`${BASE}/api/properties/featured?limit=6`),
+      cachedFetch(`${BASE}/api/properties?page=1&limit=6`),
+    ]).then(([cms, cats, featured, trending]) => {
+      if (cancelled) return;
+
+      if (cms?.success && cms.cms)           setCmsData(cms.cms);
+      if (cats?.success && Array.isArray(cats.categories)) {
+        setCategories(
+          cats.categories
+            .filter(c => c.isActive !== false)
+            .sort((a, b) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99))
+        );
+      }
+      if (featured?.success)  setFeaturedProps(featured.properties || []);
+      if (trending?.success)  setTrendingProps(trending.properties || []);
+    }).catch(e => console.error('Home fetch error:', e))
+      .finally(() => {
+        if (!cancelled) {
+          setLoadingCms(false);
+          setLoadingCats(false);
+          setLoadingFeat(false);
+          setLoadingTrend(false);
         }
-      })
-      .catch(e => console.error('Categories error:', e))
-      .finally(() => setLoadingCats(false));
-  }, []);
+      });
 
-  useEffect(() => {
-    fetch(`${BASE}/api/properties/featured?limit=6`)
-      .then(r => r.json())
-      .then(d => { if (d.success) setFeaturedProps(d.properties || []); })
-      .catch(e => console.error('Featured error:', e))
-      .finally(() => setLoadingFeat(false));
-  }, []);
-
-  useEffect(() => {
-    fetch(`${BASE}/api/properties?page=1&limit=6`)
-      .then(r => r.json())
-      .then(d => { if (d.success) setTrendingProps(d.properties || []); })
-      .catch(e => console.error('Trending error:', e))
-      .finally(() => setLoadingTrend(false));
+    return () => { cancelled = true; };
   }, []);
 
   const about        = cmsData?.about || {};

@@ -1,4 +1,4 @@
-import  { useState, useEffect, useCallback } from 'react';
+import  { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
 import AnimatedBackground from '../components/AnimatedBackground';
@@ -28,12 +28,13 @@ const CATEGORIES = [
 export default function Properties() {
   const [params] = useSearchParams();
 
-  const [type,    setType]    = useState(params.get('type')   || 'All');
-  const [status,  setStatus]  = useState(params.get('status') || 'All');
-  const [category,setCategory]= useState(params.get('subtype') || params.get('category') || '');
-  const [sort,    setSort]    = useState('-createdAt');
-  const [search,  setSearch]  = useState('');
-  const [mounted, setMounted] = useState(false);
+  const [type,        setType]       = useState(params.get('type')   || 'All');
+  const [status,      setStatus]     = useState(params.get('status') || 'All');
+  const [category,    setCategory]   = useState(params.get('subtype') || params.get('category') || '');
+  const [sort,        setSort]       = useState('-createdAt');
+  const [searchInput, setSearchInput]= useState('');   // raw input — updates instantly
+  const [search,      setSearch]     = useState('');   // debounced — triggers fetch
+  const [mounted,     setMounted]    = useState(false);
 
   const [properties, setProperties] = useState([]);
   const [total,      setTotal]      = useState(0);
@@ -45,6 +46,12 @@ export default function Properties() {
   const LIMIT = 12;
 
   useEffect(() => { setTimeout(() => setMounted(true), 80); }, []);
+
+  // Debounce search input — wait 400ms after user stops typing before fetching
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchInput), 400);
+    return () => clearTimeout(t);
+  }, [searchInput]);
 
   // Reset to page 1 when filters change
   useEffect(() => { setPage(1); }, [type, status, sort, search, category]);
@@ -83,10 +90,10 @@ export default function Properties() {
 
   const clearAll = () => {
     setType('All'); setStatus('All'); setCategory('');
-    setSearch(''); setSort('-createdAt'); setPage(1);
+    setSearchInput(''); setSearch(''); setSort('-createdAt'); setPage(1);
   };
 
-  const hasFilters = type !== 'All' || status !== 'All' || search || sort !== '-createdAt' || category;
+  const hasFilters = type !== 'All' || status !== 'All' || searchInput || sort !== '-createdAt' || category;
 
   return (
     <div className="props-page">
@@ -115,11 +122,12 @@ export default function Properties() {
             <span className="props-filters__search-icon">🔍</span>
             <input type="text"
               placeholder="Search by name, location or type…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
               className="props-filters__search-input" />
-            {search && (
-              <button className="props-filters__search-clear" onClick={() => setSearch('')}>✕</button>
+            {searchInput && (
+              <button className="props-filters__search-clear"
+                onClick={() => { setSearchInput(''); setSearch(''); }}>✕</button>
             )}
           </div>
 

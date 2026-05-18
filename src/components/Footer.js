@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { cachedFetch } from '../utils/apiCache';
 import './Footer.css';
 
 /* ── SVG Social Icons ─────────────────────────────────────────────────── */
@@ -93,13 +94,13 @@ export default function Footer() {
   const [mainRef,  mainVis]  = useReveal();
   const [botRef,   botVis]   = useReveal();
 
-  // Fetch categories from API so footer always reflects what's in the DB
+  // Fetch categories from API — uses shared cache, no extra network request
+  // if Home.js already fetched it on this page load
   useEffect(() => {
     const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
-    fetch(`${BASE}/api/categories`)
-      .then(r => r.json())
+    cachedFetch(`${BASE}/api/categories`)
       .then(d => {
-        if (d.success && Array.isArray(d.categories)) {
+        if (d?.success && Array.isArray(d.categories)) {
           setCategories(
             d.categories
               .filter(c => c.isActive !== false)
