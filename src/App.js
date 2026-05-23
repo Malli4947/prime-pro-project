@@ -11,6 +11,7 @@ const PropertyDetails= lazy(() => import('./pages/PropertyDetails'));
 const About          = lazy(() => import('./pages/About'));
 const Contact        = lazy(() => import('./pages/Contact'));
 const Profile        = lazy(() => import('./pages/Profile'));
+const Portfolio      = lazy(() => import('./pages/Portfolio'));
 
 // ── Minimal page-level loading fallback ─────────────────────────────────────
 const PageLoader = () => (
@@ -50,6 +51,7 @@ export default function App() {
               <Route path="/about"          element={<About />} />
               <Route path="/contact"        element={<Contact />} />
               <Route path="/profile"        element={<Profile />} />
+              <Route path="/portfolio"      element={<Portfolio />} />
               <Route path="*" element={
                 <div style={{
                   minHeight:'80vh', display:'flex', flexDirection:'column',

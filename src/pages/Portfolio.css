@@ -1,0 +1,394 @@
+/* ═══════════════════════════════════════════════════════════════
+   PORTFOLIO PAGE — Founder spotlight
+   Dark navy canvas · Gold accents · Editorial layout
+═══════════════════════════════════════════════════════════════ */
+
+.portfolio-page {
+  position: relative;
+  background: linear-gradient(135deg, #060d18 0%, #0c1825 55%, #0e2240 100%);
+  color: #fff;
+  overflow: hidden;
+  padding-top: 96px;
+  padding-bottom: clamp(64px, 8vw, 120px);
+}
+
+/* Decorative coral/gold tinted blob behind content */
+.portfolio-page::before {
+  content: "";
+  position: absolute;
+  top: -180px; left: -220px;
+  width: 640px; height: 640px;
+  background: radial-gradient(circle at 30% 30%,
+              rgba(201,168,76,0.22) 0%,
+              rgba(201,168,76,0.08) 35%,
+              transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+.portfolio-page::after {
+  content: "";
+  position: absolute;
+  bottom: -160px; right: -160px;
+  width: 520px; height: 520px;
+  background: radial-gradient(circle,
+              rgba(228,196,122,0.16) 0%,
+              transparent 65%);
+  filter: blur(36px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.portfolio-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--px);
+  padding-right: var(--px);
+}
+
+/* ── HERO ROW: name+role on left / portrait card on right ─ */
+.pf-hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+  position: relative;
+  padding: clamp(32px, 5vw, 56px) 0 clamp(48px, 6vw, 80px);
+}
+
+.pf-hero__left {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.pf-name {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-weight: 800;
+  font-size: clamp(48px, 7.5vw, 108px);
+  line-height: 0.95;
+  letter-spacing: -2px;
+  color: #fff;
+  margin: 0 0 28px;
+  position: relative;
+  z-index: 2;
+}
+.pf-name span {
+  display: block;
+}
+.pf-name span:last-child {
+  color: rgba(255,255,255,0.92);
+}
+
+/* Right column wraps portrait + decorations */
+.pf-hero__right {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(20px, 3vw, 40px);
+}
+
+/* Solid gold blob backdrop — sits behind the portrait card */
+.pf-hero__right::after {
+  content: "";
+  position: absolute;
+  width: clamp(260px, 32vw, 380px);
+  height: clamp(320px, 38vw, 460px);
+  border-radius: 50% 50% 38% 38% / 55% 55% 30% 30%;
+  background: linear-gradient(160deg,
+              #C9A84C 0%,
+              #9E7A2E 55%,
+              #6b5220 100%);
+  transform: translate(28px, 22px);
+  box-shadow: 0 30px 80px rgba(201,168,76,0.35);
+  z-index: 0;
+}
+
+/* Soft gold halo glow */
+.pf-hero__right > .pf-portrait-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(circle,
+              rgba(228,196,122,0.35) 0%,
+              rgba(228,196,122,0.0) 65%);
+  filter: blur(20px);
+  z-index: -1;
+}
+
+.pf-portrait-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 4 / 5;
+  border-radius: 200px 200px 24px 24px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f3efe6 0%, #e6dec9 100%);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(201,168,76,0.4),
+    0 0 0 8px rgba(12,24,37,0.6);
+  z-index: 2;
+}
+.pf-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+  display: block;
+}
+
+/* Decorative shapes — gold triangle + dot */
+.pf-shape-tri {
+  position: absolute;
+  top: 18%;
+  right: -8px;
+  width: 0; height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-bottom: 38px solid var(--gold, #C9A84C);
+  transform: rotate(95deg);
+  opacity: 0.9;
+  z-index: 3;
+}
+.pf-shape-dot {
+  position: absolute;
+  top: 12%;
+  right: 28px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--gold, #C9A84C);
+  box-shadow: 0 0 28px rgba(201,168,76,0.6);
+  z-index: 3;
+}
+/* outline ring behind the photo for depth */
+.pf-hero__right::before {
+  content: "";
+  position: absolute;
+  width: clamp(220px, 28vw, 320px);
+  height: clamp(220px, 28vw, 320px);
+  border: 1px dashed rgba(201,168,76,0.35);
+  border-radius: 50%;
+  top: -20px; left: -20px;
+  z-index: 1;
+}
+
+/* Role card — sits under the name on the LEFT */
+.pf-rolecard {
+  position: relative;
+  z-index: 3;
+  max-width: 460px;
+  padding: 24px 28px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: var(--r-lg, 20px);
+  backdrop-filter: blur(8px);
+}
+.pf-rolecard__kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold, #C9A84C);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.pf-rolecard__kicker::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold, #C9A84C), transparent);
+}
+.pf-rolecard__title {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+  margin: 0 0 14px;
+}
+.pf-rolecard__desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.65);
+  margin: 0 0 18px;
+}
+.pf-rolecard__contact p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+}
+.pf-rolecard__contact .label {
+  color: var(--gold, #C9A84C);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+/* Social rail under role card */
+.pf-socials {
+  margin-top: 24px;
+  display: flex;
+  gap: 18px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  z-index: 3;
+}
+.pf-socials a {
+  color: var(--gold, #C9A84C);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.pf-socials a:hover { color: var(--gold-light, #E4C47A); }
+
+/* ── DETAIL ROW: about + query ─────────────────────────── */
+.pf-detail {
+  margin-top: clamp(56px, 8vw, 96px);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+.pf-kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold, #C9A84C);
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.pf-kicker::before {
+  content: "";
+  width: 28px; height: 2px;
+  background: var(--gold, #C9A84C);
+}
+
+.pf-about__quote {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: #fff;
+  margin: 0 0 22px;
+}
+.pf-about__body {
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.6);
+  margin: 0 0 36px;
+  max-width: 480px;
+}
+.pf-exp {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.pf-exp__num {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(64px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--gold, #C9A84C);
+}
+.pf-exp__label {
+  font-size: 14px;
+  line-height: 1.3;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+}
+.pf-exp__label span { display: block; }
+
+.pf-query__title {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 14px;
+  letter-spacing: -0.5px;
+}
+.pf-query__lead {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  margin: 0 0 36px;
+}
+.pf-query__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  color: var(--gold, #C9A84C);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,168,76,0.45);
+  padding-bottom: 6px;
+  transition: gap 0.25s, color 0.2s;
+}
+.pf-query__link svg {
+  width: 26px; height: 26px;
+  transition: transform 0.25s;
+}
+.pf-query__link:hover {
+  color: var(--gold-light, #E4C47A);
+  gap: 26px;
+}
+.pf-query__link:hover svg { transform: translateX(4px); }
+
+/* ── SECONDARY ROW: office photo + bio ─────────────────── */
+.pf-office {
+  margin-top: clamp(64px, 8vw, 112px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+.pf-office__img {
+  width: 100%;
+  border-radius: var(--r-xl, 28px);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(201,168,76,0.2);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+}
+.pf-office__img img {
+  width: 100%; height: auto; display: block;
+}
+.pf-office__body h3 {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(26px, 3vw, 38px);
+  color: #fff;
+  margin: 14px 0 18px;
+  line-height: 1.25;
+}
+.pf-office__body p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.65);
+  margin: 0 0 14px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .pf-hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .pf-name {
+    font-size: clamp(44px, 11vw, 80px);
+    letter-spacing: -1px;
+    text-align: center;
+  }
+  .pf-rolecard { margin: 0 auto; }
+  .pf-socials { justify-content: center; }
+  .pf-hero__right { order: -1; }
+  .pf-portrait-wrap { max-width: 300px; }
+  .pf-hero__right::before { display: none; }
+  .pf-detail, .pf-office {
+    grid-template-columns: 1fr;
+  }
+  .pf-office__img { order: -1; }
+}

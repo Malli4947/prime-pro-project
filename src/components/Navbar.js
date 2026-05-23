@@ -86,6 +86,7 @@ export default function Navbar() {
     { label: 'Home',       to: '/' },
     { label: 'Properties', to: '/properties' },
     { label: 'About',      to: '/about' },
+    { label: 'Portfolio',  to: '/portfolio' },
     { label: 'Contact',    to: '/contact' },
   ];
 
