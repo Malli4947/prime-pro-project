@@ -166,16 +166,52 @@ export default function PropertyDetails() {
       .then(data => {
         if (data.success && data.property) {
           setProperty(data.property);
-          fetch(`${BASE}/api/properties?type=${data.property.type}&limit=4`)
+          const cur = data.property;
+
+          // Strict subtype match: Villa→Villa, Apartment→Apartment, Plot→Plot.
+          // Fall back to type only if the current property has no subtype.
+          const q = new URLSearchParams();
+          q.set('limit', '40');
+          if (cur.subtype) q.set('subtype', cur.subtype);
+          else if (cur.type) q.set('type', cur.type);
+
+          fetch(`${BASE}/api/properties?${q.toString()}`)
             .then(r => r.json())
             .then(d => {
-              if (d.success) {
-                setRelated(
-                  (d.properties || [])
-                    .filter(p => p._id !== data.property._id)
-                    .slice(0, 3),
-                );
-              }
+              if (!d.success) return;
+
+              const curBadge    = (cur.badge || '').toLowerCase();
+              const curLocality = (cur.location?.locality || '').toLowerCase();
+              const curCity     = (cur.location?.city || '').toLowerCase();
+              const curSubtype  = (cur.subtype || '').toLowerCase();
+              const curType     = (cur.type || '').toLowerCase();
+
+              // Hard filter: same subtype if we have one, otherwise same type
+              const pool = (d.properties || []).filter(p => {
+                if (p._id === cur._id) return false;
+                const s = (p.subtype || '').toLowerCase();
+                const t = (p.type || '').toLowerCase();
+                if (curSubtype) return s === curSubtype;
+                return t === curType;
+              });
+
+              // Rank by badge → locality → city
+              const scored = pool
+                .map(p => {
+                  let score = 0;
+                  const b = (p.badge || '').toLowerCase();
+                  const l = (p.location?.locality || '').toLowerCase();
+                  const c = (p.location?.city || '').toLowerCase();
+                  if (curBadge && b === curBadge)       score += 100;
+                  if (curLocality && l === curLocality) score += 50;
+                  if (curCity && c === curCity)         score += 20;
+                  return { p, score };
+                })
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3)
+                .map(x => x.p);
+
+              setRelated(scored);
             })
             .catch(() => {});
         } else {

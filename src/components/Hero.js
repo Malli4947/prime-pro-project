@@ -15,41 +15,41 @@ import './Hero.css';
 const SLIDES = [
   {
     id: 1,
-    tag: 'Premium Residential',
+    tag: 'Premium Apartments',
     title: 'Find Your',
-    highlight: 'Dream Home',
-    sub: "Discover verified luxury villas, apartments & plots across Hyderabad's prime localities.",
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1600&q=85',
+    highlight: 'Dream Apartment',
+    sub: "2, 3 & 4 BHK RERA-verified apartments across Madhapur, Gachibowli, Kokapet and Tellapur — gated, amenity-rich and ready to move.",
+    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=85&auto=format&fit=crop',
     accent: '#C9A84C',
     dir: 'left',
   },
   {
     id: 2,
-    tag: 'Gated Communities',
-    title: 'Live in',
-    highlight: 'Pure Luxury',
-    sub: 'World-class amenities, RERA-certified projects and zero brokerage — only at PrimePro.',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=85',
+    tag: 'Luxury Villas',
+    title: 'Live in a',
+    highlight: 'Private Villa',
+    sub: 'Independent villas in premium gated communities — Vastu-compliant designs, private pools, clubhouse and 24/7 security.',
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85&auto=format&fit=crop',
     accent: '#E4C47A',
     dir: 'right',
   },
   {
     id: 3,
-    tag: 'Smart Investment',
+    tag: 'Open Plots & Farmland',
     title: 'Invest in',
-    highlight: 'Your Future',
-    sub: 'High-yield commercial spaces, open plots and farmland with guaranteed legal clarity.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=85',
+    highlight: 'Prime Land',
+    sub: 'HMDA & DTCP-approved plots and farmland with clear titles — high-appreciation belts around Shamshabad, Adibatla and Yadadri.',
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=85&auto=format&fit=crop',
     accent: '#C9A84C',
     dir: 'up',
   },
   {
     id: 4,
-    tag: 'NRI Desk',
-    title: 'Your Home',
-    highlight: 'Awaits You',
-    sub: 'Dedicated NRI investment desk with FEMA-compliant solutions and end-to-end support.',
-    image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1600&q=85',
+    tag: 'Commercial Spaces',
+    title: 'Grow Your',
+    highlight: 'Business',
+    sub: 'Office floors, retail outlets and pre-leased commercial assets across Hyderabad\'s IT corridors — stable rental yields.',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=85&auto=format&fit=crop',
     accent: '#E4C47A',
     dir: 'left',
   },
@@ -161,7 +161,7 @@ export default function Hero({ cmsHero }) {
   const startRef = useRef(null);
   const rafRef = useRef(null);
 
-  const typed = useTypewriter(['Dream Home', 'Perfect Villa', 'Ideal Plot', 'Best Investment']);
+  const typed = useTypewriter(['Dream Apartment', 'Private Villa', 'Prime Plot', 'Commercial Space']);
 
   useEffect(() => {
     const t1 = setTimeout(() => setMounted(true), 100);
@@ -255,7 +255,15 @@ export default function Hero({ cmsHero }) {
         >
           {/* Ken Burns image */}
           <div className={`hero__slide-img${i === current % effectiveSlides.length ? ' hero__slide-img--zoom' : ''}`}>
-            <img src={s.image} alt={s.highlight} loading={i === 0 ? 'eager' : 'lazy'} />
+            <img
+              src={s.image}
+              alt={s.highlight}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              onError={e => {
+                e.target.onerror = null;
+                e.target.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=85&auto=format&fit=crop';
+              }}
+            />
           </div>
           {/* Gradient overlay */}
           <div className="hero__slide-overlay" />

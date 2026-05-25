@@ -121,18 +121,18 @@ const WHY_FEATURES = [
 ];
 
 const CAT_IMAGES = {
-  apartments:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80',
-  villas:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
-  plots:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  commercial:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80',
-  'farm lands':'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  'ready to move':'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
-  'under construction':'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80',
-  residential:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
-  agriculture:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',
-  industrial:'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
-  luxury:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80',
-  default:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+  apartments:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85&auto=format&fit=crop',
+  villas:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=85&auto=format&fit=crop',
+  plots:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=85&auto=format&fit=crop',
+  commercial:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85&auto=format&fit=crop',
+  'farm lands':'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=85&auto=format&fit=crop',
+  'ready to move':'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=900&q=85&auto=format&fit=crop',
+  'under construction':'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=85&auto=format&fit=crop',
+  residential:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=85&auto=format&fit=crop',
+  agriculture:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=85&auto=format&fit=crop',
+  industrial:'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=900&q=85&auto=format&fit=crop',
+  luxury:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&q=85&auto=format&fit=crop',
+  default:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85&auto=format&fit=crop',
 };
 
 function isUrl(str) {
