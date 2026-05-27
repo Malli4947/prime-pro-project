@@ -12,6 +12,8 @@ import './Hero.css';
    • Search bar slides up after content
 ─────────────────────────────────────────────────────────────── */
 
+/* Local hero images for slides 1–4 (served from /public) and a specific
+   high-resolution commercial photograph for slide 5. */
 const SLIDES = [
   {
     id: 1,
@@ -28,28 +30,28 @@ const SLIDES = [
     tag: 'Luxury Apartments',
     title: 'Live in a',
     highlight: 'Premium Apartment',
-    sub: '3 & 4 BHK luxury apartments with skyline views, clubhouse, pool and concierge — handpicked in Hyderabad\'s top corridors.',
+    sub: "3 & 4 BHK luxury apartments with skyline views, clubhouse, pool and concierge — handpicked in Hyderabad's top corridors.",
     image: '/Apartment2.jpeg',
     accent: '#E4C47A',
     dir: 'right',
   },
   {
     id: 3,
-    tag: 'Luxury Villas',
-    title: 'Live in a',
-    highlight: 'Private Villa',
-    sub: 'Independent villas in premium gated communities — Vastu-compliant designs, private pools, clubhouse and 24/7 security.',
-    image: '/Villas.jpeg',
-    accent: '#C9A84C',
-    dir: 'up',
-  },
-  {
-    id: 4,
     tag: 'Open Plots & Farmland',
     title: 'Invest in',
     highlight: 'Prime Land',
     sub: 'HMDA & DTCP-approved plots and farmland with clear titles — high-appreciation belts around Shamshabad, Adibatla and Yadadri.',
     image: '/Plots.jpeg',
+    accent: '#C9A84C',
+    dir: 'up',
+  },
+  {
+    id: 4,
+    tag: 'Luxury Villas',
+    title: 'Live in a',
+    highlight: 'Private Villa',
+    sub: 'Independent villas in premium gated communities — Vastu-compliant designs, private pools, clubhouse and 24/7 security.',
+    image: '/Villas.jpeg',
     accent: '#E4C47A',
     dir: 'left',
   },
@@ -59,7 +61,7 @@ const SLIDES = [
     title: 'Grow Your',
     highlight: 'Business',
     sub: "Office floors, retail outlets and pre-leased commercial assets across Hyderabad's IT corridors — stable rental yields.",
-    image: '/Commercial.jpeg',
+    image: 'https://dxc.com/insights/customer-stories/a-strategic-roadmap-for-operational-excellence-cost-optimization-and-risk-resilience/_jcr_content/root/container/articlecontainer/sidebar_copy/image.coreimg.90.768.jpeg/1765319383070/adobestock-286621283.jpeg',
     accent: '#C9A84C',
     dir: 'right',
   },
@@ -271,7 +273,7 @@ export default function Hero({ cmsHero }) {
               loading={i === 0 ? 'eager' : 'lazy'}
               onError={e => {
                 e.target.onerror = null;
-                e.target.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=85&auto=format&fit=crop';
+                e.target.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=2880&q=90&auto=format&fit=crop';
               }}
             />
           </div>

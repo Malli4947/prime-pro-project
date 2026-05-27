@@ -42,22 +42,30 @@
 .hero__slide--active { opacity: 1; z-index: 1; }
 .hero__slide--exit   { opacity: 0; z-index: 0; }
 
-/* Ken Burns zoom */
+/* Slide image — full-bleed background at native resolution, never upscaled.
+   Subtle contrast + saturation lift boosts perceived sharpness on photos
+   without pixelating them (which `image-rendering: crisp-edges` would). */
 .hero__slide-img {
-  position: absolute; inset: -5%;
-  width: 110%; height: 110%;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
 }
 .hero__slide-img img {
   width: 100%; height: 100%;
   object-fit: cover; object-position: center;
   display: block;
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: bicubic;
+  filter: contrast(1.05) saturate(1.06);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: filter;
 }
+/* Ken Burns animation removed — zooming a JPEG past its native pixel
+   size is what causes the soft / blurred look. The class is kept so the
+   JS hook still works, but it now no-ops visually. */
 .hero__slide-img--zoom img {
-  animation: kenBurns 7s ease-out forwards;
-}
-@keyframes kenBurns {
-  from { transform: scale(1.08) translate(0, 0); }
-  to   { transform: scale(1.0)  translate(-1%, -1%); }
+  animation: none;
 }
 
 /* Overlays */

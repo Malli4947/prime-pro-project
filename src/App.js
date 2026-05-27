@@ -2,6 +2,7 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ChatBot from './components/ChatBot';
 import './App.css';
 
 // ── Code-split all pages — only load what the user navigates to ──────────────
@@ -12,6 +13,10 @@ const About          = lazy(() => import('./pages/About'));
 const Contact        = lazy(() => import('./pages/Contact'));
 const Profile        = lazy(() => import('./pages/Profile'));
 const Portfolio      = lazy(() => import('./pages/Portfolio'));
+const PrivacyPolicy  = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfUse     = lazy(() => import('./pages/TermsOfUse'));
+const RERACompliance = lazy(() => import('./pages/RERACompliance'));
+const Sitemap        = lazy(() => import('./pages/Sitemap'));
 
 // ── Minimal page-level loading fallback ─────────────────────────────────────
 const PageLoader = () => (
@@ -52,6 +57,10 @@ export default function App() {
               <Route path="/contact"        element={<Contact />} />
               <Route path="/profile"        element={<Profile />} />
               <Route path="/portfolio"      element={<Portfolio />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms"          element={<TermsOfUse />} />
+              <Route path="/rera-compliance" element={<RERACompliance />} />
+              <Route path="/sitemap"        element={<Sitemap />} />
               <Route path="*" element={
                 <div style={{
                   minHeight:'80vh', display:'flex', flexDirection:'column',
@@ -69,6 +78,7 @@ export default function App() {
           </Suspense>
         </main>
         <Footer />
+        <ChatBot />
       </div>
     </BrowserRouter>
   );

@@ -56,27 +56,48 @@ export default function Properties() {
   // Reset to page 1 when filters change
   useEffect(() => { setPage(1); }, [type, status, sort, search, category]);
 
-  // GET /api/properties — with filters mapped to backend query params
+  // GET /api/properties — with filters mapped to backend query params.
+  // Plot-family subtypes vary in the DB (Plot / Plots / Open Plot / Open Plots
+  // / Farm Land etc.), so we strip the exact subtype filter for those and
+  // match client-side on a substring instead — prevents "no data found".
   const fetchProperties = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
+      const cat = (category || '').trim();
+      const catLower = cat.toLowerCase();
+      const isPlotFamily = /\bplot/.test(catLower) || /farm/.test(catLower);
+
       const q = new URLSearchParams();
       q.set('page',  page);
-      q.set('limit', LIMIT);
+      q.set('limit', isPlotFamily ? 60 : LIMIT);   // pull broader when filtering plots
       q.set('sort',  sort);
       if (type   !== 'All') q.set('type',   type);
       if (status !== 'All') q.set('status', status);
       if (search.trim())    q.set('search', search.trim());
-      if (category)         q.set('subtype', category);
+      if (cat && !isPlotFamily) q.set('subtype', cat);
 
       const res  = await fetch(`${BASE}/api/properties?${q.toString()}`);
       const data = await res.json();
 
       if (data.success) {
-        setProperties(data.properties || []);
-        setTotal(data.total || 0);
-        setPages(data.pages || 1);
+        let list = data.properties || [];
+        let listTotal = data.total || 0;
+        let listPages = data.pages || 1;
+
+        if (isPlotFamily) {
+          const want = catLower.includes('farm') ? /farm/i : /plot/i;
+          list = list.filter(p => want.test((p.subtype || '') + ' ' + (p.type || '')));
+          // Re-paginate the filtered list locally
+          listTotal = list.length;
+          listPages = Math.max(1, Math.ceil(listTotal / LIMIT));
+          const start = (page - 1) * LIMIT;
+          list = list.slice(start, start + LIMIT);
+        }
+
+        setProperties(list);
+        setTotal(listTotal);
+        setPages(listPages);
       } else {
         setError(data.message || 'Failed to load properties');
       }

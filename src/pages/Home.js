@@ -470,7 +470,7 @@ export default function Home() {
       <section className="section home-why" ref={whyRef}>
         <div className="container home-why__inner">
           <div className={`home-why__img${whyVis ? ' anim-fade-left' : ''}`}>
-            <img src="/Person.jpeg" alt="Our Team" loading="lazy" />
+            <img src="/Prashanth.jpeg" alt="Our Team" loading="lazy" />
             <div className="home-why__badge">
               <span className="home-why__badge-num">{yearsExp}+</span>
               <span className="home-why__badge-txt">Years of<br />Excellence</span>

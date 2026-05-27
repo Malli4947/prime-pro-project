@@ -126,6 +126,12 @@ export default function PropertyDetails() {
   const [brochureSubmitting, setBrochureSubmitting] = useState(false);
   const [brochureError, setBrochureError] = useState('');
 
+  // Directions form gate — collect lead before sending to Google Maps
+  const [directionsModal, setDirectionsModal] = useState(false);
+  const [directionsForm, setDirectionsForm] = useState({ name: '', phone: '', email: '' });
+  const [directionsSubmitting, setDirectionsSubmitting] = useState(false);
+  const [directionsError, setDirectionsError] = useState('');
+
   /* reveal refs */
   const [infoRef,  infoVis]  = useReveal();
   const [descRef,  descVis]  = useReveal();
@@ -168,10 +174,9 @@ export default function PropertyDetails() {
           setProperty(data.property);
           const cur = data.property;
 
-          // Strict subtype match: Villa→Villa, Apartment→Apartment, Plot→Plot.
-          // Fall back to type only if the current property has no subtype.
+          // Pull a wide candidate pool of the same subtype/type — filter strictly client-side.
           const q = new URLSearchParams();
-          q.set('limit', '60');
+          q.set('limit', '80');
           if (cur.subtype) q.set('subtype', cur.subtype);
           else if (cur.type) q.set('type', cur.type);
 
@@ -187,41 +192,54 @@ export default function PropertyDetails() {
               const curCity     = norm(cur.location?.city);
               const curSubtype  = norm(cur.subtype);
               const curType     = norm(cur.type);
+              const curFeatured = !!cur.isFeatured || !!cur.featured;
 
-              // Tag the current property as "ready" or "under construction"
-              // by checking BOTH badge and status fields.
-              const isReady = /ready/.test(curBadge) || /ready/.test(curStatus);
-              const isUC    = /under construction|under-construction|underconstruction/.test(curBadge)
-                            || /under construction|under-construction|underconstruction/.test(curStatus);
+              // Category tags carried in the `badge` field
+              const isReady   = /ready/.test(curBadge) || /ready/.test(curStatus);
+              const isUC      = /under construction|under-construction|underconstruction/.test(curBadge)
+                              || /under construction|under-construction|underconstruction/.test(curStatus);
+              const isPremium = /premium/.test(curBadge);
+              const isLuxury  = /luxury/.test(curBadge);
+              const isNew     = /new launch|new-launch|newlaunch|new\b/.test(curBadge);
 
-              // Hard filter: same subtype (or type) AND same ready/UC status when applicable
+              const hasCategoryGate = isReady || isUC || isPremium || isLuxury || isNew || curFeatured;
+
+              const matchesCategory = p => {
+                const pb = norm(p.badge);
+                const ps = norm(p.status);
+                const pFeatured = !!p.isFeatured || !!p.featured;
+
+                if (isReady   && !/ready/.test(pb) && !/ready/.test(ps)) return false;
+                if (isUC      && !/under construction|under-construction|underconstruction/.test(pb)
+                              && !/under construction|under-construction|underconstruction/.test(ps)) return false;
+                if (isPremium && !/premium/.test(pb)) return false;
+                if (isLuxury  && !/luxury/.test(pb))  return false;
+                if (isNew     && !/new launch|new-launch|newlaunch|new\b/.test(pb)) return false;
+                if (curFeatured && !pFeatured) return false;
+                return true;
+              };
+
+              // Hard filter: same subtype/type AND same active category tag
               const pool = (d.properties || []).filter(p => {
                 if (p._id === cur._id) return false;
                 const s = norm(p.subtype);
                 const t = norm(p.type);
                 const typeMatch = curSubtype ? s === curSubtype : t === curType;
                 if (!typeMatch) return false;
-
-                if (isReady || isUC) {
-                  const pb = norm(p.badge);
-                  const ps = norm(p.status);
-                  const pReady = /ready/.test(pb) || /ready/.test(ps);
-                  const pUC    = /under construction|under-construction|underconstruction/.test(pb)
-                               || /under construction|under-construction|underconstruction/.test(ps);
-                  if (isReady && !pReady) return false;
-                  if (isUC    && !pUC)    return false;
-                }
+                if (hasCategoryGate && !matchesCategory(p)) return false;
                 return true;
               });
 
-              // Rank by locality → city (status is already enforced above)
+              // Rank by locality → city → exact badge string equality (light boost)
               const scored = pool
                 .map(p => {
                   let score = 0;
                   const l = norm(p.location?.locality);
                   const c = norm(p.location?.city);
-                  if (curLocality && l === curLocality) score += 50;
-                  if (curCity && c === curCity)         score += 20;
+                  const b = norm(p.badge);
+                  if (curLocality && l === curLocality) score += 80;
+                  if (curCity     && c === curCity)     score += 30;
+                  if (curBadge    && b === curBadge)    score += 15;
                   return { p, score };
                 })
                 .sort((a, b) => b.score - a.score)
@@ -349,6 +367,60 @@ export default function PropertyDetails() {
     setBrochureForm({ name: '', phone: '', email: '', message: '', scheduleDate: '' });
   };
 
+  // ── Directions handler: capture lead, then open Google Maps in a new tab ────
+  const handleDirectionsSubmit = async e => {
+    e.preventDefault();
+    setDirectionsError('');
+    if (!directionsForm.name.trim()) return setDirectionsError('Name is required');
+    if (!directionsForm.phone.trim() || directionsForm.phone.length < 10)
+      return setDirectionsError('Valid 10-digit phone number is required');
+    if (!directionsForm.email.trim()) return setDirectionsError('Email address is required');
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(directionsForm.email.trim())) return setDirectionsError('Enter a valid email address');
+
+    setDirectionsSubmitting(true);
+    try {
+      const token = localStorage.getItem('pp_user_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const body = {
+        propertyId: property._id,
+        name: directionsForm.name.trim(),
+        phone: directionsForm.phone.replace(/\D/g, '').slice(-10),
+        email: directionsForm.email.trim().toLowerCase(),
+        message: `Requested directions to ${property.title} at ${property.location?.address || property.location?.locality || 'Hyderabad'}`,
+        type: 'Site Visit',
+        subject: `Directions Request — ${property.title}`,
+      };
+
+      const res = await fetch(`${BASE}/api/enquiries`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setDirectionsError(data.message || 'Submission failed. Please try again.');
+        setDirectionsSubmitting(false);
+        return;
+      }
+    } catch {
+      setDirectionsError('Network error — please try again.');
+      setDirectionsSubmitting(false);
+      return;
+    }
+
+    // Open Google Maps in a new tab AFTER successful lead capture
+    const addr = property.location?.address || property.location?.locality || property.title;
+    const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(addr + ', Hyderabad')}`;
+    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+
+    setDirectionsSubmitting(false);
+    setDirectionsModal(false);
+    setDirectionsForm({ name: '', phone: '', email: '' });
+  };
+
   if (loading)
     return (
       <div style={{minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 80}}>
@@ -473,7 +545,16 @@ export default function PropertyDetails() {
                   {type}{subtype ? ` · ${subtype}` : ''}
                 </div>
                 <h1 className="pd-info-card__title">{title}</h1>
-                <p className="pd-info-card__loc">📍 {displayLoc}</p>
+                <button
+                  type="button"
+                  onClick={() => setDirectionsModal(true)}
+                  className="pd-info-card__loc pd-info-card__loc--btn"
+                  aria-label={`Get directions to ${displayLoc}`}>
+                  📍 {displayLoc}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+                  </svg>
+                </button>
               </div>
               <div className="pd-info-card__header-right">
                 <div className="pd-info-card__price">{displayPrice}</div>
@@ -490,6 +571,15 @@ export default function PropertyDetails() {
             </div>
 
             <div className="pd-specs">
+              {/* Subtype — always shown as the leading spec when no Unit Type/Beds
+                  apply (e.g. Open Plots, Farmland, Commercial Land) so plots
+                  no longer look empty */}
+              {!(beds > 0) && !unitType && subtype && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">🏷️</span>
+                  <div><b>{subtype}</b><p>Property Type</p></div>
+                </div>
+              )}
               {!(beds > 0) && unitType && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">🏠</span>
@@ -500,6 +590,12 @@ export default function PropertyDetails() {
                 <div className="pd-spec">
                   <span className="pd-spec__icon">📐</span>
                   <div><b>{displayArea}</b><p>Total Area</p></div>
+                </div>
+              )}
+              {facing && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">🧭</span>
+                  <div><b>{facing}</b><p>Facing</p></div>
                 </div>
               )}
               {possession && (
@@ -524,6 +620,19 @@ export default function PropertyDetails() {
                 <div className="pd-spec">
                   <span className="pd-spec__icon">💰</span>
                   <div><b>₹{Number(pricePerSft).toLocaleString('en-IN')}</b><p>Per Sft</p></div>
+                </div>
+              )}
+              {/* Status pill — last resort so the spec grid never looks empty */}
+              {status && !possession && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">🏷️</span>
+                  <div><b>{status}</b><p>Listing Status</p></div>
+                </div>
+              )}
+              {reraVerified && (
+                <div className="pd-spec">
+                  <span className="pd-spec__icon">✅</span>
+                  <div><b>RERA Verified</b><p>Compliance</p></div>
                 </div>
               )}
             </div>
@@ -619,28 +728,38 @@ export default function PropertyDetails() {
                   {location?.pincode ? ` – ${location.pincode}` : ''}
                 </div>
               </div>
-              <a
-                href={`https://maps.google.com/?q=${encodeURIComponent((location?.address || displayLoc) + ', Hyderabad')}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => setDirectionsModal(true)}
                 className="pd-location__maps-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
                 Get Directions
-              </a>
+              </button>
             </div>
 
-            {/* Google Maps Embed */}
-            <div className="pd-map-embed">
+            {/* Google Maps Embed — overlay intercepts clicks so all paths
+                to Maps must go through the lead-capture form */}
+            <div className="pd-map-embed" style={{ position: 'relative' }}>
               <iframe
                 title="Property Location"
                 src={`https://maps.google.com/maps?q=${encodeURIComponent((location?.address || displayLoc) + ', Hyderabad')}&output=embed&z=15`}
                 width="100%"
                 height="340"
-                style={{ border: 0, borderRadius: '16px', display: 'block' }}
+                style={{ border: 0, borderRadius: '16px', display: 'block', pointerEvents: 'none' }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+              <button
+                type="button"
+                onClick={() => setDirectionsModal(true)}
+                aria-label="Get directions to this property"
+                className="pd-map-embed__shield">
+                <span className="pd-map-embed__shield-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  Open in Google Maps
+                </span>
+              </button>
             </div>
 
             {/* Nearby highlights */}
@@ -981,6 +1100,118 @@ export default function PropertyDetails() {
                 {brochureLink
                   ? 'Your details are safe with us. No spam, ever.'
                   : 'Our team will call you within 2 hours.'}
+              </p>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Directions Modal ─────────────────────────────── */}
+      {directionsModal && (
+        <div
+          style={{
+            position:'fixed', inset:0, zIndex:9000,
+            background:'rgba(6,13,24,0.75)', backdropFilter:'blur(6px)',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            padding:'16px',
+          }}
+          onClick={() => setDirectionsModal(false)}>
+          <div
+            style={{
+              background:'#fff', borderRadius:20, width:'100%', maxWidth:440,
+              boxShadow:'0 32px 80px rgba(0,0,0,0.35)',
+              overflow:'hidden', animation:'fadeUp .3s ease both',
+            }}
+            onClick={e => e.stopPropagation()}>
+
+            <div style={{
+              background:'linear-gradient(135deg,#1A2B4A,#243a60)',
+              padding:'22px 24px 18px', position:'relative',
+            }}>
+              <button
+                onClick={() => setDirectionsModal(false)}
+                style={{
+                  position:'absolute', top:14, right:14,
+                  background:'rgba(255,255,255,0.1)', border:'none',
+                  borderRadius:'50%', width:32, height:32,
+                  color:'#fff', cursor:'pointer', fontSize:16,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                }}>✕</button>
+              <div style={{fontSize:28, marginBottom:8}}>📍</div>
+              <h3 style={{color:'#fff', fontSize:18, fontWeight:700, margin:'0 0 4px', fontFamily:'inherit'}}>
+                Get Directions
+              </h3>
+              <p style={{color:'rgba(255,255,255,0.6)', fontSize:13, margin:0}}>
+                {title} — share your details and we'll open the map for you.
+              </p>
+            </div>
+
+            <form onSubmit={handleDirectionsSubmit} style={{padding:'24px'}}>
+              {directionsError && (
+                <div style={{
+                  background:'#fff5f5', border:'1px solid #fecaca',
+                  borderRadius:8, padding:'10px 14px',
+                  fontSize:13, color:'#c53030', marginBottom:14,
+                }}>
+                  ⚠️ {directionsError}
+                </div>
+              )}
+
+              <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Your Name *</label>
+                <input
+                  type="text" placeholder="Enter your name" required
+                  value={directionsForm.name}
+                  onChange={e => setDirectionsForm(f => ({...f, name: e.target.value}))}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Phone Number *</label>
+                <input
+                  type="tel" placeholder="10-digit mobile number" maxLength={10}
+                  value={directionsForm.phone}
+                  onChange={e => setDirectionsForm(f => ({...f, phone: e.target.value.replace(/\D/g,'').slice(0,10)}))}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-field" style={{marginBottom:20}}>
+                <label className="form-label">Email Address *</label>
+                <input
+                  type="email" placeholder="Enter your email" required
+                  value={directionsForm.email}
+                  onChange={e => setDirectionsForm(f => ({...f, email: e.target.value}))}
+                  className="form-input"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={directionsSubmitting}
+                className="btn btn-gold btn-full"
+                style={{height:48, fontSize:15, fontWeight:700}}>
+                {directionsSubmitting ? (
+                  <>
+                    <span style={{
+                      display:'inline-block', width:16, height:16,
+                      border:'2px solid rgba(12,24,37,0.3)', borderTopColor:'#1A2B4A',
+                      borderRadius:'50%', animation:'rotateSlow .7s linear infinite',
+                      marginRight:8,
+                    }} />
+                    Submitting…
+                  </>
+                ) : (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{marginRight:6}}><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                    Open in Google Maps
+                  </>
+                )}
+              </button>
+
+              <p style={{textAlign:'center', fontSize:12, color:'#94a3b8', marginTop:12}}>
+                Our advisor will follow up within 2 hours to assist your site visit.
               </p>
             </form>
           </div>

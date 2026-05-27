@@ -241,6 +241,24 @@
 .pd-info-card__loc {
   font-size: 14px; color: var(--text-secondary);
 }
+.pd-info-card__loc--btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: transparent; border: none; padding: 0;
+  font-family: inherit; cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+.pd-info-card__loc--btn svg {
+  color: var(--gold, #C9A84C);
+  transition: transform 0.2s ease;
+}
+.pd-info-card__loc--btn:hover { color: var(--gold, #C9A84C); }
+.pd-info-card__loc--btn:hover svg { transform: translateX(3px); }
+.pd-info-card__loc--btn:focus-visible {
+  outline: 2px solid var(--gold, #C9A84C);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 .pd-info-card__header-right { text-align: right; flex-shrink: 0; }
 .pd-info-card__price {
   font-family: Arial, Helvetica, sans-serif;
@@ -370,6 +388,8 @@
   font-size: 12px; font-weight: 700;
   transition: background 0.2s, transform 0.2s;
   text-decoration: none; flex-shrink: 0;
+  border: none; cursor: pointer;
+  font-family: inherit;
 }
 .pd-location__maps-btn:hover { background: var(--navy-3); transform: translateY(-1px); }
 
@@ -381,6 +401,34 @@
   border: 1px solid var(--border);
 }
 .pd-map-embed iframe { display: block; }
+
+/* Click-shield over the map embed — gates every path to Google Maps
+   behind the lead-capture form */
+.pd-map-embed__shield {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  padding: 14px;
+  border-radius: 16px;
+  transition: background 0.25s ease;
+}
+.pd-map-embed__shield:hover { background: rgba(6,13,24,0.18); }
+.pd-map-embed__shield-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border-radius: 99px;
+  background: #1A2B4A; color: #fff;
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.3px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.pd-map-embed__shield:hover .pd-map-embed__shield-pill {
+  transform: translateY(-2px);
+  background: #C9A84C;
+  color: #0c1825;
+}
 
 /* Nearby highlights */
 .pd-nearby {

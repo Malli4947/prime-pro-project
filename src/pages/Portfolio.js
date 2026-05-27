@@ -238,7 +238,7 @@ export default function Portfolio() {
           <div className="pf-hero__right">
             <div className="pf-portrait-wrap">
               <img
-                src="/founder-portrait.png"
+                src="/Prashanth.jpeg"
                 alt={`${FOUNDER.firstName} ${FOUNDER.lastName}`}
                 className="pf-portrait"
               />
@@ -505,7 +505,7 @@ export default function Portfolio() {
         {/* ── OFFICE / BIO ─────────────────────────────── */}
         <section className="pf-office">
           <div className="pf-office__img">
-            <img src="/founder-office.png" alt="At the PrimePro Projects office" />
+            <img src="/Prashanth.jpeg" alt="At the PrimePro Projects office" />
           </div>
           <div className="pf-office__body">
             <div className="pf-kicker">Inside the Office</div>

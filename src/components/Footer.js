@@ -322,10 +322,10 @@ export default function Footer() {
               © {year} PRIME PRO PROJECTS. All rights reserved. Est. 2024 · Journey 2024–2026.
             </p>
             <div className={`footer__legal${botVis ? ' footer-anim-up' : ''}`} style={{ animationDelay: '80ms' }}>
-              <a href="#!">Privacy Policy</a>
-              <a href="#!">Terms of Use</a>
-              <a href="#!">RERA Compliance</a>
-              <a href="#!">Sitemap</a>
+              <Link to="/privacy-policy">Privacy Policy</Link>
+              <Link to="/terms">Terms of Use</Link>
+              <Link to="/rera-compliance">RERA Compliance</Link>
+              <Link to="/sitemap">Sitemap</Link>
             </div>
           </div>
         </div>

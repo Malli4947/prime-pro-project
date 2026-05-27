@@ -2,14 +2,16 @@
    Footer — full redesign with animations & social icons
 ═══════════════════════════════════════════════════════ */
 
-/* ── Scroll-to-top button ─────────────────────────────── */
+/* ── Scroll-to-top button ─────────────────────────────────
+   Stacked above the chat FAB (which sits at bottom: 24px right: 24px)
+   so the two don't overlap on any screen size. */
 .scroll-top-btn {
   position: fixed;
-  bottom: 32px;
+  bottom: 96px;          /* sits above the chat FAB */
   right: 28px;
   z-index: 800;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--gold), var(--gold-light));
   color: var(--navy);
@@ -319,7 +321,7 @@
   .footer__legal { flex-wrap: wrap; justify-content: center; gap: 12px; }
   .footer__newsletter-form { flex-direction: row; }
   .footer__brand-desc { max-width: 100%; }
-  .scroll-top-btn { bottom: 20px; right: 16px; width: 44px; height: 44px; }
+  .scroll-top-btn { bottom: 78px; right: 16px; width: 40px; height: 40px; }
   /* Match navbar mobile logo sizing; keep PROJECTS smaller than PRIME PRO */
   .footer__logo { gap: 9px; }
   .footer__logo-img   { height: 38px; }
