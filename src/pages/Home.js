@@ -72,7 +72,7 @@ const AGENTS = [
     name: 'Prashanth Reddy',
     role: 'Senior Property Advisor',
     deals: '130',
-    exp: '6 Yrs',
+    exp: '5 Yrs',
     initials: 'PR',
     color: '#1A2B4A',
     phone: '9347870247',
@@ -82,12 +82,12 @@ const AGENTS = [
     name: 'Vaishnavi Chowdary',
     role: 'Senior Property Advisor',
     deals: '100',
-    exp: '5 Yrs',
+    exp: '4 Yrs',
     initials: 'VC',
     color: '#C9A84C',
     phone: '8688874521',
   },
-  
+
   {
     id: 3,
     name: 'K Arun Kumar Reddy',
@@ -101,9 +101,12 @@ const AGENTS = [
 ];
 
 const TESTIMONIALS = [
-  { id:1, name:'Kiran Rao',    role:'Home Buyer',     city:'Tellapur',     rating:5, initials:'KR', color:'#C9A84C', text:'PrimePro made finding my dream home effortless. The team was responsive and guided me through every step.' },
-  { id:2, name:'Divya Nair',   role:'Investor',       city:'Kokapet',   rating:5, initials:'DN', color:'#1A2B4A', text:'Excellent platform with verified listings. I found the perfect commercial space within a week!' },
-  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kollur', rating:5, initials:'SK', color:'#3b82f6', text:"Sold my property at the best price. The team's market knowledge and network is outstanding." },
+  { id:1, name:'Kiran Rao',    role:'Home Buyer',      city:'Tellapur, Hyderabad', rating:5, initials:'KR', color:'#C9A84C',
+    text:"PrimePro made finding my dream 3BHK in Tellapur effortless. They shortlisted only RERA-approved options that matched my budget, arranged site visits the same week and handled the paperwork end-to-end. Honest pricing, zero brokerage and a team that genuinely listens — I would recommend them to any home buyer." },
+  { id:2, name:'Divya Nair',   role:'Commercial Investor', city:'Kokapet, Hyderabad', rating:5, initials:'DN', color:'#1A2B4A',
+    text:"I was looking for a pre-leased commercial space with stable rental yields and PrimePro delivered the perfect deal within a week. Their market insight, transparent ROI breakdown and clean documentation made the entire investment risk-free. Truly professional advisors." },
+  { id:3, name:'Suresh Kumar', role:'Property Seller', city:'Kollur, Hyderabad',   rating:5, initials:'SK', color:'#3b82f6',
+    text:"I sold my plot through PrimePro Projects and got the best market price thanks to their strong buyer network. Verified leads, transparent negotiation and quick registration — the whole process closed in under three weeks. Highly recommended for genuine sellers." },
 ];
 
 const STATS = [
@@ -237,7 +240,7 @@ export default function Home() {
   const about        = cmsData?.about || {};
   const contactPhone = about.phone    || '6304829287';
   const contactEmail = about.email    || 'primeproprojects@gmail.com';
-  const contactAddr  = about.address  || 'Madhapur, Kavuri Hills, Hyderabad';
+  const contactAddr  = about.address  || 'Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana';
   const yearsExp     = about.yearsExperience || 5;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
@@ -598,14 +601,16 @@ export default function Home() {
             'Kokapet','Financial District','Gachibowli','Narsingi','Tellapur','Osman Nagar','Kollur','Miyapur',
             'Bachupally','Patancheru','Kompally','Medchal','Suchitra','Alwal','Shamirpet','Dundigal','Bowrampet',
             'Kandlakoya','Genome Valley','Maisammaguda','Shamshabad','Rajendranagar','Maheshwaram','Kandukur',
-            'Srisailam Highway','Tukkuguda','Adibatla','Balapur','Chandrayangutta','Kothur','Uppal','Pocharam',
-            'Nagole','LB Nagar','Hayathnagar','Ghatkesar','Pedda Amberpet','Vanasthalipuram','Yadadri',
+            'Srisailam Highway','Tukkuguda','Adibatla','Balapur','Chandrayangutta','Kothur',
+            'Uppal','Pocharam','Nagole','LB Nagar','Hayathnagar','Ghatkesar','Pedda Amberpet',
+            'Vanasthalipuram','Yadadri',
             // duplicate for seamless loop
             'Kokapet','Financial District','Gachibowli','Narsingi','Tellapur','Osman Nagar','Kollur','Miyapur',
             'Bachupally','Patancheru','Kompally','Medchal','Suchitra','Alwal','Shamirpet','Dundigal','Bowrampet',
             'Kandlakoya','Genome Valley','Maisammaguda','Shamshabad','Rajendranagar','Maheshwaram','Kandukur',
-            'Srisailam Highway','Tukkuguda','Adibatla','Balapur','Chandrayangutta','Kothur','Uppal','Pocharam',
-            'Nagole','LB Nagar','Hayathnagar','Ghatkesar','Pedda Amberpet','Vanasthalipuram','Yadadri',
+            'Srisailam Highway','Tukkuguda','Adibatla','Balapur','Chandrayangutta','Kothur',
+            'Uppal','Pocharam','Nagole','LB Nagar','Hayathnagar','Ghatkesar','Pedda Amberpet',
+            'Vanasthalipuram','Yadadri',
           ].map((loc, i) => <span key={i} className="home-marquee__item">⬡ {loc}</span>)}
         </div>
       </div>

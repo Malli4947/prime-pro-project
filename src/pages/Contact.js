@@ -23,27 +23,11 @@ function useReveal(threshold = 0.12) {
 const OFFICES = [
   {
     city: 'Hyderabad (HQ)',
-    address: 'Madhapur, Kavuri Hills Phase,\nHyderabad, Telangana',
+    address: 'Madhapur, Kavuri Hills Phase 1,\nHyderabad, Telangana',
     phone: '6304829287',
     email: 'primeproprojects@gmail.com',
     hours: 'Mon–Sat: 9 AM – 7 PM',
     emoji: '🏢',
-  },
-  {
-    city: 'Gachibowli Branch',
-    address: 'Gachibowli,\nHyderabad – 500032',
-    phone: '9347870247',
-    email: 'primeproprojects@gmail.com',
-    hours: 'Mon–Sat: 9 AM – 7 PM',
-    emoji: '🏙️',
-  },
-  {
-    city: 'Banjara Hills Branch',
-    address: 'Banjara Hills,\nHyderabad – 500034',
-    phone: '8688874521',
-    email: 'primeproprojects@gmail.com',
-    hours: 'Mon–Sat: 9 AM – 7 PM',
-    emoji: '🌆',
   },
 ];
 
@@ -363,9 +347,9 @@ export default function Contact() {
             <div className="contact-map">
               <div className="contact-map__placeholder">
                 <span>🗺️</span>
-                <p>Laxmi Cyber City, Kondapur</p>
-                <p className="contact-map__sub">Hyderabad – 500081</p>
-                <a href="https://maps.google.com/?q=Kondapur+Hyderabad"
+                <p>Madhapur, Kavuri Hills Phase 1,</p>
+                <p className="contact-map__sub">Hyderabad, Telangana</p>
+                <a href="https://maps.google.com/?q=Madhapur+Kavuri+Hills+Phase+1+Hyderabad+Telangana"
                   target="_blank" rel="noopener noreferrer"
                   className="btn btn-dark btn-sm">
                   Open in Google Maps →

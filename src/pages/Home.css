@@ -535,7 +535,7 @@
 }
 .home-marquee__track {
   display: flex; width: max-content;
-  animation: marquee 28s linear infinite;
+  animation: marquee 70s linear infinite;
 }
 .home-marquee__item {
   font-size: 13px; font-weight: 700; color: var(--navy);

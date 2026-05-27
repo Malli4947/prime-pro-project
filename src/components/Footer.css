@@ -130,7 +130,7 @@
 .footer__logo-gold { color: var(--gold); }
 .footer__logo-textblock { display: flex; flex-direction: column; line-height: 1; gap: 4px; }
 .footer__logo-line1 { font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #ffffff; text-transform: uppercase; }
-.footer__logo-line2 { font-size: 20px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #C9A84C; text-align: center; }
+.footer__logo-line2 { font-size: 15px; font-weight: 900; letter-spacing: 2.6px; text-transform: uppercase; color: #C9A84C; text-align: center; }
 
 /* Logo images */
 .footer__logo-img {
@@ -320,10 +320,23 @@
   .footer__newsletter-form { flex-direction: row; }
   .footer__brand-desc { max-width: 100%; }
   .scroll-top-btn { bottom: 20px; right: 16px; width: 44px; height: 44px; }
+  /* Match navbar mobile logo sizing; keep PROJECTS smaller than PRIME PRO */
+  .footer__logo { gap: 9px; }
+  .footer__logo-img   { height: 38px; }
+  .footer__logo-line1 { font-size: 14px; letter-spacing: 2px; }
+  .footer__logo-line2 { font-size: 11px; letter-spacing: 1.8px; }
 }
 @media (max-width: 480px) {
   .footer__cta-actions { flex-direction: column; }
   .footer__cta-actions .footer__cta-btn { width: 100%; }
   .footer__socials { gap: 8px; }
   .footer__social { width: 38px; height: 38px; }
+  .footer__logo-line1 { font-size: 13px; letter-spacing: 1.8px; }
+  .footer__logo-line2 { font-size: 10px; letter-spacing: 1.6px; }
+  .footer__logo-img   { height: 36px; }
+}
+@media (max-width: 380px) {
+  .footer__logo-line1 { font-size: 12px; letter-spacing: 1.5px; }
+  .footer__logo-line2 { font-size: 9px;  letter-spacing: 1.4px; }
+  .footer__logo-img   { height: 34px; }
 }

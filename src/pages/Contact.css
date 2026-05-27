@@ -153,7 +153,9 @@
 /* ── OFFICES ───────────────────────────────────────────── */
 .contact-offices__header { margin-bottom: 36px; }
 .contact-offices__grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 460px));
+  justify-content: center;
   gap: 24px;
 }
 .office-card {

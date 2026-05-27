@@ -171,7 +171,7 @@ export default function PropertyDetails() {
           // Strict subtype match: Villa→Villa, Apartment→Apartment, Plot→Plot.
           // Fall back to type only if the current property has no subtype.
           const q = new URLSearchParams();
-          q.set('limit', '40');
+          q.set('limit', '60');
           if (cur.subtype) q.set('subtype', cur.subtype);
           else if (cur.type) q.set('type', cur.type);
 
@@ -180,29 +180,46 @@ export default function PropertyDetails() {
             .then(d => {
               if (!d.success) return;
 
-              const curBadge    = (cur.badge || '').toLowerCase();
-              const curLocality = (cur.location?.locality || '').toLowerCase();
-              const curCity     = (cur.location?.city || '').toLowerCase();
-              const curSubtype  = (cur.subtype || '').toLowerCase();
-              const curType     = (cur.type || '').toLowerCase();
+              const norm = v => (v || '').toString().toLowerCase().trim().replace(/[\s\-_/]+/g, ' ');
+              const curBadge    = norm(cur.badge);
+              const curStatus   = norm(cur.status);
+              const curLocality = norm(cur.location?.locality);
+              const curCity     = norm(cur.location?.city);
+              const curSubtype  = norm(cur.subtype);
+              const curType     = norm(cur.type);
 
-              // Hard filter: same subtype if we have one, otherwise same type
+              // Tag the current property as "ready" or "under construction"
+              // by checking BOTH badge and status fields.
+              const isReady = /ready/.test(curBadge) || /ready/.test(curStatus);
+              const isUC    = /under construction|under-construction|underconstruction/.test(curBadge)
+                            || /under construction|under-construction|underconstruction/.test(curStatus);
+
+              // Hard filter: same subtype (or type) AND same ready/UC status when applicable
               const pool = (d.properties || []).filter(p => {
                 if (p._id === cur._id) return false;
-                const s = (p.subtype || '').toLowerCase();
-                const t = (p.type || '').toLowerCase();
-                if (curSubtype) return s === curSubtype;
-                return t === curType;
+                const s = norm(p.subtype);
+                const t = norm(p.type);
+                const typeMatch = curSubtype ? s === curSubtype : t === curType;
+                if (!typeMatch) return false;
+
+                if (isReady || isUC) {
+                  const pb = norm(p.badge);
+                  const ps = norm(p.status);
+                  const pReady = /ready/.test(pb) || /ready/.test(ps);
+                  const pUC    = /under construction|under-construction|underconstruction/.test(pb)
+                               || /under construction|under-construction|underconstruction/.test(ps);
+                  if (isReady && !pReady) return false;
+                  if (isUC    && !pUC)    return false;
+                }
+                return true;
               });
 
-              // Rank by badge → locality → city
+              // Rank by locality → city (status is already enforced above)
               const scored = pool
                 .map(p => {
                   let score = 0;
-                  const b = (p.badge || '').toLowerCase();
-                  const l = (p.location?.locality || '').toLowerCase();
-                  const c = (p.location?.city || '').toLowerCase();
-                  if (curBadge && b === curBadge)       score += 100;
+                  const l = norm(p.location?.locality);
+                  const c = norm(p.location?.city);
                   if (curLocality && l === curLocality) score += 50;
                   if (curCity && c === curCity)         score += 20;
                   return { p, score };

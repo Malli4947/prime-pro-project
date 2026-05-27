@@ -51,7 +51,7 @@ const AGENTS = [
     name: 'Prashanth Reddy',
     role: 'Senior Property Advisor',
     deals: '130',
-    exp: '6 Yrs',
+    exp: '5 Yrs',
     initials: 'PR',
     color: '#1A2B4A',
     phone: '9347870247',
@@ -61,7 +61,7 @@ const AGENTS = [
     name: 'Vaishnavi Chowdary',
     role: 'Senior Property Advisor',
     deals: '100',
-    exp: '5 Yrs',
+    exp: '4 Yrs',
     initials: 'VC',
     color: '#C9A84C',
     phone: '8688874521',
@@ -389,12 +389,12 @@ export default function About() {
           </div>
           <div className="home-testi__grid">
             {[
-              { name:'Rajesh Kumar',  role:'Home Buyer',     city:'Kondapur',    rating:5, initials:'RK', color:'#C9A84C',
-                text:'Buying a plot through PrimePro Project\'s was one of the best decisions we made as a family. The location, documentation process, and customer service were all top-notch. Truly professional!' },
-              { name:'Priya Reddy',   role:'NRI Investor',   city:'Dubai → Hyd', rating:5, initials:'PR', color:'#1A2B4A',
-                text:'As an NRI, I was initially hesitant about investing in real estate back home. But the team made the entire process smooth and transparent. I received regular updates, and the team was always responsive.' },
-              { name:'Anil Mehta',    role:'Villa Owner',    city:'Gachibowli',  rating:5, initials:'AM', color:'#3b82f6',
-                text:"We recently moved into our villa. The quality of construction and attention to detail exceeded our expectations. It's rare to find a platform that actually delivers on time and as promised!" },
+              { name:'Rajesh Kumar',  role:'Home Buyer',     city:'Kondapur, Hyderabad',    rating:5, initials:'RK', color:'#C9A84C',
+                text:"We bought our family plot through PrimePro Projects and it was honestly the smoothest property purchase we've ever made. The location was carefully shortlisted to match our budget, every document was verified upfront, and the team walked us through each step with patience. No pressure, no hidden charges — just clear, professional guidance from start to handover." },
+              { name:'Priya Reddy',   role:'NRI Investor',   city:'Dubai → Hyderabad', rating:5, initials:'PR', color:'#1A2B4A',
+                text:"As an NRI, investing back home felt risky until I connected with PrimePro Projects. They handled the site shortlisting, legal verification, registration and even post-purchase follow-ups completely remotely. Regular video walkthroughs, instant WhatsApp replies and 100% transparent paperwork — exactly the kind of trust an overseas investor needs." },
+              { name:'Anil Mehta',    role:'Villa Owner',    city:'Kollur, Hyderabad',  rating:5, initials:'AM', color:'#3b82f6',
+                text:"I purchased my villa through PrimePro Projects and the experience exceeded every expectation. Their advice was unbiased, the project information was detailed and transparent, and the team's responsiveness during site visits, negotiation and registration was exceptional. If you want a trustworthy real estate partner in Hyderabad, this is the team to call." },
             ].map((t, i) => (
               <div key={i} className="testi-card" style={{ animationDelay:`${i * 100}ms` }}>
                 <div className="testi-card__quote">"</div>
@@ -437,7 +437,7 @@ export default function About() {
               </a>
               <span className="about-cta__contact-chip">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Madhapur, Kavuri Hills, Hyderabad
+                Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana
               </span>
             </div>
             <div className="about-cta__actions">

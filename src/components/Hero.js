@@ -17,41 +17,51 @@ const SLIDES = [
     id: 1,
     tag: 'Premium Apartments',
     title: 'Find Your',
-    highlight: 'Dream Apartment',
-    sub: "2, 3 & 4 BHK RERA-verified apartments across Madhapur, Gachibowli, Kokapet and Tellapur — gated, amenity-rich and ready to move.",
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=85&auto=format&fit=crop',
+    highlight: 'Dream Properties',
+    sub: "2, 3 & 4 BHK RERA-verified apartments across Kokapet, Gachibowli, Tellapur and Narsingi — gated, amenity-rich and ready to move.",
+    image: '/Apartment1.jpeg',
     accent: '#C9A84C',
     dir: 'left',
   },
   {
     id: 2,
-    tag: 'Luxury Villas',
+    tag: 'Luxury Apartments',
     title: 'Live in a',
-    highlight: 'Private Villa',
-    sub: 'Independent villas in premium gated communities — Vastu-compliant designs, private pools, clubhouse and 24/7 security.',
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85&auto=format&fit=crop',
+    highlight: 'Premium Apartment',
+    sub: '3 & 4 BHK luxury apartments with skyline views, clubhouse, pool and concierge — handpicked in Hyderabad\'s top corridors.',
+    image: '/Apartment2.jpeg',
     accent: '#E4C47A',
     dir: 'right',
   },
   {
     id: 3,
-    tag: 'Open Plots & Farmland',
-    title: 'Invest in',
-    highlight: 'Prime Land',
-    sub: 'HMDA & DTCP-approved plots and farmland with clear titles — high-appreciation belts around Shamshabad, Adibatla and Yadadri.',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=85&auto=format&fit=crop',
+    tag: 'Luxury Villas',
+    title: 'Live in a',
+    highlight: 'Private Villa',
+    sub: 'Independent villas in premium gated communities — Vastu-compliant designs, private pools, clubhouse and 24/7 security.',
+    image: '/Villas.jpeg',
     accent: '#C9A84C',
     dir: 'up',
   },
   {
     id: 4,
+    tag: 'Open Plots & Farmland',
+    title: 'Invest in',
+    highlight: 'Prime Land',
+    sub: 'HMDA & DTCP-approved plots and farmland with clear titles — high-appreciation belts around Shamshabad, Adibatla and Yadadri.',
+    image: '/Plots.jpeg',
+    accent: '#E4C47A',
+    dir: 'left',
+  },
+  {
+    id: 5,
     tag: 'Commercial Spaces',
     title: 'Grow Your',
     highlight: 'Business',
-    sub: 'Office floors, retail outlets and pre-leased commercial assets across Hyderabad\'s IT corridors — stable rental yields.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=85&auto=format&fit=crop',
-    accent: '#E4C47A',
-    dir: 'left',
+    sub: "Office floors, retail outlets and pre-leased commercial assets across Hyderabad's IT corridors — stable rental yields.",
+    image: '/Commercial.jpeg',
+    accent: '#C9A84C',
+    dir: 'right',
   },
 ];
 
@@ -300,20 +310,15 @@ export default function Hero({ cmsHero }) {
             <span>{useCms ? "Hyderabad's #1 Real Estate Platform" : slide.tag}</span>
           </div>
 
-          {/* Title */}
+          {/* Title — always render slide title + highlight so the gold word
+              appears on the very first paint (CMS only overrides image/subtitle) */}
           <h1 className="hero__title" key={`title-${current}`}>
-            {useCms ? (
-              <>{cmsHero.title}</>
-            ) : (
-              <>
-                <span className="hero__title-line1">{slide.title}</span>
-                <br />
-                <span className="hero__title-highlight" style={{ '--accent': slide.accent }}>
-                  {slide.highlight}
-                  <span className="hero__title-underline" />
-                </span>
-              </>
-            )}
+            <span className="hero__title-line1">{slide.title}</span>
+            <br />
+            <span className="hero__title-highlight" style={{ '--accent': slide.accent }}>
+              {slide.highlight}
+              <span className="hero__title-underline" />
+            </span>
           </h1>
 
           {/* Typewriter sub (only when no CMS) */}
