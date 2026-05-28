@@ -174,9 +174,10 @@ export default function PropertyDetails() {
           setProperty(data.property);
           const cur = data.property;
 
-          // Pull a wide candidate pool of the same subtype/type — filter strictly client-side.
+          // Pull a wide candidate pool of the SAME category (subtype), then rank
+          // by location: same locality → nearby locality → same city → others.
           const q = new URLSearchParams();
-          q.set('limit', '80');
+          q.set('limit', '100');
           if (cur.subtype) q.set('subtype', cur.subtype);
           else if (cur.type) q.set('type', cur.type);
 
@@ -186,60 +187,50 @@ export default function PropertyDetails() {
               if (!d.success) return;
 
               const norm = v => (v || '').toString().toLowerCase().trim().replace(/[\s\-_/]+/g, ' ');
-              const curBadge    = norm(cur.badge);
-              const curStatus   = norm(cur.status);
               const curLocality = norm(cur.location?.locality);
               const curCity     = norm(cur.location?.city);
               const curSubtype  = norm(cur.subtype);
               const curType     = norm(cur.type);
-              const curFeatured = !!cur.isFeatured || !!cur.featured;
+              const curBadge    = norm(cur.badge);
 
-              // Category tags carried in the `badge` field
-              const isReady   = /ready/.test(curBadge) || /ready/.test(curStatus);
-              const isUC      = /under construction|under-construction|underconstruction/.test(curBadge)
-                              || /under construction|under-construction|underconstruction/.test(curStatus);
-              const isPremium = /premium/.test(curBadge);
-              const isLuxury  = /luxury/.test(curBadge);
-              const isNew     = /new launch|new-launch|newlaunch|new\b/.test(curBadge);
-
-              const hasCategoryGate = isReady || isUC || isPremium || isLuxury || isNew || curFeatured;
-
-              const matchesCategory = p => {
-                const pb = norm(p.badge);
-                const ps = norm(p.status);
-                const pFeatured = !!p.isFeatured || !!p.featured;
-
-                if (isReady   && !/ready/.test(pb) && !/ready/.test(ps)) return false;
-                if (isUC      && !/under construction|under-construction|underconstruction/.test(pb)
-                              && !/under construction|under-construction|underconstruction/.test(ps)) return false;
-                if (isPremium && !/premium/.test(pb)) return false;
-                if (isLuxury  && !/luxury/.test(pb))  return false;
-                if (isNew     && !/new launch|new-launch|newlaunch|new\b/.test(pb)) return false;
-                if (curFeatured && !pFeatured) return false;
-                return true;
+              // Nearby-locality clusters across Hyderabad corridors. If two
+              // localities sit in the same cluster they count as "nearby".
+              const NEARBY = [
+                ['madhapur','gachibowli','kondapur','hitec city','hitech city','jubilee hills','kokapet','financial district','nanakramguda','manikonda','raidurg'],
+                ['kokapet','narsingi','financial district','gachibowli','tellapur','osman nagar','kollur','manchirevula','puppalaguda'],
+                ['tellapur','narsingi','nallagandla','osman nagar','kollur','beeramguda','patancheru'],
+                ['miyapur','bachupally','nizampet','kukatpally','pragathi nagar','bowrampet','tellapur'],
+                ['kompally','medchal','suchitra','alwal','dundigal','kandlakoya','bowrampet','quthbullapur'],
+                ['shamshabad','rajendranagar','maheshwaram','kothur','tukkuguda','adibatla','shadnagar','srisailam highway'],
+                ['adibatla','tukkuguda','maheshwaram','pedda amberpet','ibrahimpatnam'],
+                ['uppal','pocharam','ghatkesar','nagole','lb nagar','pedda amberpet','narapally'],
+                ['shamirpet','genome valley','maisammaguda','medchal','keesara'],
+              ];
+              const isNearby = (a, b) => {
+                if (!a || !b || a === b) return false;
+                return NEARBY.some(group => group.includes(a) && group.includes(b));
               };
 
-              // Hard filter: same subtype/type AND same active category tag
+              // Pool: same category (subtype if present, else type). No badge gate —
+              // so we always have results to rank by location.
               const pool = (d.properties || []).filter(p => {
                 if (p._id === cur._id) return false;
                 const s = norm(p.subtype);
                 const t = norm(p.type);
-                const typeMatch = curSubtype ? s === curSubtype : t === curType;
-                if (!typeMatch) return false;
-                if (hasCategoryGate && !matchesCategory(p)) return false;
-                return true;
+                return curSubtype ? s === curSubtype : t === curType;
               });
 
-              // Rank by locality → city → exact badge string equality (light boost)
+              // Score: same locality (top) → nearby locality → same city → badge bonus.
               const scored = pool
                 .map(p => {
                   let score = 0;
                   const l = norm(p.location?.locality);
                   const c = norm(p.location?.city);
                   const b = norm(p.badge);
-                  if (curLocality && l === curLocality) score += 80;
-                  if (curCity     && c === curCity)     score += 30;
-                  if (curBadge    && b === curBadge)    score += 15;
+                  if (curLocality && l === curLocality)   score += 100; // exact same area
+                  else if (isNearby(curLocality, l))      score += 60;  // adjacent area
+                  if (curCity && c === curCity)           score += 30;  // same city
+                  if (curBadge && b === curBadge)         score += 12;  // same tier (soft)
                   return { p, score };
                 })
                 .sort((a, b) => b.score - a.score)

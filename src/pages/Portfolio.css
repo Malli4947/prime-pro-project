@@ -137,7 +137,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 12%;
+  object-position: center top;
   display: block;
 }
 
@@ -899,6 +899,14 @@
     grid-template-columns: 1fr;
     gap: 36px;
   }
+  /* Center the whole left column on mobile — the inline-flex badge then
+     centers cleanly without margin/transform hacks. */
+  .pf-hero__left {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .pf-name {
     font-size: clamp(44px, 11vw, 80px);
     letter-spacing: -1px;
@@ -906,8 +914,8 @@
   }
   .pf-hero__badge {
     display: inline-flex;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    margin: 0 auto 22px;
+    transform: none;
     white-space: nowrap;
     max-width: calc(100vw - 32px);
     overflow: hidden;

@@ -11,15 +11,13 @@
    so place more specific ones (e.g. "nri") above broader ones ("about").
    ═══════════════════════════════════════════════════════════════ */
 
+/* First four are shown on the welcome screen. Schedule visit & Locations
+   are intentionally NOT here — they only surface when the user asks. */
 export const QUICK_SUGGESTIONS = [
   'Contact details',
   'Office address',
   'Working hours',
   'Property categories',
-  'Founder portfolio',
-  'NRI services',
-  'Zero brokerage',
-  'Schedule a visit',
 ];
 
 export const WELCOME = {
@@ -149,7 +147,7 @@ const INTENTS = [
       { type: 'tel',  label: '📞 Talk to Advisor',  href: `tel:${PHONE}` },
       { type: 'wa',   label: '💬 WhatsApp',          href: WA_LINK },
     ],
-    suggest: ['Apartments in Kokapet', 'Ready to move', 'Home loan help'],
+    suggest: ['Apartments in Kokapet', 'Schedule visit', 'Home loan help'],
   },
 
   /* ── Villas — drill-down ────────────────────────── */
@@ -258,7 +256,7 @@ const INTENTS = [
       { type: 'page', label: 'Plots',             href: '/properties?subtype=Plot' },
       { type: 'page', label: 'Commercial',        href: '/properties?type=Commercial' },
     ],
-    suggest: ['Featured projects', 'New launches', 'Ready to move'],
+    suggest: ['Featured projects', 'Locations', 'Schedule visit'],
   },
 
   /* ── Featured / Premium / Luxury / New Launch ────── */
@@ -275,22 +273,7 @@ const INTENTS = [
       { type: 'page', label: '👑 Luxury',       href: '/properties?badge=Luxury' },
       { type: 'page', label: '🚀 New Launches', href: '/properties?badge=New+Launch' },
     ],
-    suggest: ['Browse all', 'Ready to move'],
-  },
-
-  /* ── Ready to Move / Under Construction ──────────── */
-  {
-    name: 'status',
-    patterns: [
-      /\b(ready\s*to\s*move|under\s*construction|possession|move\s*in)\b/i,
-    ],
-    reply:
-      "Sort properties by completion stage:\n\n✅ **Ready to Move** — get keys immediately, perfect for end-users\n🏗️ **Under Construction** — best pricing, longer possession",
-    links: [
-      { type: 'page', label: 'Ready to Move →',      href: '/properties?subtype=Ready+to+Move' },
-      { type: 'page', label: 'Under Construction →', href: '/properties?subtype=Under+Construction' },
-    ],
-    suggest: ['Schedule visit', 'Home loan help'],
+    suggest: ['Property categories', 'Schedule visit'],
   },
 
   /* ── Locations / Areas / Localities ──────────────── */

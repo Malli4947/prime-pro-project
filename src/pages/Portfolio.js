@@ -238,7 +238,7 @@ export default function Portfolio() {
           <div className="pf-hero__right">
             <div className="pf-portrait-wrap">
               <img
-                src="/Prashanth.jpeg"
+                src="/founder-portrait.png"
                 alt={`${FOUNDER.firstName} ${FOUNDER.lastName}`}
                 className="pf-portrait"
               />
