@@ -18,8 +18,8 @@ const SLIDES = [
     tag: 'Premium Apartments',
     title: 'Find Your',
     highlight: 'Dream Home',
-    sub: 'RERA-verified 2, 3 & 4 BHK apartments across Kokapet, Gachibowli, Tellapur and Narsingi.',
-    image: '/Apartment1.jpeg',
+    sub: 'Looking for a RERA-verified 2, 3 or 4 BHK in Kokapet, Gachibowli, Tellapur or Narsingi?',
+    image: 'https://cbuildfiles.blob.core.windows.net/ventura-estate-developers/propertyimages/2024-12-05/a4a69c1d-3dd5-475f-8116-245bd4ecc184c7.jpg',
     accent: '#C9A84C',
     to: '/properties?subtype=Apartment',
   },
@@ -29,7 +29,7 @@ const SLIDES = [
     tag: 'Luxury Villas',
     title: 'Live in a',
     highlight: 'Private Villa',
-    sub: 'Independent gated villas — Vastu-compliant, private pools, clubhouse and 24/7 security.',
+    sub: 'Looking for a private gated villa with Vastu-compliant design, pool, clubhouse and 24/7 security?',
     image: '/Villas.jpeg',
     accent: '#E4C47A',
     to: '/properties?subtype=Villa',
@@ -40,7 +40,7 @@ const SLIDES = [
     tag: 'Open Plots & Layouts',
     title: 'Invest in',
     highlight: 'Prime Land',
-    sub: 'HMDA & DTCP-approved open plots with clear titles in high-appreciation belts.',
+    sub: 'Looking for HMDA & DTCP-approved open plots with clear titles in high-appreciation belts?',
     image: '/Plots.jpeg',
     accent: '#C9A84C',
     to: '/properties?subtype=Plot',
@@ -51,7 +51,7 @@ const SLIDES = [
     tag: 'Commercial Spaces',
     title: 'Grow Your',
     highlight: 'Business',
-    sub: "Office floors, retail outlets and pre-leased assets across Hyderabad's IT corridors.",
+    sub: "Looking for office floors, retail outlets or pre-leased assets in Hyderabad's IT corridors?",
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2880&q=90&auto=format&fit=crop',
     accent: '#E4C47A',
     to: '/properties?type=Commercial',
@@ -62,14 +62,14 @@ const SLIDES = [
     tag: 'Concept Farm Lands',
     title: 'Own a Piece of',
     highlight: 'Green Earth',
-    sub: 'Gated farm-land communities with managed agro-living and strong long-term appreciation.',
+    sub: 'Looking for a gated farm-land community with managed agro-living and strong appreciation?',
     image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=2880&q=90&auto=format&fit=crop',
     accent: '#C9A84C',
     to: '/properties?subtype=Farm+Land',
   },
 ];
 
-const INTERVAL = 6000;
+const INTERVAL = 10000;
 const FALLBACK = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=2880&q=90&auto=format&fit=crop';
 
 export default function Hero({ cmsHero }) {

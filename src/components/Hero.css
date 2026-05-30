@@ -90,6 +90,9 @@
   flex: 1;
   display: flex;
   align-items: center;
+  /* Keep the content (tag/title) clear of the fixed navbar logo on shorter
+     laptop screens — pushes the vertically-centred block below the header. */
+  padding-top: clamp(72px, 11vh, 120px);
 }
 
 /* ── Content ── */
@@ -133,25 +136,16 @@
 }
 .hero__title-1 { display: block; }
 .hero__title-2 {
-  display: block;
+  display: table;   /* shrink-to-fit the text so the underline matches its width */
   color: var(--accent, #C9A84C);
   font-style: italic;
   position: relative;
-  background: linear-gradient(100deg, var(--accent, #C9A84C), #fff7e0, var(--accent, #C9A84C));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: heroShine 5s linear infinite;
-}
-@keyframes heroShine {
-  to { background-position: 200% center; }
 }
 .hero__title-2::after {
   content: '';
   position: absolute; left: 0; bottom: -8px;
-  width: 84px; height: 3px;
-  background: linear-gradient(90deg, var(--accent, #C9A84C), transparent);
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--accent, #C9A84C) 0%, var(--accent, #C9A84C) 78%, transparent 100%);
   border-radius: 2px;
 }
 
@@ -370,7 +364,7 @@
     padding: 7px 14px; margin-bottom: 16px;
   }
   .hero__title { font-size: clamp(34px, 11vw, 56px); letter-spacing: -1px; }
-  .hero__title-2::after { bottom: -6px; width: 60px; height: 2.5px; }
+  .hero__title-2::after { bottom: -6px; width: 100%; height: 2.5px; }
   .hero__sub { font-size: 14px; margin: 16px 0 24px; }
   .hero__cta { gap: 10px; }
   .hero__btn { flex: 1; justify-content: center; padding: 13px 16px; font-size: 13.5px; }
@@ -395,5 +389,5 @@
 @media (prefers-reduced-motion: reduce) {
   .hero__content, .hero__strip-wrap { animation: none; }
   .hero__slide { transition: opacity 0.3s ease; }
-  .hero__tag-dot, .hero__orb, .hero__title-2, .hero__btn--gold { animation: none; }
+  .hero__tag-dot, .hero__orb, .hero__btn--gold { animation: none; }
 }

@@ -443,6 +443,9 @@ export default function PropertyDetails() {
     floors, totalUnits, pricePerSft, facing, projectStatus, brochureLink,
   } = property;
 
+  // Villas are independent units — "Floors"/"Blocks" don't apply, so hide them.
+  const isVilla = (subtype || '').toLowerCase().includes('villa');
+
   const galleryImgs = toValidImgArray(images, image);
   const hasGallery = galleryImgs.length > 0;
   const safeActiveImg = Math.min(activeImg, Math.max(0, galleryImgs.length - 1));
@@ -595,7 +598,7 @@ export default function PropertyDetails() {
                   <div><b>{possession}</b><p>Possession</p></div>
                 </div>
               )}
-              {floors > 0 && (
+              {floors > 0 && !isVilla && (
                 <div className="pd-spec">
                   <span className="pd-spec__icon">🏢</span>
                   <div><b>{floors}</b><p>Floors</p></div>
@@ -667,7 +670,7 @@ export default function PropertyDetails() {
                 ['Project Status', projectStatus],
                 ['Unit Type',      unitType],
                 ['Total Area',     displayArea],
-                ['Floors',         floors > 0 ? String(floors) : null],
+                ['Floors',         (floors > 0 && !isVilla) ? String(floors) : null],
                 ['Total Units',    totalUnits > 0 ? String(totalUnits) : null],
                 ['Facing',         facing],
                 ['Price Per Sft',  pricePerSft > 0 ? `₹${Number(pricePerSft).toLocaleString('en-IN')}` : null],

@@ -149,9 +149,6 @@ function AnimatedBackground({
         </>
       )}
 
-      {/* Scan line */}
-      <div className="anim-bg__scan" />
-
       {/* Corner accents */}
       <div className="anim-bg__corner anim-bg__corner--tl" />
       <div className="anim-bg__corner anim-bg__corner--br" />

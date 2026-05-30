@@ -74,20 +74,6 @@
   background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
 }
 
-/* ── Scan line ──────────────────────────────────────────────── */
-.anim-bg__scan {
-  position: absolute;
-  left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
-  animation: scanLine 8s linear infinite;
-  opacity: 0.5;
-}
-@keyframes scanLine {
-  0%   { top: -2px; }
-  100% { top: 100%; }
-}
-
 /* ── Corner accents ─────────────────────────────────────────── */
 .anim-bg__corner {
   position: absolute;
@@ -114,9 +100,6 @@
 }
 
 /* ── Light variant overrides ────────────────────────────────── */
-.anim-bg--light .anim-bg__scan {
-  background: linear-gradient(90deg, transparent, rgba(12,24,37,0.15), transparent);
-}
 .anim-bg--light .anim-bg__corner--tl,
 .anim-bg--light .anim-bg__corner--br {
   border-color: rgba(201,168,76,0.4);
