@@ -124,10 +124,15 @@
   position: relative;
   width: 100%;
   max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
   /* Drop the portrait down so its top edge lines up with the NAME
      (Prashanth Reddy), not the green status badge above it. */
   margin-top: 56px;
-  aspect-ratio: 4 / 5.4;
+  /* Frame height controls where the photo crops at the bottom — tuned so the
+     image cuts around the chest (3rd–4th shirt button). Increase this number
+     to show more of the body, decrease it to crop higher. */
+  aspect-ratio: 4 / 4.7;
   border-radius: 200px 200px 24px 24px;
   overflow: hidden;
   background: linear-gradient(180deg, #f3efe6 0%, #e6dec9 100%);

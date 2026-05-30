@@ -69,13 +69,12 @@ const SLIDES = [
   },
 ];
 
-const INTERVAL = 10000;
+const INTERVAL = 6000;
 const FALLBACK = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=2880&q=90&auto=format&fit=crop';
 
 export default function Hero({ cmsHero }) {
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [paused, setPaused] = useState(false);
   const rafRef = useRef(null);
   const startRef = useRef(null);
 
@@ -99,8 +98,8 @@ export default function Hero({ cmsHero }) {
     startRef.current = performance.now();
   }, [total]);
 
+  // Auto-advance continuously — never pauses on hover/in-out.
   useEffect(() => {
-    if (paused) { cancelAnimationFrame(rafRef.current); return; }
     startRef.current = performance.now();
     const tick = (now) => {
       const pct = Math.min(((now - startRef.current) / INTERVAL) * 100, 100);
@@ -114,14 +113,10 @@ export default function Hero({ cmsHero }) {
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [paused, total]);
+  }, [total]);
 
   return (
-    <section
-      className="hero"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <section className="hero">{/* auto-advances continuously — no pause on hover */}
       {/* ── Background slides ── */}
       <div className="hero__bg">
         {slides.map((s, i) => (
@@ -191,6 +186,14 @@ export default function Hero({ cmsHero }) {
             <span className="hero__trust-item"><b>35+</b> Happy Families</span>
             <span className="hero__trust-sep" />
             <span className="hero__trust-item"><b>4.9★</b> Rated</span>
+          </div>
+
+          {/* Trust badges — fills the gap (esp. on mobile) + adds credibility */}
+          <div className="hero__badges">
+            <span className="hero__badge">🛡️ RERA Verified</span>
+            <span className="hero__badge">💰 Zero Brokerage</span>
+            <span className="hero__badge">⚡ 2-Hr Response</span>
+            <span className="hero__badge">🏆 Award Winning</span>
           </div>
         </div>
       </div>
