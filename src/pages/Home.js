@@ -111,7 +111,7 @@ const TESTIMONIALS = [
 
 const STATS = [
   { icon:'🏘️', value:'200+',  label:'Properties'   },
-  { icon:'🤝', value:'35+',   label:'Clients'       },
+  { icon:'🤝', value:'100+',   label:'Clients'       },
   { icon:'🏙️', value:'5',     label:'Major Cities'  },
   { icon:'⭐', value:'4.9★',  label:'Rating'        },
 ];
@@ -244,120 +244,10 @@ export default function Home() {
   const yearsExp     = about.yearsExperience || 5;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
-  const cmsBanners   = (Array.isArray(cmsData?.banners) ? cmsData.banners : []).filter(b => b.isActive);
-
-  const { active: bnrActive, prog: bnrProg, next: bnrNext, prev: bnrPrev, goTo: bnrGoTo, setPaused: bnrSetPaused }
-    = useBannerSlider(Math.max(cmsBanners.length, 1));
 
   return (
     <div className="home">
       <Hero cmsHero={cmsData?.hero} />
-
-      {/* ── CMS BANNERS carousel ── */}
-      {(loadingCms || cmsBanners.length > 0) && (
-        <section className="home-banners">
-          <div className="home-banners__bg-deco" aria-hidden="true" />
-          <div className="container">
-            <div className="home-banners__header">
-              <div>
-                <span className="sec-tag">Exclusive Offers</span>
-                <h2 className="sec-title">Special <span className="hi">Highlights</span></h2>
-                <p className="sec-sub">Handpicked deals and featured projects — updated live from our team.</p>
-              </div>
-              {!loadingCms && cmsBanners.length > 1 && (
-                <div className="bnr-counter">
-                  <span className="bnr-counter__cur">{String(bnrActive + 1).padStart(2,'0')}</span>
-                  <span className="bnr-counter__sep">/</span>
-                  <span className="bnr-counter__tot">{String(cmsBanners.length).padStart(2,'0')}</span>
-                </div>
-              )}
-            </div>
-
-            {loadingCms ? (
-              <div className="bnr-skeleton">
-                <div className="bnr-skeleton__img" style={shimmerStyle} />
-                <div className="bnr-skeleton__body">
-                  <div style={{ height:14, width:'18%', borderRadius:50, ...shimmerStyle }} />
-                  <div style={{ height:36, width:'55%', borderRadius:8,  ...shimmerStyle }} />
-                  <div style={{ height:3,  width:'80px',borderRadius:4,  ...shimmerStyle }} />
-                  <div style={{ height:14, width:'70%', borderRadius:6,  ...shimmerStyle }} />
-                  <div style={{ height:14, width:'50%', borderRadius:6,  ...shimmerStyle }} />
-                </div>
-              </div>
-            ) : (
-              <div
-                className="bnr-slider"
-                onMouseEnter={() => bnrSetPaused(true)}
-                onMouseLeave={() => bnrSetPaused(false)}
-              >
-                <div className="bnr-track">
-                  {cmsBanners.map((banner, i) => {
-                    const isActive = i === bnrActive;
-                    const isPrev   = cmsBanners.length > 1 && i === (bnrActive - 1 + cmsBanners.length) % cmsBanners.length;
-                    return (
-                      <a
-                        key={banner._id || i}
-                        href={banner.link || '#'}
-                        className={`bnr-slide${isActive ? ' bnr-slide--active' : ''}${isPrev ? ' bnr-slide--prev' : ''}`}
-                        onClick={e => { if (!banner.link) e.preventDefault(); }}
-                        aria-hidden={!isActive}
-                        tabIndex={isActive ? 0 : -1}
-                      >
-                        <img
-                          src={getBannerImg(banner.image)}
-                          alt={banner.title || 'Banner'}
-                          loading={i === 0 ? 'eager' : 'lazy'}
-                          className="bnr-slide__img"
-                          onError={e => { e.target.onerror = null; e.target.src = FALLBACK_IMG; }}
-                        />
-                        <div className="bnr-slide__overlay" />
-                        <div className="bnr-slide__glow" />
-                        <div className="bnr-slide__corner bnr-slide__corner--tr" />
-                        <div className="bnr-slide__corner bnr-slide__corner--bl" />
-                        <div className="bnr-slide__num">{String(i + 1).padStart(2,'0')}</div>
-                        <div className="bnr-slide__body">
-                          {banner.tag      && <span className="bnr-slide__tag">{banner.tag}</span>}
-                          {banner.title    && <h3   className="bnr-slide__title">{banner.title}</h3>}
-                          <div className="bnr-slide__rule" />
-                          {banner.subtitle && <p    className="bnr-slide__sub">{banner.subtitle}</p>}
-                          {banner.cta      && (
-                            <span className="bnr-slide__cta">
-                              {banner.cta}
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                            </span>
-                          )}
-                        </div>
-                        {isActive && cmsBanners.length > 1 && (
-                          <div className="bnr-slide__progress">
-                            <div className="bnr-slide__progress-bar" style={{ width:`${bnrProg}%` }} />
-                          </div>
-                        )}
-                      </a>
-                    );
-                  })}
-                </div>
-
-                {cmsBanners.length > 1 && (
-                  <>
-                    <button className="bnr-arrow bnr-arrow--prev" onClick={bnrPrev} aria-label="Previous banner">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                    </button>
-                    <button className="bnr-arrow bnr-arrow--next" onClick={bnrNext} aria-label="Next banner">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
-                    <div className="bnr-dots">
-                      {cmsBanners.map((_, i) => (
-                        <button key={i} className={`bnr-dot${i === bnrActive ? ' bnr-dot--active' : ''}`}
-                          onClick={() => bnrGoTo(i)} aria-label={`Go to banner ${i + 1}`} />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
 
       {/* ── CATEGORIES ── */}
       <section className="section home-cats" ref={catsRef}>
@@ -514,7 +404,7 @@ export default function Home() {
           <div className={`home-section-header${trendVis ? ' anim-fade-up' : ''}`}>
             <div>
               <span className="sec-tag">Latest Listings</span>
-              <h2 className="sec-title">Trending <span className="hi">Properties</span></h2>
+              <h2 className="sec-title"> <span className="hi">Properties</span></h2>
             </div>
             <Link to="/properties" className="btn btn-outline">View All →</Link>
           </div>

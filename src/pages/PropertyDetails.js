@@ -122,13 +122,13 @@ export default function PropertyDetails() {
   const [isPaused, setIsPaused] = useState(false);
   const autoPlayRef = useRef(null);
   const [brochureModal, setBrochureModal] = useState(false);
-  const [brochureForm, setBrochureForm] = useState({ name: '', phone: '', email: '', message: '', scheduleDate: '' });
+  const [brochureForm, setBrochureForm] = useState({ name: '', phone: '', altPhone: '', email: '', message: '', scheduleDate: '' });
   const [brochureSubmitting, setBrochureSubmitting] = useState(false);
   const [brochureError, setBrochureError] = useState('');
 
   // Directions form gate — collect lead before sending to Google Maps
   const [directionsModal, setDirectionsModal] = useState(false);
-  const [directionsForm, setDirectionsForm] = useState({ name: '', phone: '', email: '' });
+  const [directionsForm, setDirectionsForm] = useState({ name: '', phone: '', altPhone: '', email: '' });
   const [directionsSubmitting, setDirectionsSubmitting] = useState(false);
   const [directionsError, setDirectionsError] = useState('');
 
@@ -141,7 +141,7 @@ export default function PropertyDetails() {
   const [relRef,   relVis]   = useReveal();
 
   const [form, setForm] = useState({
-    name: '', phone: '', email: '', message: '', scheduleDate: '',
+    name: '', phone: '', altPhone: '', email: '', message: '', scheduleDate: '',
   });
 
   useEffect(() => {
@@ -263,14 +263,17 @@ export default function PropertyDetails() {
       const headers = {'Content-Type': 'application/json'};
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
+      const altPhone = form.altPhone.replace(/\D/g, '').slice(-10);
+      const baseMsg =
+        form.message.trim() ||
+        `I'm interested in ${property.title}. Please share more details.`;
       const body = {
         propertyId: property._id,
         name: form.name.trim(),
         phone: form.phone.replace(/\D/, '').slice(-10),
+        altPhone: altPhone || undefined,
         email: form.email.trim().toLowerCase() || undefined,
-        message:
-          form.message.trim() ||
-          `I'm interested in ${property.title}. Please share more details.`,
+        message: altPhone ? `${baseMsg}\nAlternative number: ${altPhone}` : baseMsg,
         type: 'Site Visit',
         subject: `Site Visit — ${property.title}`,
       };
@@ -284,7 +287,7 @@ export default function PropertyDetails() {
       const data = await res.json();
       if (data.success) {
         setSubmitted(true);
-        setForm({name: '', phone: '', email: '', message: '', scheduleDate: ''});
+        setForm({name: '', phone: '', altPhone: '', email: '', message: '', scheduleDate: ''});
         setTimeout(() => setSubmitted(false), 6000);
       } else {
         setEnquiryError(data.message || 'Submission failed. Please try again.');
@@ -312,14 +315,17 @@ export default function PropertyDetails() {
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
+      const altPhone = brochureForm.altPhone.replace(/\D/g, '').slice(-10);
+      const baseMsg =
+        brochureForm.message.trim() ||
+        `Brochure download request for ${property.title}`;
       const body = {
         propertyId: property._id,
         name: brochureForm.name.trim(),
         phone: brochureForm.phone.replace(/\D/g, '').slice(-10),
+        altPhone: altPhone || undefined,
         email: brochureForm.email.trim().toLowerCase(),
-        message:
-          brochureForm.message.trim() ||
-          `Brochure download request for ${property.title}`,
+        message: altPhone ? `${baseMsg}\nAlternative number: ${altPhone}` : baseMsg,
         type: 'Site Visit',
         subject: `Site Visit — ${property.title}`,
       };
@@ -355,7 +361,7 @@ export default function PropertyDetails() {
 
     setBrochureSubmitting(false);
     setBrochureModal(false);
-    setBrochureForm({ name: '', phone: '', email: '', message: '', scheduleDate: '' });
+    setBrochureForm({ name: '', phone: '', altPhone: '', email: '', message: '', scheduleDate: '' });
   };
 
   // ── Directions handler: capture lead, then open Google Maps in a new tab ────
@@ -375,12 +381,15 @@ export default function PropertyDetails() {
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
+      const altPhone = directionsForm.altPhone.replace(/\D/g, '').slice(-10);
+      const dirMsg = `Requested directions to ${property.title} at ${property.location?.address || property.location?.locality || 'Hyderabad'}`;
       const body = {
         propertyId: property._id,
         name: directionsForm.name.trim(),
         phone: directionsForm.phone.replace(/\D/g, '').slice(-10),
+        altPhone: altPhone || undefined,
         email: directionsForm.email.trim().toLowerCase(),
-        message: `Requested directions to ${property.title} at ${property.location?.address || property.location?.locality || 'Hyderabad'}`,
+        message: altPhone ? `${dirMsg}\nAlternative number: ${altPhone}` : dirMsg,
         type: 'Site Visit',
         subject: `Directions Request — ${property.title}`,
       };
@@ -409,7 +418,7 @@ export default function PropertyDetails() {
 
     setDirectionsSubmitting(false);
     setDirectionsModal(false);
-    setDirectionsForm({ name: '', phone: '', email: '' });
+    setDirectionsForm({ name: '', phone: '', altPhone: '', email: '' });
   };
 
   if (loading)
@@ -639,8 +648,8 @@ export default function PropertyDetails() {
             </div>
           )}
 
-          {/* ── Download Brochure Banner — only when brochureLink exists ── */}
-          {brochureLink && brochureLink.trim() !== '' && (
+          {/* ── Download Brochure Banner — shown for all properties ── */}
+          {(
             <div className={`pd-brochure-banner${mounted ? ' anim-fade-up' : ''}`}>
               <div className="pd-brochure-banner__left">
                 <div className="pd-brochure-banner__icon">
@@ -818,6 +827,15 @@ export default function PropertyDetails() {
                   />
                 </div>
                 <div className="form-field">
+                  <label className="form-label">Alternative Number *</label>
+                  <input
+                    type="tel" placeholder="Alternative number" maxLength={10}
+                    value={form.altPhone}
+                    onChange={e => setForm(f => ({...f, altPhone: e.target.value.replace(/\D/, '').slice(0, 10)}))}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-field">
                   <label className="form-label">Email Address</label>
                   <input
                     type="email" placeholder="Enter email"
@@ -860,8 +878,8 @@ export default function PropertyDetails() {
             )}
           </div>
 
-          {/* ── Download Brochure button — only when brochureLink exists ── */}
-          {brochureLink && (
+          {/* ── Download Brochure button — shown for all properties ── */}
+          {(
             <div className={`pd-brochure-wrap${mounted ? ' anim-fade-up d-4' : ''}`}>
               <button
                 className="pd-brochure-btn"
@@ -1033,6 +1051,16 @@ export default function PropertyDetails() {
               </div>
 
               <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Alternative Number *</label>
+                <input
+                  type="tel" placeholder="Alternative number" maxLength={10}
+                  value={brochureForm.altPhone}
+                  onChange={e => setBrochureForm(f => ({...f, altPhone: e.target.value.replace(/\D/g,'').slice(0,10)}))}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-field" style={{marginBottom:14}}>
                 <label className="form-label">Email Address *</label>
                 <input
                   type="email" placeholder="Enter your email" required
@@ -1167,6 +1195,16 @@ export default function PropertyDetails() {
                   type="tel" placeholder="10-digit mobile number" maxLength={10}
                   value={directionsForm.phone}
                   onChange={e => setDirectionsForm(f => ({...f, phone: e.target.value.replace(/\D/g,'').slice(0,10)}))}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-field" style={{marginBottom:14}}>
+                <label className="form-label">Alternative Number *</label>
+                <input
+                  type="tel" placeholder="Alternative number " maxLength={10}
+                  value={directionsForm.altPhone}
+                  onChange={e => setDirectionsForm(f => ({...f, altPhone: e.target.value.replace(/\D/g,'').slice(0,10)}))}
                   className="form-input"
                 />
               </div>

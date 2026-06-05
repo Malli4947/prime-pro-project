@@ -76,7 +76,7 @@ export default function Contact() {
   const [openFaq,   setOpenFaq] = useState(null);
 
   const [form, setForm] = useState({
-    name: '', email: '', phone: '', subject: '', message: '',
+    name: '', email: '', phone: '', altPhone: '', subject: '', message: '',
     type: 'General Enquiry', scheduleDate: '',
   });
   const [submitted,  setSubmitted]  = useState(false);
@@ -117,11 +117,13 @@ export default function Contact() {
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
+      const altPhone = form.altPhone.replace(/\D/g, '').slice(-10);
       const body = {
         name:    form.name.trim(),
         email:   form.email.trim().toLowerCase(),
         phone:   form.phone.replace(/\s|\+91|-/g, '').slice(-10),
-        message: form.message.trim(),
+        altPhone: altPhone || undefined,
+        message: altPhone ? `${form.message.trim()}\nAlternative number: ${altPhone}` : form.message.trim(),
         subject: form.subject.trim() || form.type,
         type:    form.type,
       };
@@ -139,7 +141,7 @@ export default function Contact() {
 
       if (data.success) {
         setSubmitted(true);
-        setForm({ name:'', email:'', phone:'', subject:'', message:'', type:'General Enquiry', scheduleDate:'' });
+        setForm({ name:'', email:'', phone:'', altPhone:'', subject:'', message:'', type:'General Enquiry', scheduleDate:'' });
         // Auto-reset after 7 seconds
         setTimeout(() => setSubmitted(false), 7000);
       } else {
@@ -272,6 +274,13 @@ export default function Contact() {
                         onChange={e => setField('phone', e.target.value.replace(/\D/,'').slice(0,10))}
                         className={`form-input${errors.phone ? ' form-input--error' : ''}`} />
                       {errors.phone && <span className="form-error">{errors.phone}</span>}
+                    </div>
+                    <div className="form-field">
+                      <label className="form-label">Alternative Number *</label>
+                      <input type="tel" placeholder="Alternative number" maxLength={10}
+                        value={form.altPhone}
+                        onChange={e => setField('altPhone', e.target.value.replace(/\D/,'').slice(0,10))}
+                        className="form-input" />
                     </div>
                   </div>
 
