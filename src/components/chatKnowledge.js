@@ -110,7 +110,7 @@ const INTENTS = [
       /\b(portfolio|founder|prashanth|ceo|owner)\b/i,
     ],
     reply:
-      "**Prashanth Reddy** — Founder & CEO\n\n5+ years in Hyderabad real estate · 130+ deals closed · Senior Property Advisor.\n\nHis story, vision, recent wins and step-by-step process are all on the portfolio page.",
+      "**Prashanth Reddy** — Founder & MD\n\n5+ years in Hyderabad real estate · 130+ deals closed · Senior Property Advisor.\n\nHis story, vision, recent wins and step-by-step process are all on the portfolio page.",
     links: [
       { type: 'page', label: 'Open Portfolio →', href: '/portfolio' },
       { type: 'tel',  label: '📞 Talk to Prashanth', href: `tel:${PHONE}` },

@@ -54,8 +54,8 @@ const CalendarIcon = () => (
 const FOUNDER = {
   firstName: 'Prashanth',
   lastName:  'Reddy',
-  role:      "Founder & CEO · PrimePro Projects",
-  location:  'Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana',
+  role:      "Founder & MD · PrimePro Projects",
+  location:  'Hyderabad, Telangana',
   tagline:   "I help families, NRIs and investors buy the right property in Hyderabad — verified, transparent and stress-free.",
   blurb:     "I founded PrimePro Projects in 2024 with one mission — to make real estate honest. Every project we list is RERA-verified, every document is checked by our legal desk, and every client receives the same advice I would give my own family. Whether it's your first home, a villa upgrade, a commercial asset or an NRI investment, I'm here to guide you end-to-end.",
   phone:     '+91 63048 29287',
@@ -170,7 +170,7 @@ export default function Portfolio() {
     <div className="portfolio-page">
       <Helmet>
         <title>Prashanth Reddy — Founder & Real Estate Advisor | Prime Pro Projects</title>
-        <meta name="description" content="Meet Prashanth Reddy, Founder & CEO of Prime Pro Projects. 5+ years guiding families, NRIs and investors in Hyderabad real estate. RERA verified, zero brokerage. Call +91 63048 29287." />
+        <meta name="description" content="Meet Prashanth Reddy, Founder & MD of Prime Pro Projects. 5+ years guiding families, NRIs and investors in Hyderabad real estate. RERA verified, zero brokerage. Call +91 63048 29287." />
         <link rel="canonical" href="https://www.primeproprojects.in/portfolio" />
         <meta property="og:title" content="Prashanth Reddy — Real Estate Advisor Hyderabad" />
         <meta property="og:description" content="Founder of Prime Pro Projects. Helping families buy verified homes in Hyderabad since 2024." />
