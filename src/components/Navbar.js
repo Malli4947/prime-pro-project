@@ -48,10 +48,20 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 72);
+    let rafId = null;
+    const fn = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setScrolled(prev => {
+          const next = window.scrollY > 72;
+          return prev === next ? prev : next; // skip re-render if unchanged
+        });
+      });
+    };
     window.addEventListener('scroll', fn, { passive: true });
     fn();
-    return () => window.removeEventListener('scroll', fn);
+    return () => { window.removeEventListener('scroll', fn); cancelAnimationFrame(rafId); };
   }, []);
 
   useEffect(() => { setMenuOpen(false); setUserMenu(false); }, [location.pathname]);

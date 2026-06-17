@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import LeadershipSection from '../components/LeadershipSection';
 import './Portfolio.css';
 
 /* ── Social SVG icons (matches Footer styling) ──────────────── */
@@ -77,7 +79,7 @@ const CALL_LINK = `tel:${FOUNDER.phoneRaw.replace(/^91/, '')}`;
 /* ── Key numbers ───────────────────────────────────────────── */
 const STATS = [
   { num: '200+', label: 'Properties Listed' },
-  { num: '35+',  label: 'Happy Families'    },
+  { num: '100+',  label: 'Happy Families'    },
   { num: '5',    label: 'Major Cities'      },
   { num: '4.9★', label: 'Customer Rating'   },
 ];
@@ -125,7 +127,7 @@ const JOURNEY = [
   { year: '2024', title: 'PrimePro Projects Founded',  desc: "Launched in Hyderabad with one mission — make real estate transparent, trustworthy and accessible for every family in Telangana." },
   { year: '2024', title: 'First Verified Listings',     desc: 'Released our first HMDA & DTCP approved inventory across Madhapur, Kavuri Hills and Gachibowli — covering villas, apartments and plots.' },
   { year: '2025', title: 'NRI Desk & Farmland Launch',  desc: 'Opened a dedicated NRI advisory desk and concept-farmland vertical — helping global investors access Hyderabad with full FEMA compliance.' },
-  { year: '2025', title: 'Award-Winning Recognition',   desc: 'Crossed 200+ verified listings, 35+ happy families and earned recognition as one of Hyderabad\'s most trusted real-estate platforms.' },
+  { year: '2025', title: 'Award-Winning Recognition',   desc: 'Crossed 200+ verified listings, 100+ happy families and earned recognition as one of Hyderabad\'s most trusted real-estate platforms.' },
   { year: '2026', title: 'Scaling Across Telangana',    desc: 'Expanding into emerging corridors with AI-powered recommendations, virtual site tours and real-time RERA verification — five cities and counting.' },
 ];
 
@@ -166,6 +168,14 @@ const TRUST_PILLS = [
 export default function Portfolio() {
   return (
     <div className="portfolio-page">
+      <Helmet>
+        <title>Prashanth Reddy — Founder & Real Estate Advisor | Prime Pro Projects</title>
+        <meta name="description" content="Meet Prashanth Reddy, Founder & CEO of Prime Pro Projects. 5+ years guiding families, NRIs and investors in Hyderabad real estate. RERA verified, zero brokerage. Call +91 63048 29287." />
+        <link rel="canonical" href="https://www.primeproprojects.in/portfolio" />
+        <meta property="og:title" content="Prashanth Reddy — Real Estate Advisor Hyderabad" />
+        <meta property="og:description" content="Founder of Prime Pro Projects. Helping families buy verified homes in Hyderabad since 2024." />
+        <meta property="og:url" content="https://www.primeproprojects.in/portfolio" />
+      </Helmet>
       <div className="portfolio-inner">
 
         {/* ── HERO ─────────────────────────────────────── */}
@@ -241,6 +251,9 @@ export default function Portfolio() {
                 src="/founder-portrait.png"
                 alt={`${FOUNDER.firstName} ${FOUNDER.lastName}`}
                 className="pf-portrait"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
               />
             </div>
             <div className="pf-shape-tri" />
@@ -338,7 +351,7 @@ export default function Portfolio() {
               From first call to <span className="pf-hi">house-warming</span> — in 4 simple steps.
             </h2>
             <p className="pf-section-sub">
-              A proven playbook that's closed 35+ family deals since 2024 — most clients
+              A proven playbook that's closed 100+ family deals since 2024 — most clients
               go from enquiry to registration in under 30 days.
             </p>
           </div>
@@ -505,7 +518,7 @@ export default function Portfolio() {
         {/* ── OFFICE / BIO ─────────────────────────────── */}
         <section className="pf-office">
           <div className="pf-office__img">
-            <img src="/Prashanth.jpeg" alt="At the PrimePro Projects office" />
+            <img src="/Prashanth.jpeg" alt="At the PrimePro Projects office" loading="lazy" decoding="async" />
           </div>
           <div className="pf-office__body">
             <div className="pf-kicker">Inside the Office</div>
@@ -536,6 +549,10 @@ export default function Portfolio() {
             </div>
           </div>
         </section>
+
+        <div style={{ marginTop: 'clamp(48px, 8vw, 96px)' }}>
+          <LeadershipSection variant="dark" />
+        </div>
 
         {/* ── FINAL CTA ────────────────────────────────── */}
         <section className="pf-cta">

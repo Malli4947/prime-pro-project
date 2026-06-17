@@ -1,15 +1,6 @@
 import { useEffect, useRef, memo } from 'react';
 import './AnimatedBackground.css';
 
-/* ─────────────────────────────────────────────────────────────
-   AnimatedBackground — canvas-based particle + grid system
-   Props:
-     variant: 'dark' | 'light' | 'gold'  (default: 'dark')
-     density: number  (particle count multiplier, default 1)
-     showGrid: bool   (show dot-grid overlay, default true)
-     showOrbs: bool   (show glowing orbs, default true)
-     showLines: bool  (show connecting lines, default true)
-───────────────────────────────────────────────────────────────*/
 function AnimatedBackground({
   variant = 'dark',
   density = 1,
@@ -18,16 +9,16 @@ function AnimatedBackground({
   showLines = true,
   className = '',
 }) {
-  const canvasRef = useRef(null);
-  const animRef   = useRef(null);
-  const mouseRef  = useRef({ x: -9999, y: -9999 });
+  const canvasRef  = useRef(null);
+  const animRef    = useRef(null);
+  const mouseRef   = useRef({ x: -9999, y: -9999 });
+  const visibleRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    /* ── Colour palette per variant ── */
     const palette = {
       dark:  { particle: 'rgba(201,168,76,', line: 'rgba(201,168,76,', bg: 'transparent' },
       light: { particle: 'rgba(12,24,37,',   line: 'rgba(12,24,37,',  bg: 'transparent' },
@@ -35,7 +26,6 @@ function AnimatedBackground({
     };
     const col = palette[variant] || palette.dark;
 
-    /* ── Resize ── */
     const resize = () => {
       canvas.width  = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
@@ -44,9 +34,8 @@ function AnimatedBackground({
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    /* ── Particles ── */
-    const COUNT = Math.floor((canvas.width / 1440) * 80 * density);
-    const particles = Array.from({ length: Math.max(20, Math.min(COUNT, 120)) }, () => ({
+    const COUNT = Math.floor((canvas.width / 1440) * 60 * density);
+    const particles = Array.from({ length: Math.max(15, Math.min(COUNT, 60)) }, () => ({
       x:  Math.random() * canvas.width,
       y:  Math.random() * canvas.height,
       vx: (Math.random() - 0.5) * 0.4,
@@ -56,7 +45,6 @@ function AnimatedBackground({
       pulse: Math.random() * Math.PI * 2,
     }));
 
-    /* ── Mouse interaction ── */
     const onMouse = e => {
       const rect = canvas.getBoundingClientRect();
       mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -65,23 +53,21 @@ function AnimatedBackground({
     canvas.addEventListener('mousemove', onMouse);
     canvas.addEventListener('mouseleave', onLeave);
 
-    /* ── Draw loop ── */
-    let frame = 0; // eslint-disable-line no-unused-vars
+    let frameCount = 0;
     const draw = () => {
+      if (!visibleRef.current) { animRef.current = null; return; }
       animRef.current = requestAnimationFrame(draw);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      frame++;
+      frameCount++;
 
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
 
-      /* Update + draw particles */
       particles.forEach(p => {
         p.pulse += 0.02;
         p.x += p.vx;
         p.y += p.vy;
 
-        /* Mouse repulsion */
         const dx = p.x - mx;
         const dy = p.y - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -90,7 +76,6 @@ function AnimatedBackground({
           p.y += (dy / dist) * 1.5;
         }
 
-        /* Wrap edges */
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
@@ -103,8 +88,7 @@ function AnimatedBackground({
         ctx.fill();
       });
 
-      /* Draw connecting lines */
-      if (showLines) {
+      if (showLines && frameCount % 2 === 0) {
         for (let i = 0; i < particles.length; i++) {
           for (let j = i + 1; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
@@ -122,11 +106,21 @@ function AnimatedBackground({
         }
       }
     };
-    draw();
+
+    /* ── Start/stop animation based on visibility ── */
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting && !animRef.current) {
+        draw();
+      }
+    }, { threshold: 0.05 });
+    io.observe(canvas.parentElement || canvas);
 
     return () => {
       cancelAnimationFrame(animRef.current);
+      animRef.current = null;
       ro.disconnect();
+      io.disconnect();
       canvas.removeEventListener('mousemove', onMouse);
       canvas.removeEventListener('mouseleave', onLeave);
     };
@@ -134,13 +128,8 @@ function AnimatedBackground({
 
   return (
     <div className={`anim-bg anim-bg--${variant} ${className}`} aria-hidden="true">
-      {/* Canvas particles */}
       <canvas ref={canvasRef} className="anim-bg__canvas" />
-
-      {/* Dot grid overlay */}
       {showGrid && <div className="anim-bg__grid" />}
-
-      {/* Glowing orbs */}
       {showOrbs && (
         <>
           <div className="anim-bg__orb anim-bg__orb--1" />
@@ -148,8 +137,6 @@ function AnimatedBackground({
           <div className="anim-bg__orb anim-bg__orb--3" />
         </>
       )}
-
-      {/* Corner accents */}
       <div className="anim-bg__corner anim-bg__corner--tl" />
       <div className="anim-bg__corner anim-bg__corner--br" />
     </div>

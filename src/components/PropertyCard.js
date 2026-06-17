@@ -159,7 +159,6 @@ export default function PropertyCard({property, style}) {
 
   return (
     <div className="prop-card" style={style}>
-      {/* ── Image carousel ─────────────────────────────────── */}
       <Link
         to={propertyLink}
         className="prop-card__img-wrap"
@@ -188,7 +187,6 @@ export default function PropertyCard({property, style}) {
 
         <div className="prop-card__img-overlay" />
 
-        {/* Top row: badges + status */}
         <div className="prop-card__top">
           <div className="prop-card__badges">
             {badge && <span className={badgeClass}>{badge}</span>}
@@ -197,10 +195,8 @@ export default function PropertyCard({property, style}) {
           {status && <span className={statusClass}>{status}</span>}
         </div>
 
-        {/* Type chip (bottom-left) */}
         <div className="prop-card__type-chip">{subtype || type}</div>
 
-        {/* Prev / Next arrows — only when multiple images */}
         {galleryImgs.length > 1 && !imgError && (
           <>
             <button
@@ -218,7 +214,6 @@ export default function PropertyCard({property, style}) {
           </>
         )}
 
-        {/* Dots (capped at 6) */}
         {galleryImgs.length > 1 && galleryImgs.length <= 6 && !imgError && (
           <div className="prop-card__dots">
             {galleryImgs.map((_, i) => (
@@ -232,7 +227,6 @@ export default function PropertyCard({property, style}) {
           </div>
         )}
 
-        {/* Counter (for > 6 images) */}
         {galleryImgs.length > 6 && !imgError && (
           <div className="prop-card__counter">
             📷 {safeActiveImg + 1}/{galleryImgs.length}
@@ -240,7 +234,6 @@ export default function PropertyCard({property, style}) {
         )}
       </Link>
 
-      {/* ── Body ───────────────────────────────────────────── */}
       <div className="prop-card__body">
         <div className="prop-card__price">{displayPrice}</div>
 
@@ -250,7 +243,6 @@ export default function PropertyCard({property, style}) {
 
         <p className="prop-card__loc">📍 {displayLoc}</p>
 
-        {/* Specs — only render a chip when the value actually exists */}
         <div className="prop-card__specs">
           {displayUnitType && (
             <span className="prop-card__spec">🏠 {displayUnitType}</span>

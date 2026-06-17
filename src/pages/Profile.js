@@ -2,11 +2,11 @@ import  { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import PropertyCard from '../components/PropertyCard';
+import LeadershipSection from '../components/LeadershipSection';
 import './Home.css';
 
 const BASE = (process.env.REACT_APP_API_URL || 'http://localhost:3000').replace(/\/+$/, '');
 
-// ── Intersection observer reveal hook ────────────────────────────────────────
 function useReveal(threshold = 0.12) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -20,7 +20,6 @@ function useReveal(threshold = 0.12) {
   return [ref, visible];
 }
 
-// ── Fallback category images keyed by name (lowercase) ───────────────────────
 const CAT_FALLBACK_IMAGES = {
   residential: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80',
   commercial:  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80',
@@ -35,13 +34,11 @@ const CAT_FALLBACK_IMAGES = {
 function getCatImage(cat) {
   if (cat.image) return cat.image;
   const key = cat.name?.toLowerCase().trim();
-  // Try exact match first, then partial
   if (CAT_FALLBACK_IMAGES[key]) return CAT_FALLBACK_IMAGES[key];
   const partial = Object.keys(CAT_FALLBACK_IMAGES).find(k => key?.includes(k));
   return partial ? CAT_FALLBACK_IMAGES[partial] : CAT_FALLBACK_IMAGES.default;
 }
 
-// ── Static agents ─────────────────────────────────────────────────────────────
 const AGENTS = [
   { id: 1, name: 'Priya Reddy',  role: 'Senior Property Advisor', deals: '142', exp: '8 Yrs', initials: 'PR', color: '#C9A84C' },
   { id: 2, name: 'Rahul Sharma', role: 'Commercial Specialist',   deals: '98',  exp: '6 Yrs', initials: 'RS', color: '#1A2B4A' },
@@ -66,12 +63,11 @@ const WHY_FEATURES = [
 
 const BASE_STATS = [
   { icon: '🏘️', value: '200+',  label: 'Properties'  },
-  { icon: '🤝', value: '35+',   label: 'Clients'      },
+  { icon: '🤝', value: '100+',   label: 'Clients'      },
   { icon: '🏙️', value: '5',     label: 'Major Cities' },
   { icon: '⭐', value: '4.9★',  label: 'Rating'       },
 ];
 
-// ── Skeleton shimmer card ─────────────────────────────────────────────────────
 const SkeletonCard = () => (
   <div className="skeleton-card">
     <div className="skeleton-img" />
@@ -83,7 +79,6 @@ const SkeletonCard = () => (
   </div>
 );
 
-// ── Empty state ───────────────────────────────────────────────────────────────
 const EmptyState = ({ icon = '🏠', msg = 'Nothing here yet.' }) => (
   <div className="home-empty">
     <span className="home-empty__icon">{icon}</span>
@@ -92,7 +87,6 @@ const EmptyState = ({ icon = '🏠', msg = 'Nothing here yet.' }) => (
 );
 
 export default function Home() {
-  // ── API state ─────────────────────────────────────────────────────────────
   const [cmsData,       setCmsData]       = useState(null);
   const [categories,    setCategories]    = useState([]);
   const [featuredProps, setFeaturedProps] = useState([]);
@@ -102,7 +96,6 @@ export default function Home() {
   const [loadingFeat,   setLoadingFeat]   = useState(true);
   const [loadingTrend,  setLoadingTrend]  = useState(true);
 
-  // ── Reveal refs ───────────────────────────────────────────────────────────
   const [catsRef,  catsVis]  = useReveal();
   const [featRef,  featVis]  = useReveal();
   const [whyRef,   whyVis]   = useReveal();
@@ -111,18 +104,14 @@ export default function Home() {
   const [agentRef, agentVis] = useReveal();
   const [testiRef, testiVis] = useReveal();
 
-  // ── GET /api/cms ──────────────────────────────────────────────────────────
-  // Response: { success, cms: { hero, about, seo, banners } }
   useEffect(() => {
     fetch(`${BASE}/api/cms`)
       .then(r => r.json())
       .then(d => { if (d.success && d.cms) setCmsData(d.cms); })
-      .catch(e => console.error('CMS error:', e))
+      .catch(() => {})
       .finally(() => setLoadingCms(false));
   }, []);
 
-  // ── GET /api/categories ───────────────────────────────────────────────────
-  // Response: { success, categories: [{ _id, name, description, icon, color, image, slug, sortOrder, isActive, propertyCount }] }
   useEffect(() => {
     fetch(`${BASE}/api/categories`)
       .then(r => r.json())
@@ -135,30 +124,26 @@ export default function Home() {
           );
         }
       })
-      .catch(e => console.error('Categories error:', e))
+      .catch(() => {})
       .finally(() => setLoadingCats(false));
   }, []);
 
-  // ── GET /api/properties/featured?limit=6 ─────────────────────────────────
   useEffect(() => {
     fetch(`${BASE}/api/properties/featured?limit=6`)
       .then(r => r.json())
       .then(d => { if (d.success) setFeaturedProps(d.properties || []); })
-      .catch(e => console.error('Featured error:', e))
+      .catch(() => {})
       .finally(() => setLoadingFeat(false));
   }, []);
 
-  // ── GET /api/properties?page=1&limit=6 ───────────────────────────────────
   useEffect(() => {
     fetch(`${BASE}/api/properties?page=1&limit=6`)
       .then(r => r.json())
       .then(d => { if (d.success) setTrendingProps(d.properties || []); })
-      .catch(e => console.error('Trending error:', e))
+      .catch(() => {})
       .finally(() => setLoadingTrend(false));
   }, []);
 
-  // ── CMS derived values ────────────────────────────────────────────────────
-  // All fall back gracefully when CMS is loading or empty
   const hero    = cmsData?.hero    || {};
   const about   = cmsData?.about   || {};
   const banners = (cmsData?.banners || []).filter(b => b.isActive);
@@ -174,16 +159,8 @@ export default function Home() {
   return (
     <div className="home">
 
-      {/* ── HERO ─────────────────────────────────────────
-          Passes live CMS hero data: title, subtitle, ctaText, backgroundImage
-          Hero component should render cmsHero.title / cmsHero.subtitle etc.
-      ──────────────────────────────────────────────── */}
       <Hero cmsHero={hero} />
 
-      {/* ── CMS BANNERS ──────────────────────────────────
-          Rendered only when banners exist and isActive=true
-          cms.banners[].{ title, subtitle, image, isActive, _id }
-      ──────────────────────────────────────────────── */}
       {banners.length > 0 && (
         <section className="home-cms-banners">
           <div className="container">
@@ -202,10 +179,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* ── CATEGORIES ───────────────────────────────────
-          Source: GET /api/categories
-          Fields used: _id, name, description, icon, color, image, slug, propertyCount
-      ──────────────────────────────────────────────── */}
       <section className="section home-cats" ref={catsRef}>
         <div className="container">
           <div className={`home-cats__header${catsVis ? ' anim-fade-up' : ''}`}>
@@ -239,10 +212,8 @@ export default function Home() {
                   className={`cat-card${catsVis ? ' anim-fade-up' : ''}`}
                   style={{ animationDelay: `${i * 90}ms` }}>
 
-                  {/* Category image — API image or smart fallback */}
                   <div className="cat-card__img">
                     <img src={getCatImage(cat)} alt={cat.name} loading="lazy" />
-                    {/* Tinted overlay using the category's brand color */}
                     <div
                       className="cat-card__overlay"
                       style={cat.color ? { background: `${cat.color}44` } : {}}
@@ -250,7 +221,6 @@ export default function Home() {
                   </div>
 
                   <div className="cat-card__body">
-                    {/* Icon from API (emoji string like "💎") */}
                     <span className="cat-card__emoji" style={cat.color ? { color: cat.color } : {}}>
                       {cat.icon || '🏠'}
                     </span>
@@ -258,7 +228,6 @@ export default function Home() {
                     {cat.description && (
                       <p className="cat-card__desc">{cat.description}</p>
                     )}
-                    {/* Property count badge — only show when > 0 */}
                     {cat.propertyCount > 0 && (
                       <span className="cat-card__count"
                         style={cat.color ? { background: `${cat.color}22`, color: cat.color, border: `1px solid ${cat.color}44` } : {}}>
@@ -273,7 +242,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FEATURED PROPERTIES ─────────────────────────── */}
       <section className="section section--mid home-featured" ref={featRef}>
         <div className="container">
           <div className={`home-section-header${featVis ? ' anim-fade-up' : ''}`}>
@@ -298,7 +266,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── STATS BANNER ────────────────────────────────── */}
       <section className="home-stats" ref={statRef}>
         <div className="home-stats__bg" />
         <div className="container">
@@ -314,11 +281,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHY US ───────────────────────────────────────
-          Bound to: cms.about.heading, cms.about.body,
-                    cms.about.yearsExperience, cms.about.phone,
-                    cms.about.email, cms.about.address
-      ──────────────────────────────────────────────── */}
+      <LeadershipSection variant="mid" />
+
       <section className="section home-why" ref={whyRef}>
         <div className="container home-why__inner">
           <div className={`home-why__img${whyVis ? ' anim-fade-left' : ''}`}>
@@ -328,7 +292,6 @@ export default function Home() {
               loading="lazy"
             />
             <div className="home-why__badge">
-              {/* ✅ cms.about.yearsExperience */}
               <span className="home-why__badge-num">{yearsExp}+</span>
               <span className="home-why__badge-txt">Years of<br />Excellence</span>
             </div>
@@ -338,7 +301,6 @@ export default function Home() {
           <div className={`home-why__content${whyVis ? ' anim-fade-right' : ''}`}>
             <span className="sec-tag">Why Choose Us</span>
 
-            {/* ✅ cms.about.heading — last word highlighted */}
             <h2 className="sec-title">
               {loadingCms ? (
                 <span className="skel-inline" />
@@ -349,7 +311,6 @@ export default function Home() {
               })()}
             </h2>
 
-            {/* ✅ cms.about.body */}
             <p className="sec-sub" style={{ marginBottom: 32 }}>
               {loadingCms ? <span className="skel-block" /> : aboutBody}
             </p>
@@ -366,7 +327,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* ✅ Contact info from cms.about */}
             <div className="home-why__contact-row">
               {contactEmail && (
                 <a href={`mailto:${contactEmail}`} className="home-why__contact-chip">
@@ -392,7 +352,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── TRENDING PROPERTIES ─────────────────────────── */}
       <section className="section section--mid home-trending" ref={trendRef}>
         <div className="container">
           <div className={`home-section-header${trendVis ? ' anim-fade-up' : ''}`}>
@@ -417,7 +376,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── AGENTS ──────────────────────────────────────── */}
       <section className="section home-agents" ref={agentRef}>
         <div className="container">
           <div className={`home-section-header home-section-header--center${agentVis ? ' anim-fade-up' : ''}`}>
@@ -442,7 +400,6 @@ export default function Home() {
                   <div className="agent-card__stat-sep" />
                   <div className="agent-card__stat"><b>{a.exp}</b><span>Experience</span></div>
                 </div>
-                {/* ✅ Phone from cms.about.phone */}
                 <a href={`tel:${contactPhone}`} className="btn btn-outline btn-sm btn-full agent-card__cta">
                   Contact
                 </a>
@@ -452,7 +409,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ────────────────────────────────── */}
       <section className="section section--dark home-testi" ref={testiRef}>
         <div className="container">
           <div className={`home-section-header home-section-header--center${testiVis ? ' anim-fade-up' : ''}`}>
@@ -484,7 +440,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MARQUEE ─────────────────────────────────────── */}
       <div className="home-marquee" aria-hidden="true">
         <div className="home-marquee__track">
           {[

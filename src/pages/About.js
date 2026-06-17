@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import AnimatedBackground from '../components/AnimatedBackground';
+import LeadershipSection from '../components/LeadershipSection';
 import './About.css';
 
 function useReveal(threshold = 0.10) {
@@ -22,11 +24,11 @@ const TIMELINE = [
   { year: '2024', title: 'First Verified Listings',         desc: 'Launched our first set of HMDA & DTCP approved listings across Madhapur, Kavuri Hills, and Gachibowli — covering Villas, Apartments, and Open Plots.' },
   { year: '2024', title: 'Growing Network',                 desc: 'Expanded our developer and channel partner network across Hyderabad\'s prime localities. Closed our first successful property deals with happy families.' },
   { year: '2025', title: 'Farmland & NRI Desk',             desc: 'Launched Concept-Based Farmland Projects and a dedicated NRI investment advisory desk — helping non-resident Indians invest with full transparency and legal clarity.' },
-  { year: '2025', title: 'Scaling New Heights',             desc: 'Reached new milestones with 200+ verified listings, 35+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors.' },
+  { year: '2025', title: 'Scaling New Heights',             desc: 'Reached new milestones with 200+ verified listings, 100+ happy clients, and a strong presence across Hyderabad\'s fastest-growing real estate corridors.' },
   { year: '2025', title: 'Award Winning Recognition',       desc: 'Recognised as one of Hyderabad\'s most trusted real estate platforms — with verified listings, a dedicated NRI desk, and a channel partner network spanning the entire city.' },
   { year: '2026', title: 'Expanding Horizons',              desc: 'Scaling operations beyond Hyderabad into emerging Telangana corridors — bringing new luxury villa projects, commercial spaces, and farmland investments to a wider audience.' },
   { year: '2026', title: 'Technology & Innovation',         desc: 'Launched an enhanced digital platform with AI-powered property recommendations, virtual site tours, and real-time RERA verification — making property discovery faster and smarter.' },
-  { year: '2026', title: 'Stronger. Bigger. Trusted.',      desc: 'With 200+ listings, 35+ happy clients, and a presence across 5 major cities, PrimePro Project\'s continues to set new benchmarks in Hyderabad\'s real estate market.' },
+  { year: '2026', title: 'Stronger. Bigger. Trusted.',      desc: 'With 200+ listings, 100+ happy clients, and a presence across 5 major cities, PrimePro Project\'s continues to set new benchmarks in Hyderabad\'s real estate market.' },
 ];
 
 const VALUES = [
@@ -40,7 +42,7 @@ const VALUES = [
 
 const STATS = [
   { icon: '🏘️', value: '200+',  label: 'Properties Listed'  },
-  { icon: '🤝', value: '35+',   label: 'Happy Families'      },
+  { icon: '🤝', value: '100+',   label: 'Happy Families'      },
   { icon: '🏙️', value: '5',     label: 'Major Cities'        },
   { icon: '⭐', value: '4.9/5', label: 'Customer Rating'     },
 ];
@@ -117,6 +119,14 @@ export default function About() {
 
   return (
     <div className="about-page" id="about">
+      <Helmet>
+        <title>About Us — Prime Pro Projects | Hyderabad Real Estate</title>
+        <meta name="description" content="Learn about Prime Pro Projects — Hyderabad's trusted real estate platform since 2024. 200+ verified listings, RERA-compliant, zero brokerage. Meet our expert team." />
+        <link rel="canonical" href="https://www.primeproprojects.in/about" />
+        <meta property="og:title" content="About Prime Pro Projects — Hyderabad Real Estate" />
+        <meta property="og:description" content="Hyderabad's trusted real estate platform. 200+ RERA-verified properties, expert team, zero brokerage." />
+        <meta property="og:url" content="https://www.primeproprojects.in/about" />
+      </Helmet>
 
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="about-hero">
@@ -301,7 +311,7 @@ export default function About() {
               </p>
               <div className="about-timeline__summary-pills">
                 <span>✓ 200+ Properties</span>
-                <span>✓ 35+ Happy Clients</span>
+                <span>✓ 100+ Happy Clients</span>
                 <span>✓ 5 Major Cities</span>
                 <span>✓ 4.9 ★ Rating</span>
               </div>
@@ -309,6 +319,8 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      <LeadershipSection variant="light" />
 
       {/* ── TEAM ──────────────────────────────────────────── */}
       <section className="section section--mid about-team" ref={teamRef}>

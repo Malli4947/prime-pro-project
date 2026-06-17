@@ -4,7 +4,7 @@
  */
 
 const cache = new Map();
-const DEFAULT_TTL = 60_000; // 1 minute
+const DEFAULT_TTL = 300_000; // 5 minutes
 
 export async function cachedFetch(url, ttl = DEFAULT_TTL) {
   const now = Date.now();

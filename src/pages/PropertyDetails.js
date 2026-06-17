@@ -1070,17 +1070,6 @@ export default function PropertyDetails() {
                 />
               </div>
 
-              {/* <div className="form-field" style={{marginBottom:14}}>
-                <label className="form-label">Preferred Visit Date</label>
-                <input
-                  type="date"
-                  min={new Date().toISOString().split('T')[0]}
-                  value={brochureForm.scheduleDate}
-                  onChange={e => setBrochureForm(f => ({...f, scheduleDate: e.target.value}))}
-                  className="form-input"
-                />
-              </div> */}
-
               <div className="form-field" style={{marginBottom:20}}>
                 <label className="form-label">Message</label>
                 <textarea

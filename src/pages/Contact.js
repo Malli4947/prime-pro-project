@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Contact.css';
 
@@ -161,6 +162,14 @@ export default function Contact() {
 
   return (
     <div className="contact-page" id="contact">
+      <Helmet>
+        <title>Contact Us — Prime Pro Projects | Hyderabad Real Estate</title>
+        <meta name="description" content="Contact Prime Pro Projects for RERA-verified properties in Hyderabad. Call +91 63048 29287 or WhatsApp. Free consultation. 2-hour response. Office: Madhapur, Kavuri Hills Phase 1." />
+        <link rel="canonical" href="https://www.primeproprojects.in/contact" />
+        <meta property="og:title" content="Contact Prime Pro Projects — Hyderabad Real Estate" />
+        <meta property="og:description" content="Reach us for verified properties in Hyderabad. Call, WhatsApp or visit our office in Madhapur." />
+        <meta property="og:url" content="https://www.primeproprojects.in/contact" />
+      </Helmet>
 
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="contact-hero">

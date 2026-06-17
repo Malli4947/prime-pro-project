@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import PropertyCard from '../components/PropertyCard';
 import AnimatedBackground from '../components/AnimatedBackground';
+import LeadershipSection from '../components/LeadershipSection';
 import { cachedFetch } from '../utils/apiCache';
 import './Home.css';
 
@@ -124,18 +126,18 @@ const WHY_FEATURES = [
 ];
 
 const CAT_IMAGES = {
-  apartments:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85&auto=format&fit=crop',
-  villas:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=85&auto=format&fit=crop',
-  plots:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=85&auto=format&fit=crop',
-  commercial:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85&auto=format&fit=crop',
-  'farm lands':'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=85&auto=format&fit=crop',
-  'ready to move':'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=900&q=85&auto=format&fit=crop',
-  'under construction':'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=85&auto=format&fit=crop',
-  residential:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=85&auto=format&fit=crop',
-  agriculture:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=85&auto=format&fit=crop',
-  industrial:'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=900&q=85&auto=format&fit=crop',
-  luxury:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&q=85&auto=format&fit=crop',
-  default:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85&auto=format&fit=crop',
+  apartments:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=640&q=75&auto=format&fit=crop',
+  villas:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=640&q=75&auto=format&fit=crop',
+  plots:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=640&q=75&auto=format&fit=crop',
+  commercial:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=640&q=75&auto=format&fit=crop',
+  'farm lands':'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=640&q=75&auto=format&fit=crop',
+  'ready to move':'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=640&q=75&auto=format&fit=crop',
+  'under construction':'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=640&q=75&auto=format&fit=crop',
+  residential:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=640&q=75&auto=format&fit=crop',
+  agriculture:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=640&q=75&auto=format&fit=crop',
+  industrial:'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=640&q=75&auto=format&fit=crop',
+  luxury:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=640&q=75&auto=format&fit=crop',
+  default:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=640&q=75&auto=format&fit=crop',
 };
 
 function isUrl(str) {
@@ -224,7 +226,7 @@ export default function Home() {
       }
       if (featured?.success)  setFeaturedProps(featured.properties || []);
       if (trending?.success)  setTrendingProps(trending.properties || []);
-    }).catch(e => console.error('Home fetch error:', e))
+    }).catch(() => {})
       .finally(() => {
         if (!cancelled) {
           setLoadingCms(false);
@@ -247,6 +249,20 @@ export default function Home() {
 
   return (
     <div className="home">
+      <Helmet>
+        <title>Prime Pro Projects — Hyderabad's Trusted Real Estate Platform</title>
+        <meta name="description" content="Buy RERA-verified apartments, villas, plots, commercial spaces and farmlands in Hyderabad. Zero brokerage, 2-hour response, 200+ verified listings. Call +91 63048 29287." />
+        <meta name="keywords" content="real estate Hyderabad, apartments Hyderabad, villas Hyderabad, plots Kokapet, RERA verified properties, Prime Pro Projects" />
+        <link rel="canonical" href="https://www.primeproprojects.in/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Prime Pro Projects — Hyderabad's Trusted Real Estate Platform" />
+        <meta property="og:description" content="200+ RERA-verified properties in Hyderabad. Apartments, villas, plots, commercial & farmland. Zero brokerage. Call +91 63048 29287." />
+        <meta property="og:url" content="https://www.primeproprojects.in/" />
+        <meta property="og:image" content="https://www.primeproprojects.in/FullLogo.jpeg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Prime Pro Projects — Hyderabad Real Estate" />
+        <meta name="twitter:description" content="200+ RERA-verified properties. Zero brokerage. Expert advice." />
+      </Helmet>
       <Hero cmsHero={cmsData?.hero} />
 
       {/* ── CATEGORIES ── */}
@@ -360,7 +376,7 @@ export default function Home() {
       <section className="section home-why" ref={whyRef}>
         <div className="container home-why__inner">
           <div className={`home-why__img${whyVis ? ' anim-fade-left' : ''}`}>
-            <img src="/Prashanth.jpeg" alt="Our Team" loading="lazy" />
+            <img src="/Prashanth.jpeg" alt="Our Team" loading="lazy" decoding="async" />
             <div className="home-why__badge">
               <span className="home-why__badge-num">{yearsExp}+</span>
               <span className="home-why__badge-txt">Years of<br />Excellence</span>
@@ -424,6 +440,7 @@ export default function Home() {
           )}
         </div>
       </section>
+ <LeadershipSection variant="dark" />
 
       {/* ── AGENTS ── */}
       <section className="section home-agents" ref={agentRef}>
@@ -457,6 +474,8 @@ export default function Home() {
         </div>
       </section>
 
+    
+     
       {/* ── TESTIMONIALS ── */}
       <section className="section section--dark home-testi" ref={testiRef}>
         <AnimatedBackground variant="dark" density={0.5} showGrid showOrbs={false} showLines />

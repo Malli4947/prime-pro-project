@@ -52,7 +52,7 @@ const SLIDES = [
     title: 'Grow Your',
     highlight: 'Business',
     sub: "Looking for office floors, retail outlets or pre-leased assets in Hyderabad's IT corridors?",
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2880&q=90&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1280&q=80&auto=format&fit=crop',
     accent: '#E4C47A',
     to: '/properties?type=Commercial',
   },
@@ -63,14 +63,21 @@ const SLIDES = [
     title: 'Own a Piece of',
     highlight: 'Green Earth',
     sub: 'Looking for a gated farm-land community with managed agro-living and strong appreciation?',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=2880&q=90&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1280&q=80&auto=format&fit=crop',
     accent: '#C9A84C',
     to: '/properties?subtype=Farm+Land',
   },
 ];
 
 const INTERVAL = 6000;
-const FALLBACK = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=2880&q=90&auto=format&fit=crop';
+const FALLBACK = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1280&q=80&auto=format&fit=crop';
+const FALLBACK_THUMB = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=120&q=60&auto=format&fit=crop';
+
+function thumbUrl(src) {
+  if (!src) return FALLBACK_THUMB;
+  if (src.includes('unsplash.com')) return src.replace(/w=\d+/, 'w=120').replace(/q=\d+/, 'q=60');
+  return src; // Azure/local images — use as-is; browser caches them anyway
+}
 
 export default function Hero({ cmsHero }) {
   const [current, setCurrent] = useState(0);
@@ -129,6 +136,8 @@ export default function Hero({ cmsHero }) {
               src={s.image}
               alt={s.highlight}
               loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : 'low'}
+              decoding={i === 0 ? 'sync' : 'async'}
               onError={e => { e.target.onerror = null; e.target.src = FALLBACK; }}
             />
           </div>
@@ -183,7 +192,7 @@ export default function Hero({ cmsHero }) {
           <div className="hero__trust">
             <span className="hero__trust-item"><b>200+</b> Properties</span>
             <span className="hero__trust-sep" />
-            <span className="hero__trust-item"><b>35+</b> Happy Families</span>
+            <span className="hero__trust-item"><b>100+</b> Happy Families</span>
             <span className="hero__trust-sep" />
             <span className="hero__trust-item"><b>4.9★</b> Rated</span>
           </div>
@@ -216,8 +225,8 @@ export default function Hero({ cmsHero }) {
               aria-label={`Show ${s.nav}`}
             >
               <span className="hero__chip-thumb">
-                <img src={s.image} alt={s.nav} loading="lazy"
-                  onError={e => { e.target.onerror = null; e.target.src = FALLBACK; }} />
+                <img src={thumbUrl(s.image)} alt={s.nav} loading="lazy" decoding="async"
+                  onError={e => { e.target.onerror = null; e.target.src = FALLBACK_THUMB; }} />
               </span>
               <span className="hero__chip-text">
                 <span className="hero__chip-num">{String(i + 1).padStart(2, '0')}</span>

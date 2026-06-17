@@ -1,5 +1,6 @@
 import  { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import PropertyCard from '../components/PropertyCard';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Properties.css';
@@ -118,6 +119,14 @@ export default function Properties() {
 
   return (
     <div className="props-page">
+      <Helmet>
+        <title>Properties in Hyderabad — Apartments, Villas, Plots | Prime Pro Projects</title>
+        <meta name="description" content="Browse 200+ RERA-verified properties in Hyderabad — apartments, villas, open plots, commercial spaces and farmlands. Filter by location, price & type. Zero brokerage." />
+        <link rel="canonical" href="https://www.primeproprojects.in/properties" />
+        <meta property="og:title" content="Properties in Hyderabad — Prime Pro Projects" />
+        <meta property="og:description" content="200+ RERA-verified apartments, villas, plots and commercial properties in Hyderabad." />
+        <meta property="og:url" content="https://www.primeproprojects.in/properties" />
+      </Helmet>
       {/* Hero */}
       <section className="props-hero">
         <AnimatedBackground variant="dark" density={0.8} showGrid showOrbs={false} showLines />

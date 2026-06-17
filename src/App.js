@@ -1,5 +1,6 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatBot from './components/ChatBot';
@@ -43,6 +44,7 @@ function ScrollReset() {
 
 export default function App() {
   return (
+    <HelmetProvider>
     <BrowserRouter>
       <ScrollReset />
       <div className="app-wrapper">
@@ -81,5 +83,6 @@ export default function App() {
         <ChatBot />
       </div>
     </BrowserRouter>
+    </HelmetProvider>
   );
 }

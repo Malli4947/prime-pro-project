@@ -95,7 +95,7 @@ const INTENTS = [
       /\bprime\s*pro\b/i,
     ],
     reply:
-      "**About PrimePro Projects**\n\nFounded in 2024 by Prashanth Reddy, we're a Hyderabad-based real-estate platform with one mission — to make property buying transparent, RERA-compliant and zero-brokerage for every family and investor.\n\n• 200+ verified listings\n• 35+ happy families\n• 4.9★ client rating\n• 5 major cities served",
+      "**About PrimePro Projects**\n\nFounded in 2024 by Prashanth Reddy, we're a Hyderabad-based real-estate platform with one mission — to make property buying transparent, RERA-compliant and zero-brokerage for every family and investor.\n\n• 200+ verified listings\n• 100+ happy families\n• 4.9★ client rating\n• 5 major cities served",
     links: [
       { type: 'page', label: 'About Us →',      href: '/about' },
       { type: 'page', label: 'Founder Portfolio →', href: '/portfolio' },
@@ -228,7 +228,7 @@ const INTENTS = [
       /\bbrowse\b/i,
     ],
     reply:
-      "We list **200+ verified properties** across 5 categories — tap any to see details:\n\n🏢 **Apartments** — 80+ listings (2/3/4 BHK)\n🏠 **Villas** — 35+ gated villas with pools\n📐 **Open Plots** — HMDA & DTCP approved\n🌿 **Farm Land** — concept projects, NRI-friendly\n🏬 **Commercial** — offices, retail, pre-leased",
+      "We list **200+ verified properties** across 5 categories — tap any to see details:\n\n🏢 **Apartments** — 80+ listings (2/3/4 BHK)\n🏠 **Villas** — 100+ gated villas with pools\n📐 **Open Plots** — HMDA & DTCP approved\n🌿 **Farm Land** — concept projects, NRI-friendly\n🏬 **Commercial** — offices, retail, pre-leased",
     links: [
       { type: 'page', label: 'All Properties →',  href: '/properties' },
       { type: 'page', label: '🏢 Apartments',     href: '/properties?subtype=Apartment' },
@@ -386,7 +386,7 @@ const INTENTS = [
       /\b(review|testimonial|rating|feedback|client|customer\s*say)\b/i,
     ],
     reply:
-      "⭐ **4.9 / 5 from 35+ happy families**\n\nClients consistently highlight our transparent paperwork, honest advice and end-to-end execution — including NRIs who buy remotely from Dubai, UK and the US.",
+      "⭐ **4.9 / 5 from 100+ happy families**\n\nClients consistently highlight our transparent paperwork, honest advice and end-to-end execution — including NRIs who buy remotely from Dubai, UK and the US.",
     links: [
       { type: 'page', label: 'Read Stories →', href: '/about' },
       { type: 'page', label: 'Founder Portfolio →', href: '/portfolio' },
@@ -401,7 +401,7 @@ const INTENTS = [
       /\b(award|recogni[sz]e|prize|achievement|trophy)\b/i,
     ],
     reply:
-      "🏆 Awarded one of **Hyderabad's most trusted real-estate platforms in 2025** within a year of founding — backed by 200+ verified listings, 35+ happy clients and a 4.9★ rating.",
+      "🏆 Awarded one of **Hyderabad's most trusted real-estate platforms in 2025** within a year of founding — backed by 200+ verified listings, 100+ happy clients and a 4.9★ rating.",
     links: [
       { type: 'page', label: 'Our Journey →', href: '/portfolio' },
     ],

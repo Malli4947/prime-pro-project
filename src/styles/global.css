@@ -4,8 +4,6 @@
    Fonts: Playfair Display + DM Sans
 ═══════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
-
 /* ── CSS Variables ──────────────────────────────────────────── */
 :root {
   --gold:        #C9A84C;
@@ -147,8 +145,8 @@ h1,h2,h3,h4,h5 { font-family: var(--font-display); line-height: 1.15; letter-spa
   to   { transform: translateX(-50%); }
 }
 @keyframes borderPulse {
-  0%,100% { border-color: var(--gold-border); }
-  50%      { border-color: var(--gold); }
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.7; }
 }
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
@@ -257,10 +255,8 @@ h1,h2,h3,h4,h5 { font-family: var(--font-display); line-height: 1.15; letter-spa
 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-  background-size: 200% 200%;
   color: var(--navy);
   box-shadow: var(--shadow-gold);
-  animation: gradientShift 4s ease infinite;
 }
 .btn-gold:hover {
   transform: translateY(-3px);

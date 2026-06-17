@@ -217,7 +217,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
     >
       <div className="auth-modal" role="dialog" aria-modal="true">
 
-        {/* ── Header ──────────────────────────────── */}
         <div className="auth-modal__header">
           <div className="auth-modal__logo">
             <div className="auth-modal__logo-icon">PP</div>
@@ -236,7 +235,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
           <button className="auth-modal__close" onClick={onClose} aria-label="Close">✕</button>
         </div>
 
-        {/* ── Tab switcher ────────────────────────── */}
         <div className="auth-tabs" role="tablist">
           <button
             className={`auth-tab${tab === 'login' ? ' active' : ''}`}
@@ -254,10 +252,7 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
           </button>
         </div>
 
-        {/* ── Body ────────────────────────────────── */}
         <div className="auth-modal__body">
-
-          {/* ── Success state ─────────────────────── */}
           {step === 'success' ? (
             <div className="auth-success">
               <div className="auth-success-icon">✓</div>
@@ -272,12 +267,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
             </div>
 
           ) : tab === 'login' ? (
-
-            /* ════════════════════════════════════════
-               LOGIN FORM
-               API: POST /api/auth/login
-               Body: { email?, phone?, password }
-               ════════════════════════════════════════ */
             <form className="auth-form" onSubmit={handleLogin} noValidate>
 
               {error && (
@@ -286,7 +275,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               )}
 
-              {/* Email or Phone */}
               <div className="auth-field">
                 <label className="auth-label">Email or Phone Number</label>
                 <div className="auth-input-wrap">
@@ -303,7 +291,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               </div>
 
-              {/* Password */}
               <div className="auth-field">
                 <label className="auth-label">Password</label>
                 <div className="auth-input-wrap">
@@ -328,21 +315,18 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               </div>
 
-              {/* Forgot password */}
               <div className="auth-forgot">
                 <button type="button" onClick={() => alert('Password reset feature coming soon!')}>
                   Forgot password?
                 </button>
               </div>
 
-              {/* Sign In button */}
               <button type="submit" className="auth-submit" disabled={loading}>
                 {loading
                   ? <><div className="auth-spinner" /> Signing in…</>
                   : '🔐 Sign In'}
               </button>
 
-              {/* Switch to register */}
               <div className="auth-switch">
                 Don't have an account?{' '}
                 <button type="button" onClick={() => switchTab('register')}>
@@ -350,7 +334,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </button>
               </div>
 
-              {/* Trust indicators */}
               <div className="auth-trust">
                 <span className="auth-trust-item"><span className="auth-trust-dot" /> Secure login</span>
                 <span className="auth-trust-item"><span className="auth-trust-dot" /> Zero brokerage</span>
@@ -359,13 +342,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
             </form>
 
           ) : (
-
-            /* ════════════════════════════════════════
-               REGISTER FORM
-               API: POST /api/auth/register
-               Body: { name, email, phone, password }
-               Note: confirmPassword is NOT sent — frontend only
-               ════════════════════════════════════════ */
             <form className="auth-form" onSubmit={handleRegister} noValidate>
 
               {error && (
@@ -374,7 +350,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               )}
 
-              {/* Full name */}
               <div className="auth-field">
                 <label className="auth-label">Full Name</label>
                 <div className="auth-input-wrap">
@@ -391,7 +366,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               </div>
 
-              {/* Email */}
               <div className="auth-field">
                 <label className="auth-label">Email Address</label>
                 <div className="auth-input-wrap">
@@ -407,7 +381,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               </div>
 
-              {/* Mobile number with +91 prefix */}
               <div className="auth-field">
                 <label className="auth-label">Mobile Number</label>
                 <div className="auth-input-phone">
@@ -423,7 +396,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 </div>
               </div>
 
-              {/* Password with strength meter */}
               <div className="auth-field">
                 <label className="auth-label">Password</label>
                 <div className="auth-input-wrap">
@@ -446,7 +418,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                     <EyeIcon show={showRegPw} />
                   </button>
                 </div>
-                {/* Strength meter — only visible when user has typed */}
                 {regForm.password && strength && (
                   <div style={{ marginTop: 6 }}>
                     <div style={{ height: 4, background: '#e8ecf2', borderRadius: 4, overflow: 'hidden' }}>
@@ -459,8 +430,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 )}
               </div>
 
-              {/* ✅ Confirm password — RESTORED (was commented out) */}
-              {/* This field is validated frontend-only. confirmPassword is NOT sent to the API. */}
               <div className="auth-field">
                 <label className="auth-label">Confirm Password</label>
                 <div className="auth-input-wrap">
@@ -487,7 +456,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                     <EyeIcon show={showRegConfPw} />
                   </button>
                 </div>
-                {/* Inline mismatch warning */}
                 {regForm.confirmPassword && regForm.confirmPassword !== regForm.password && (
                   <span style={{ fontSize: 11, color: '#e53e3e', fontWeight: 600, marginTop: 3, display: 'block' }}>
                     Passwords do not match
@@ -495,14 +463,12 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 )}
               </div>
 
-              {/* Create account button */}
               <button type="submit" className="auth-submit" disabled={loading}>
                 {loading
                   ? <><div className="auth-spinner" /> Creating account…</>
                   : '🏠 Create Free Account'}
               </button>
 
-              {/* Terms */}
               <p className="auth-terms">
                 By registering you agree to our{' '}
                 <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
@@ -510,7 +476,6 @@ export default function AuthModal({ onClose, defaultTab = 'login', onAuthSuccess
                 <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
               </p>
 
-              {/* Switch to login */}
               <div className="auth-switch">
                 Already have an account?{' '}
                 <button type="button" onClick={() => switchTab('login')}>
