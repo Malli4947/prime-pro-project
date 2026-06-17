@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import './LeadershipSection.css';
 
 const PILLARS = [
-  { name: 'K Sreekant Reddy',   title: 'Chief Executive Officer',     color: '#C9A84C', photo: '/Srikanth.jpeg'        },
+  { name: 'K Sreekant Reddy',   title: 'Chief Executive Officer',     color: '#C9A84C', photo: '/Srikanth.PNG'        },
   { name: 'Prashanth Reddy',    title: 'Founder & Managing Director', color: '#5B9BD5', photo: '/founder-portrait.png', objectPos: 'center center' },
   { name: 'Arun Kumar Reddy',   title: 'Co-Founder',                  color: '#22c55e', photo: '/Arun.PNG'             },
   { name: 'Gorantla Vaishnavi', title: 'Director',                    color: '#f472b6', photo: null                   },
