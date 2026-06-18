@@ -114,7 +114,6 @@ export default function PropertyPopup() {
   const img   = getImg(current);
   const price = getPrice(current);
   const loc   = getLoc(current);
-  const badge = current.badge || current.status || 'Featured';
   const type  = current.subtype || current.type || 'Property';
   const link  = `/properties/${current._id}`;
 
@@ -141,7 +140,6 @@ export default function PropertyPopup() {
             ? <img src={img} alt={current.title} className="prop-popup__img" loading="lazy" />
             : <div className="prop-popup__img-placeholder">🏠</div>
           }
-          {/* <span className="prop-popup__badge">{badge}</span> */}
         </div>
 
         {/* Info right */}
@@ -150,7 +148,6 @@ export default function PropertyPopup() {
           <div className="prop-popup__title">{current.title}</div>
           <div className="prop-popup__loc">📍 {loc}</div>
           <span className="prop-popup__type">{type}</span>
-          {/* <span className="prop-popup__view">View Property →</span> */}
         </div>
       </Link>
 
