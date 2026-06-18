@@ -518,7 +518,7 @@ export default function Portfolio() {
         {/* ── OFFICE / BIO ─────────────────────────────── */}
         <section className="pf-office">
           <div className="pf-office__img">
-            <img src="/Prashanth.jpeg" alt="At the PrimePro Projects office" loading="lazy" decoding="async" />
+            <img src="/Founder.jpeg" alt="At the PrimePro Projects office" loading="lazy" decoding="async" />
           </div>
           <div className="pf-office__body">
             <div className="pf-kicker">Inside the Office</div>

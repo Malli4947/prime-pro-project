@@ -177,7 +177,7 @@ export default function About() {
         <div className="container about-story__inner">
           <div className={`about-story__img${storyVis ? ' anim-fade-left' : ''}`}>
             <img
-              src="/Prashanth.jpeg"
+              src="/Founder.jpeg"
               alt="Our Office"
               loading="lazy"
             />

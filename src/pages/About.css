@@ -81,8 +81,9 @@
 }
 .about-story__img { position: relative; }
 .about-story__img img {
-  width: 100%; height: 500px; object-fit: cover;
+  width: 100%; height: auto; max-height: 540px; object-fit: contain;
   border-radius: var(--r-xl); box-shadow: var(--shadow-xl);
+  background: #f5f0e8;
 }
 .about-story__img-badge {
   position: absolute; bottom: -20px; right: -20px;
@@ -349,7 +350,7 @@
 @media (max-width: 1024px) {
   .about-hero__chips { display: none; }
   .about-story__inner { grid-template-columns: 1fr; gap: 40px; }
-  .about-story__img img { height: 340px; }
+  .about-story__img img { height: auto; max-height: 360px; }
   .about-story__img-badge { right: 14px; bottom: -12px; }
   .about-stats__grid { grid-template-columns: repeat(2, 1fr); }
   .about-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -372,7 +373,7 @@
   .about-why__grid    { grid-template-columns: 1fr; }
   .about-why__card { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
   .about-why__card:last-child { border-bottom: none; }
-  .about-story__img img { height: 280px; }
+  .about-story__img img { height: auto; max-height: 300px; }
 
   /* Timeline collapses to single column */
   .about-timeline__line { left: 20px; }
@@ -386,5 +387,5 @@
   .about-stat { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08); }
   .about-stat:last-child { border-bottom: none; }
   .about-hero__title { font-size: 26px; }
-  .about-story__img img { height: 240px; }
+  .about-story__img img { height: auto; max-height: 260px; }
 }

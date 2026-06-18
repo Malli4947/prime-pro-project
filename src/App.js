@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatBot from './components/ChatBot';
+import PropertyPopup from './components/PropertyPopup';
 import './App.css';
 
 // ── Code-split all pages — only load what the user navigates to ──────────────
@@ -81,6 +82,7 @@ export default function App() {
         </main>
         <Footer />
         <ChatBot />
+        <PropertyPopup />
       </div>
     </BrowserRouter>
     </HelmetProvider>
