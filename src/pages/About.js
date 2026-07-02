@@ -439,9 +439,9 @@ export default function About() {
               Explore verified properties — Villas, Apartments, Open Plots, and Farmland — or talk to an expert for personalised guidance. Zero brokerage. Full transparency. Est. 2024 · Award Winning.
             </p>
             <div className="about-cta__contact-row">
-              <a href="tel:6304829287" className="about-cta__contact-chip">
+              <a href="tel:9866212211" className="about-cta__contact-chip">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                6304829287
+                9866212211
               </a>
               <a href="mailto:primeproprojects@gmail.com" className="about-cta__contact-chip">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -449,7 +449,7 @@ export default function About() {
               </a>
               <span className="about-cta__contact-chip">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana
+                Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd, CBI Colony, Madhapur, Hyderabad, Telangana 500033
               </span>
             </div>
             <div className="about-cta__actions">

@@ -94,7 +94,7 @@ export default function Sitemap() {
         <div className="legal-callout">
           <strong>Can't find what you need?</strong> Use the search bar on the{' '}
           <Link to="/properties">All Properties</Link> page, or{' '}
-          <a href="tel:6304829287">call us at 6304829287</a> and we'll help you find it directly.
+          <a href="tel:9866212211">call us at 9866212211</a> and we'll help you find it directly.
         </div>
 
         <div className="sitemap-grid">
@@ -120,7 +120,7 @@ export default function Sitemap() {
           </p>
           <div className="legal-cta__actions">
             <Link to="/contact" className="btn btn-gold">Contact Us →</Link>
-            <a href="https://wa.me/916304829287?text=Hi%20PrimePro%2C%20I%27m%20looking%20for%20a%20property."
+            <a href="https://wa.me/919866212211?text=Hi%20PrimePro%2C%20I%27m%20looking%20for%20a%20property."
               target="_blank" rel="noopener noreferrer"
               className="btn btn-outline-light">
               💬 WhatsApp

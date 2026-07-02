@@ -58,8 +58,8 @@ const FOUNDER = {
   location:  'Hyderabad, Telangana',
   tagline:   "I help families, NRIs and investors buy the right property in Hyderabad — verified, transparent and stress-free.",
   blurb:     "I founded PrimePro Projects in 2024 with one mission — to make real estate honest. Every project we list is RERA-verified, every document is checked by our legal desk, and every client receives the same advice I would give my own family. Whether it's your first home, a villa upgrade, a commercial asset or an NRI investment, I'm here to guide you end-to-end.",
-  phone:     '+91 63048 29287',
-  phoneRaw:  '916304829287',
+  phone:     '+91 98662 12211',
+  phoneRaw:  '919866212211',
   email:     'primeproprojects@gmail.com',
   experience:'5',
   socials: [
@@ -146,7 +146,7 @@ const FAQS = [
   { q: 'Do you charge any brokerage from buyers?',
     a: 'No. PrimePro Projects operates on a zero-brokerage model for buyers, renters and investors. Our fees are disclosed upfront — there are no hidden charges at any stage.' },
   { q: 'How quickly can I get a response after enquiring?',
-    a: 'Every enquiry receives a personal response within 2 hours during business hours (Mon–Sun 10 AM–7 PM, Tuesday closed). For urgent requirements, call or WhatsApp +91 63048 29287 directly.' },
+    a: 'Every enquiry receives a personal response within 2 hours during business hours (Mon–Sun 10 AM–7 PM, Tuesday closed). For urgent requirements, call or WhatsApp +91 98662 12211 directly.' },
   { q: 'Are all listed projects RERA approved?',
     a: 'Yes. Every project on our platform is RERA registered with HMDA or DTCP approvals. The RERA number is shown on each property detail page and verified by our in-house legal desk.' },
   { q: 'Do you help with home loans and registration?',
@@ -170,7 +170,7 @@ export default function Portfolio() {
     <div className="portfolio-page">
       <Helmet>
         <title>Prashanth Reddy — Founder & Real Estate Advisor | Prime Pro Projects</title>
-        <meta name="description" content="Meet Prashanth Reddy, Founder & MD of Prime Pro Projects. 5+ years guiding families, NRIs and investors in Hyderabad real estate. RERA verified, zero brokerage. Call +91 63048 29287." />
+        <meta name="description" content="Meet Prashanth Reddy, Founder & MD of Prime Pro Projects. 5+ years guiding families, NRIs and investors in Hyderabad real estate. RERA verified, zero brokerage. Call +91 98662 12211." />
         <link rel="canonical" href="https://www.primeproprojects.in/portfolio" />
         <meta property="og:title" content="Prashanth Reddy — Real Estate Advisor Hyderabad" />
         <meta property="og:description" content="Founder of Prime Pro Projects. Helping families buy verified homes in Hyderabad since 2024." />

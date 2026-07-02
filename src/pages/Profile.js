@@ -148,9 +148,9 @@ export default function Home() {
   const about   = cmsData?.about   || {};
   const banners = (cmsData?.banners || []).filter(b => b.isActive);
 
-  const contactPhone = about.phone    || '6304829287';
+  const contactPhone = about.phone    || '9866212211';
   const contactEmail = about.email    || 'primeproprojects@gmail.com';
-  const contactAddr  = about.address  || 'Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana';
+  const contactAddr  = about.address  || 'Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd, CBI Colony, Madhapur, Hyderabad, Telangana 500033';
   const yearsExp     = about.yearsExperience || 12;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';

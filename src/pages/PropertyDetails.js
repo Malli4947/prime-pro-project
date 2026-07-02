@@ -891,15 +891,15 @@ export default function PropertyDetails() {
           )}
 
           <div className={`pd-contacts${mounted ? ' anim-fade-up d-4' : ''}`}>
-            <a href="tel:6304829287" className="pd-contact pd-contact--call">
+            <a href="tel:9866212211" className="pd-contact pd-contact--call">
               <span className="pd-contact__icon">📞</span>
               <div>
                 <div className="pd-contact__label">Call Us Now</div>
-                <div className="pd-contact__val">6304829287</div>
+                <div className="pd-contact__val">9866212211</div>
               </div>
             </a>
             <a
-              href={`https://wa.me/916304829287?text=Hi! I'm interested in ${encodeURIComponent(title)} at ${encodeURIComponent(displayLoc)}.`}
+              href={`https://wa.me/919866212211?text=Hi! I'm interested in ${encodeURIComponent(title)} at ${encodeURIComponent(displayLoc)}.`}
               target="_blank" rel="noopener noreferrer"
               className="pd-contact pd-contact--whatsapp">
               <span className="pd-contact__icon">💬</span>
@@ -966,7 +966,7 @@ export default function PropertyDetails() {
       <div className={`pd-sticky${showSticky ? ' visible' : ''}`}>
         <div className="pd-sticky__price">{displayPrice}</div>
         <div className="pd-sticky__actions">
-          <a href="tel:6304829287" className="btn btn-outline-light btn-sm">
+          <a href="tel:9866212211" className="btn btn-outline-light btn-sm">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             Call
           </a>

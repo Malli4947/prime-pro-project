@@ -26,7 +26,7 @@ export const WELCOME = {
   suggest: QUICK_SUGGESTIONS.slice(0, 4),
 };
 
-const PHONE = '6304829287';
+const PHONE = '9866212211';
 const WA_LINK = `https://wa.me/91${PHONE}?text=${encodeURIComponent("Hi PrimePro, I'd like to know more.")}`;
 const EMAIL = 'primeproprojects@gmail.com';
 
@@ -47,7 +47,7 @@ const INTENTS = [
       /\bhow.*(reach|contact)\b/i,
     ],
     reply:
-      "Here's the fastest way to reach us:\n\n📞 **Phone:** +91 63048 29287\n💬 **WhatsApp:** Tap below — replies in under 2 hours\n✉️ **Email:** primeproprojects@gmail.com\n📍 **Office:** Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana",
+      "Here's the fastest way to reach us:\n\n📞 **Phone:** +91 98662 12211\n💬 **WhatsApp:** Tap below — replies in under 2 hours\n✉️ **Email:** primeproprojects@gmail.com\n📍 **Office:** Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd, CBI Colony, Madhapur, Hyderabad, Telangana 500033",
     links: [
       { type: 'tel',  label: '📞 Call Now',     href: `tel:${PHONE}` },
       { type: 'wa',   label: '💬 WhatsApp',     href: WA_LINK },
@@ -65,7 +65,7 @@ const INTENTS = [
       /\b(directions?|map|maps)\b/i,
     ],
     reply:
-      "📍 **Our Office**\nMadhapur, Kavuri Hills Phase 1,\nHyderabad, Telangana\n\nVisit us in person — just call ahead so we can keep your file ready and a coffee on the table.",
+      "📍 **Our Office**\nDivya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd,\nCBI Colony, Madhapur, Hyderabad, Telangana 500033\n\nVisit us in person — just call ahead so we can keep your file ready and a coffee on the table.",
     links: [
       { type: 'page', label: 'Get Directions →', href: '/contact' },
       { type: 'tel',  label: '📞 Call Before Visit', href: `tel:${PHONE}` },

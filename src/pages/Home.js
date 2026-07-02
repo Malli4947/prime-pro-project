@@ -240,9 +240,9 @@ export default function Home() {
   }, []);
 
   const about        = cmsData?.about || {};
-  const contactPhone = about.phone    || '6304829287';
+  const contactPhone = about.phone    || '9866212211';
   const contactEmail = about.email    || 'primeproprojects@gmail.com';
-  const contactAddr  = about.address  || 'Madhapur, Kavuri Hills Phase 1, Hyderabad, Telangana';
+  const contactAddr  = about.address  || 'Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd, CBI Colony, Madhapur, Hyderabad, Telangana 500033';
   const yearsExp     = about.yearsExperience || 5;
   const aboutHeading = about.heading  || "Hyderabad's Most Trusted Real Estate Platform";
   const aboutBody    = about.body     || 'We combine deep local expertise with cutting-edge technology to make your property journey smooth, transparent, and rewarding.';
@@ -251,12 +251,12 @@ export default function Home() {
     <div className="home">
       <Helmet>
         <title>Prime Pro Projects — Hyderabad's Trusted Real Estate Platform</title>
-        <meta name="description" content="Buy RERA-verified apartments, villas, plots, commercial spaces and farmlands in Hyderabad. Zero brokerage, 2-hour response, 200+ verified listings. Call +91 63048 29287." />
+        <meta name="description" content="Buy RERA-verified apartments, villas, plots, commercial spaces and farmlands in Hyderabad. Zero brokerage, 2-hour response, 200+ verified listings. Call +91 98662 12211." />
         <meta name="keywords" content="real estate Hyderabad, apartments Hyderabad, villas Hyderabad, plots Kokapet, RERA verified properties, Prime Pro Projects" />
         <link rel="canonical" href="https://www.primeproprojects.in/" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Prime Pro Projects — Hyderabad's Trusted Real Estate Platform" />
-        <meta property="og:description" content="200+ RERA-verified properties in Hyderabad. Apartments, villas, plots, commercial & farmland. Zero brokerage. Call +91 63048 29287." />
+        <meta property="og:description" content="200+ RERA-verified properties in Hyderabad. Apartments, villas, plots, commercial & farmland. Zero brokerage. Call +91 98662 12211." />
         <meta property="og:url" content="https://www.primeproprojects.in/" />
         <meta property="og:image" content="https://www.primeproprojects.in/FullLogo.jpeg" />
         <meta name="twitter:card" content="summary_large_image" />

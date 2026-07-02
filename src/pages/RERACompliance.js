@@ -167,7 +167,7 @@ export default function RERACompliance() {
             you commit a single rupee.
           </p>
           <div className="legal-cta__actions">
-            <a href="tel:6304829287" className="btn btn-gold">📞 Talk to Legal Desk</a>
+            <a href="tel:9866212211" className="btn btn-gold">📞 Talk to Legal Desk</a>
             <a href="https://rera.telangana.gov.in/" target="_blank" rel="noopener noreferrer"
               className="btn btn-outline-light">
               Visit TS RERA Portal →
