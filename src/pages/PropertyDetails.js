@@ -898,6 +898,13 @@ export default function PropertyDetails() {
                 <div className="pd-contact__val">9866212211</div>
               </div>
             </a>
+            <a href="tel:9866475511" className="pd-contact pd-contact--call">
+              <span className="pd-contact__icon">📞</span>
+              <div>
+                <div className="pd-contact__label">Call Us Now</div>
+                <div className="pd-contact__val">9866475511</div>
+              </div>
+            </a>
             <a
               href={`https://wa.me/919866212211?text=Hi! I'm interested in ${encodeURIComponent(title)} at ${encodeURIComponent(displayLoc)}.`}
               target="_blank" rel="noopener noreferrer"

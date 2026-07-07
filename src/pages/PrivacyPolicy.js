@@ -156,7 +156,7 @@ export default function PrivacyPolicy() {
             request — disclosure, correction or deletion of your information.
           </p>
           <div className="legal-cta__actions">
-            <a href="tel:9866212211" className="btn btn-gold">📞 Call 9866212211</a>
+            <a href="tel:9866212211" className="btn btn-gold">📞 Call 9866212211 / 9866475511</a>
             <a href="mailto:primeproprojects@gmail.com" className="btn btn-outline-light">
               ✉ Email Data Officer
             </a>

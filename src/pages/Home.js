@@ -77,7 +77,7 @@ const AGENTS = [
     exp: '5 Yrs',
     initials: 'PR',
     color: '#1A2B4A',
-    phone: '9347870247',
+    phone: '6304839287',
   },
   {
     id: 2,
@@ -87,7 +87,7 @@ const AGENTS = [
     exp: '4 Yrs',
     initials: 'VC',
     color: '#C9A84C',
-    phone: '8688874521',
+    phone: '9866475511',
   },
 
   {
@@ -407,6 +407,7 @@ export default function Home() {
             <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginTop:24, marginBottom:4 }}>
               {contactEmail && <a href={`mailto:${contactEmail}`} style={chipStyle}>✉️ {contactEmail}</a>}
               {contactPhone && <a href={`tel:${contactPhone}`}    style={chipStyle}>📞 {contactPhone}</a>}
+              <a href="tel:9866475511" style={chipStyle}>📞 9866475511</a>
               {contactAddr  && <span                              style={chipStyle}>📍 {contactAddr}</span>}
             </div>
             <Link to="/properties" className="btn btn-gold" style={{ marginTop:24 }}>Explore All Properties →</Link>

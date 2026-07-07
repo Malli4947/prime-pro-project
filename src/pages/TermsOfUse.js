@@ -194,7 +194,7 @@ export default function TermsOfUse() {
           </p>
           <div className="legal-cta__actions">
             <Link to="/contact" className="btn btn-gold">Contact Us →</Link>
-            <a href="tel:9866212211" className="btn btn-outline-light">📞 Call 9866212211</a>
+            <a href="tel:9866212211" className="btn btn-outline-light">📞 Call 9866212211 / 9866475511</a>
           </div>
         </div>
       </div>

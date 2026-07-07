@@ -60,6 +60,8 @@ const FOUNDER = {
   blurb:     "I founded PrimePro Projects in 2024 with one mission — to make real estate honest. Every project we list is RERA-verified, every document is checked by our legal desk, and every client receives the same advice I would give my own family. Whether it's your first home, a villa upgrade, a commercial asset or an NRI investment, I'm here to guide you end-to-end.",
   phone:     '+91 98662 12211',
   phoneRaw:  '919866212211',
+  phone2:    '+91 98664 75511',
+  phone2Raw: '919866475511',
   email:     'primeproprojects@gmail.com',
   experience:'5',
   socials: [
@@ -75,6 +77,7 @@ const FOUNDER = {
 const WA_TEXT = encodeURIComponent("Hi Prashanth, I'd like to discuss a property requirement.");
 const WA_LINK = `https://wa.me/${FOUNDER.phoneRaw}?text=${WA_TEXT}`;
 const CALL_LINK = `tel:${FOUNDER.phoneRaw.replace(/^91/, '')}`;
+const CALL_LINK2 = `tel:${FOUNDER.phone2Raw.replace(/^91/, '')}`;
 
 /* ── Key numbers ───────────────────────────────────────────── */
 const STATS = [
@@ -202,7 +205,7 @@ export default function Portfolio() {
                 honest advice — that's the promise to every family I work with.
               </p>
               <div className="pf-rolecard__contact">
-                <p><span className="label">P :</span>{FOUNDER.phone}</p>
+                <p><span className="label">P :</span>{FOUNDER.phone}, {FOUNDER.phone2}</p>
                 <p><span className="label">E :</span>{FOUNDER.email}</p>
               </div>
 
@@ -307,6 +310,10 @@ export default function Portfolio() {
               <a href={CALL_LINK} className="pf-query__chip">
                 <PhoneIcon />
                 {FOUNDER.phone}
+              </a>
+              <a href={CALL_LINK2} className="pf-query__chip">
+                <PhoneIcon />
+                {FOUNDER.phone2}
               </a>
               <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
                 className="pf-query__chip pf-query__chip--whatsapp">
@@ -541,7 +548,7 @@ export default function Portfolio() {
             </div>
             <div className="pf-office__cta-row">
               <a href={CALL_LINK} className="btn btn-gold">
-                Call {FOUNDER.phone}
+                Call {FOUNDER.phone} / {FOUNDER.phone2}
               </a>
               <Link to="/contact" className="btn btn-outline-light">
                 Visit My Office →
@@ -567,7 +574,7 @@ export default function Portfolio() {
             </p>
             <div className="pf-cta__actions">
               <a href={CALL_LINK} className="btn btn-gold">
-                📞 Call {FOUNDER.phone}
+                📞 Call {FOUNDER.phone} / {FOUNDER.phone2}
               </a>
               <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
                 className="btn btn-whatsapp">

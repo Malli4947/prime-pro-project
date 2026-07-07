@@ -94,7 +94,7 @@ export default function Sitemap() {
         <div className="legal-callout">
           <strong>Can't find what you need?</strong> Use the search bar on the{' '}
           <Link to="/properties">All Properties</Link> page, or{' '}
-          <a href="tel:9866212211">call us at 9866212211</a> and we'll help you find it directly.
+          <a href="tel:9866212211">call us at 9866212211 / 9866475511</a> and we'll help you find it directly.
         </div>
 
         <div className="sitemap-grid">

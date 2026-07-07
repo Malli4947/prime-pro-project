@@ -338,6 +338,9 @@ export default function Home() {
                   <span>📞</span> {contactPhone}
                 </a>
               )}
+              <a href="tel:9866475511" className="home-why__contact-chip">
+                <span>📞</span> 9866475511
+              </a>
               {contactAddr && (
                 <span className="home-why__contact-chip">
                   <span>📍</span> {contactAddr}

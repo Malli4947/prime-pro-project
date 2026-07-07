@@ -26,6 +26,7 @@ const OFFICES = [
     city: 'Hyderabad (HQ)',
     address: 'Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd,\nCBI Colony, Madhapur, Hyderabad, Telangana 500033',
     phone: '9866212211',
+    altPhone: '9866475511',
     email: 'primeproprojects@gmail.com',
     hours: 'Mon–Sat: 9 AM – 7 PM',
     emoji: '🏢',
@@ -43,7 +44,7 @@ const FAQS = [
   },
   {
     q: 'How quickly will your team respond to my enquiry?',
-    a: 'We guarantee a response within 2 hours during business hours (Mon–Sun 10 AM–7 PM, Tuesday closed). For urgent requirements, call us directly at 9866212211 or WhatsApp us for an instant response from our dedicated advisors.',
+    a: 'We guarantee a response within 2 hours during business hours (Mon–Sun 10 AM–7 PM, Tuesday closed). For urgent requirements, call us directly at 9866212211 / 9866475511 or WhatsApp us for an instant response from our dedicated advisors.',
   },
   {
     q: 'Can I schedule a physical site visit?',
@@ -62,6 +63,7 @@ const FAQS = [
 // Updated hours everywhere
 const QUICK_LINKS = [
   { icon: '📞', label: 'Call Us',       val: '9866212211',                    href: 'tel:9866212211' },
+  { icon: '📞', label: 'Call Us (Alt)', val: '9866475511',                    href: 'tel:9866475511' },
   { icon: '✉️',  label: 'Email Us',      val: 'primeproprojects@gmail.com',     href: 'mailto:primeproprojects@gmail.com' },
   { icon: '💬', label: 'WhatsApp',      val: '+91 9866212211',        href: 'https://wa.me/919866212211' },
   { icon: '🕐', label: 'Working Hours', val: 'Mon–Sun 10AM–7PM  |  Tue Closed', href: null },
@@ -164,7 +166,7 @@ export default function Contact() {
     <div className="contact-page" id="contact">
       <Helmet>
         <title>Contact Us — Prime Pro Projects | Hyderabad Real Estate</title>
-        <meta name="description" content="Contact Prime Pro Projects for RERA-verified properties in Hyderabad. Call +91 98662 12211 or WhatsApp. Free consultation. 2-hour response. Office: Divya Diamonds, Kavuri Hills Rd, Madhapur." />
+        <meta name="description" content="Contact Prime Pro Projects for RERA-verified properties in Hyderabad. Call +91 98662 12211 / +91 98664 75511 or WhatsApp. Free consultation. 2-hour response. Office: Divya Diamonds, Kavuri Hills Rd, Madhapur." />
         <link rel="canonical" href="https://www.primeproprojects.in/contact" />
         <meta property="og:title" content="Contact Prime Pro Projects — Hyderabad Real Estate" />
         <meta property="og:description" content="Reach us for verified properties in Hyderabad. Call, WhatsApp or visit our office in Madhapur." />
@@ -384,6 +386,14 @@ export default function Contact() {
                   <div className="contact-direct__note">Mon–Sun 10 AM–7 PM  ·  Tue Closed</div>
                 </div>
               </a>
+              <a href="tel:9866475511" className="contact-direct__item contact-direct__item--call">
+                <div className="contact-direct__icon">📞</div>
+                <div>
+                  <div className="contact-direct__label">Call Us (Alt)</div>
+                  <div className="contact-direct__val">9866475511</div>
+                  <div className="contact-direct__note">Mon–Sun 10 AM–7 PM  ·  Tue Closed</div>
+                </div>
+              </a>
               <a href="https://wa.me/919866212211" target="_blank" rel="noopener noreferrer"
                 className="contact-direct__item contact-direct__item--whatsapp">
                 <div className="contact-direct__icon">💬</div>
@@ -429,6 +439,11 @@ export default function Contact() {
                   <li><span>📞</span>
                     <a href={`tel:${office.phone.replace(/\s/g,'')}`}>{office.phone}</a>
                   </li>
+                  {office.altPhone && (
+                    <li><span>📞</span>
+                      <a href={`tel:${office.altPhone.replace(/\s/g,'')}`}>{office.altPhone}</a>
+                    </li>
+                  )}
                   <li><span>✉️</span>
                     <a href={`mailto:${office.email}`}>{office.email}</a>
                   </li>
@@ -453,7 +468,7 @@ export default function Contact() {
             <h2 className="sec-title">Frequently Asked <span className="hi">Questions</span></h2>
             <p className="sec-sub">
               Can't find your answer?{' '}
-              <a href="tel:9866212211" style={{ color:'var(--gold)' }}>Call 9866212211</a>
+              <a href="tel:9866212211" style={{ color:'var(--gold)' }}>Call 9866212211 / 9866475511</a>
             </p>
             <Link to="/properties" className="btn btn-gold" style={{ marginTop:24 }}>
               Browse Properties →

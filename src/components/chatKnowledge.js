@@ -27,6 +27,7 @@ export const WELCOME = {
 };
 
 const PHONE = '9866212211';
+const PHONE2 = '9866475511';
 const WA_LINK = `https://wa.me/91${PHONE}?text=${encodeURIComponent("Hi PrimePro, I'd like to know more.")}`;
 const EMAIL = 'primeproprojects@gmail.com';
 
@@ -47,9 +48,10 @@ const INTENTS = [
       /\bhow.*(reach|contact)\b/i,
     ],
     reply:
-      "Here's the fastest way to reach us:\n\n📞 **Phone:** +91 98662 12211\n💬 **WhatsApp:** Tap below — replies in under 2 hours\n✉️ **Email:** primeproprojects@gmail.com\n📍 **Office:** Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd, CBI Colony, Madhapur, Hyderabad, Telangana 500033",
+      "Here's the fastest way to reach us:\n\n📞 **Phone:** +91 98662 12211 / +91 98664 75511\n💬 **WhatsApp:** Tap below — replies in under 2 hours\n✉️ **Email:** primeproprojects@gmail.com\n📍 **Office:** Divya Diamonds, Hi Tech city, 3-225, Kavuri Hills Rd, CBI Colony, Madhapur, Hyderabad, Telangana 500033",
     links: [
       { type: 'tel',  label: '📞 Call Now',     href: `tel:${PHONE}` },
+      { type: 'tel',  label: '📞 Call (Alt)',   href: `tel:${PHONE2}` },
       { type: 'wa',   label: '💬 WhatsApp',     href: WA_LINK },
       { type: 'mail', label: '✉️ Email Us',     href: `mailto:${EMAIL}` },
       { type: 'page', label: 'Contact Page →',  href: '/contact' },
@@ -125,7 +127,7 @@ const INTENTS = [
       /\b(team|agents?|advisors?|staff|staff|employees?|members?)\b/i,
     ],
     reply:
-      "**Our Team**\n\n🔹 **Prashanth Reddy** — Senior Property Advisor · 5 yrs · 130 deals · +91 93478 70247\n🔹 **Vaishnavi Chowdary** — Senior Property Advisor · 4 yrs · 100 deals · +91 86888 74521\n🔹 **K Arun Kumar Reddy** — Property Advisor · 3 yrs · 75 deals · +91 93907 98969",
+      "**Our Team**\n\n🔹 **Prashanth Reddy** — Senior Property Advisor · 5 yrs · 130 deals · +91 63048 39287\n🔹 **Vaishnavi Chowdary** — Senior Property Advisor · 4 yrs · 100 deals · +91 98664 75511\n🔹 **K Arun Kumar Reddy** — Property Advisor · 3 yrs · 75 deals · +91 93907 98969",
     links: [
       { type: 'page', label: 'Meet the Team →', href: '/about' },
     ],
