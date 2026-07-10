@@ -127,7 +127,7 @@ const INTENTS = [
       /\b(team|agents?|advisors?|staff|staff|employees?|members?)\b/i,
     ],
     reply:
-      "**Our Team**\n\n🔹 **Prashanth Reddy** — Senior Property Advisor · 5 yrs · 130 deals · +91 63048 39287\n🔹 **Vaishnavi Chowdary** — Senior Property Advisor · 4 yrs · 100 deals · +91 98664 75511\n🔹 **K Arun Kumar Reddy** — Property Advisor · 3 yrs · 75 deals · +91 93907 98969",
+      "**Our Team**\n\n🔹 **Prashanth Reddy** — Senior Property Advisor · 5 yrs · 130 deals · +91 63048 39287\n🔹 **K Surya prakash** — Senior Property Advisor · 4 yrs · 100 deals · +91 98664 75511\n🔹 **K Arun Kumar Reddy** — Property Advisor · 3 yrs · 75 deals · +91 93907 98969",
     links: [
       { type: 'page', label: 'Meet the Team →', href: '/about' },
     ],

@@ -81,7 +81,7 @@ const AGENTS = [
   },
   {
     id: 2,
-    name: 'Vaishnavi Chowdary',
+    name: 'K Surya prakash',
     role: 'Senior Property Advisor',
     deals: '100',
     exp: '4 Yrs',
